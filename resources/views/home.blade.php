@@ -1,4 +1,4 @@
-<x-header></x-header>
+<x-header :title="$title" />
 <section id="home" class="py-5 d-flex align-items-center mb-5 mt-5">
     <div class="container-fluid px-lg-5">
         <div class="row align-items-center">

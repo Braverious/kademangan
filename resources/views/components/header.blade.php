@@ -1,3 +1,5 @@
+@props(['title' => 'Kelurahan'])
+
 <!doctype html>
 <html lang="id">
 

@@ -1,6 +1,7 @@
 <?php
-
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home', ['title' => 'KKelurahan Kademangan']);
-});
+// Route::get('/', function () {
+//     return view('home', ['title' => 'Kelurahan Kademangan']);
+// });
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
 
 // Grouping Authentication
 Route::controller(AuthController::class)->group(function () {
@@ -25,9 +29,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('logout', 'logout')->name('logout');
 });
 
-// Grouping Admin (Hanya bisa diakses jika sudah login)
+// Grouping Admin (Harus Login)
 Route::middleware(['auth'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 });
