@@ -1,0 +1,111 @@
+/* =====================================================
+   BERITA LIST & DETAIL (warna disesuaikan)
+   ===================================================== */
+
+/* LIST BERITA – putih bersih */
+.berita-section.list {
+  background-color: var(--white);
+  color: var(--text);
+}
+
+/* DETAIL BERITA – biru lembut */
+.berita-section.detail {
+  background-color: var(--white);
+  color: var(--text);
+}
+
+/* Judul halaman dan konten umum */
+.berita-section h1,
+.berita-section .display-6 {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.berita-section p,
+.berita-section .text-muted {
+  color: var(--text);
+}
+
+/* Card berita */
+.berita-section .card {
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.25s ease;
+  background-color: var(--white);
+}
+
+.berita-section .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Badge kategori */
+.berita-section .badge {
+  background-color: rgba(31,111,235,0.1);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Tombol utama */
+.berita-section .btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.berita-section .btn-primary:hover {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* Tombol Kembali */
+.back-icon {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--primary);
+  transition: all 0.25s ease;
+}
+
+.back-icon:hover {
+  color: var(--accent);
+  transform: translateX(-2px);
+}
+
+/* Gambar di detail berita */
+.berita-section.detail img {
+  border: 1px solid #dbeafe;
+  background: var(--white);
+}
+
+/* === Aksen kuning di kiri judul halaman list === */
+.berita-section.list h1.h3 {
+  color: var(--primary);
+  font-weight: 800;
+  border-left: 6px solid var(--accent);
+  padding-left: 12px;
+}
+
+/* === Garis aksen kuning di atas setiap card === */
+.berita-section.list .card {
+  position: relative;
+  overflow: hidden;
+}
+
+.berita-section.list .card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: var(--accent);
+  transition: all 0.25s ease;
+}
+
+.berita-section.list .card:hover::before {
+  height: 5px;
+}

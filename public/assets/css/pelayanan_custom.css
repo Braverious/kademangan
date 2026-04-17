@@ -1,0 +1,117 @@
+/* =========================================================
+   PALET WARNA UTAMA (sinkron dengan style.css global)
+   ========================================================= */
+:root {
+  --primary: #1F6FEB;   /* biru utama */
+  --accent:  #F5B301;   /* kuning aksen */
+  --light-bg: #E5F2FF;  /* biru muda lembut */
+  --text:    #1E293B;   /* teks utama */
+  --white:   #FFFFFF;   /* putih */
+}
+
+/* =========================================================
+   SECTION & HEADER
+   ========================================================= */
+.pelayanan-section {
+  background-color: var(--white);
+  color: var(--text);
+}
+
+.pelayanan-section h1.h3 {
+  color: var(--primary);
+  font-weight: 800;
+  border-left: 6px solid var(--accent);
+  padding-left: 12px;
+}
+
+.pelayanan-section p {
+  color: var(--text);
+}
+
+.back-icon {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--primary);
+  transition: all 0.25s ease;
+}
+
+.back-icon:hover {
+  background-color: var(--light-bg);
+  color: var(--accent);
+}
+
+/* =========================================================
+   CARD PELAYANAN
+   ========================================================= */
+.service-card {
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  background-color: var(--white);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* Garis aksen kuning di atas */
+.service-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background-color: var(--accent);
+  transition: all 0.25s ease;
+}
+
+/* Hover effect */
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.service-card:hover::before {
+  height: 6px;
+}
+
+/* Header ikon dan judul sejajar */
+.service-card .card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-card .card-body .d-flex i {
+  color: var(--primary);
+}
+
+.service-card .card-title {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+/* Deskripsi */
+.service-card .card-text {
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+/* Tombol */
+.service-card .btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.service-card .btn-primary:hover {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--text);
+}

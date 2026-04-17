@@ -1,0 +1,157 @@
+/* Custom CSS untuk Halaman Login Geometris */
+:root {
+  --primary: #1F6FEB;   /* biru utama */
+  --accent:  #F5B301;   /* kuning aksen */
+  --light-bg: #E5F2FF;  /* biru muda lembut */
+  --text:    #1E293B;   /* teks utama */
+  --white:   #FFFFFF;
+}
+
+body.login {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(180deg, var(--light-bg) 0%, var(--white) 100%);
+  color: var(--text);
+  
+  /* ==== penting untuk center sempurna ==== */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - var(--header-h, 0px));
+  width: 100vw;         /* pastikan lebar penuh */
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ornamen dekoratif kiri-kanan */
+body.login::before {
+  content: '';
+  position: absolute;
+  top: -150px;
+  left: -150px;
+  width: 400px;
+  height: 400px;
+  background: var(--primary);
+  border-radius: 50%;
+  opacity: 0.08;
+}
+
+/* Bentuk Lingkaran Kiri */
+body.login::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: #4a69bd;
+    border-radius: 50%;
+    opacity: 0.3;
+}
+
+body.login::after {
+  content: '';
+  position: absolute;
+  bottom: -120px;
+  right: -120px;
+  width: 300px;
+  height: 300px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.15;
+}
+
+/* Container form */
+.container-login {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 32px;
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(31, 47, 90, 0.08);
+  text-align: center;
+  border: 1px solid #e0e7ff;
+  margin: 0 auto;      /* tengah horizontal */
+}
+
+.logo-login {
+  max-width: 90px;
+  height: auto;
+  margin-bottom: 16px;
+}
+
+.container-login h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 24px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc;
+  color: var(--text);
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-control::placeholder { color: #94a3b8; }
+
+.form-control:focus {
+  border-color: var(--primary);
+  background-color: var(--white);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
+}
+
+/* Tombol login */
+.btn-primary {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: var(--primary);
+  border: none;
+  border-radius: 8px;
+  color: var(--white);
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent);
+  color: var(--text);
+}
+
+/* Alert (error login) */
+.alert-danger {
+  background-color: rgba(245, 179, 1, 0.15);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  font-size: 14px;
+  text-align: left;
+}

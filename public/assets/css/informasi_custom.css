@@ -1,0 +1,167 @@
+/* =========================================================
+   INFORMASI LIST & DETAIL (Biznet Blue–Yellow–White Theme)
+   ========================================================= */
+/* Hanya halaman detail yang biru */
+.informasi-section.detail {
+  background-color: var(--white);
+  color: var(--text);
+}
+
+/* Halaman list tetap putih */
+.informasi-section.list {
+  background-color: var(--white);
+  color: var(--text);
+}
+
+h1.h3, .display-6 {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* === Filter Form === */
+.form-label.small {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.form-control,
+.form-select {
+  border: 1px solid #cbd5e1;
+  background-color: var(--white);
+  color: var(--text);
+  border-radius: 8px;
+  box-shadow: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(31,111,235,0.1);
+}
+
+/* === Button Primary === */
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* === Button Outline === */
+.btn-outline-primary {
+  border-color: var(--primary);
+  color: var(--primary);
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* === Info Card === */
+.info-card {
+  border-radius: 12px;
+  transition: all 0.25s ease;
+  background: var(--white);
+  border: 1px solid #e0e7ff;
+}
+
+.info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* === Tambahan aksen kuning pada kartu informasi (list) === */
+.informasi-section.list .info-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Garis kuning di atas card */
+.informasi-section.list .info-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: var(--accent);
+  transition: all 0.25s ease;
+}
+
+/* Hover effect — garis makin tebal & card naik */
+.informasi-section.list .info-card:hover::before {
+  height: 5px;
+}
+
+/* Heading besar: beri sedikit aksen kuning di kiri */
+.informasi-section.list h1.h3 {
+  border-left: 6px solid var(--accent);
+  padding-left: 12px;
+}
+
+.info-card h5 {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.info-card .badge {
+  background-color: rgba(31,111,235,0.1);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.info-card small {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.info-card p {
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+/* === Detail Page === */
+.article-content {
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 1rem;
+}
+
+.article-content p {
+  margin-bottom: 1rem;
+}
+
+.display-6 {
+  color: var(--primary);
+  border-bottom: 3px solid var(--accent);
+  padding-bottom: 8px;
+  margin-bottom: 24px;
+}
+
+/* === Back Icon === */
+.back-icon {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--primary);
+  transition: all 0.25s ease;
+}
+
+.back-icon:hover {
+  background-color: var(--light-bg);
+  color: var(--accent);
+}
