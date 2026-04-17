@@ -26,6 +26,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::controller(AuthController::class)->group(function () {
     Route::get('auth/login', 'index')->name('login');
     Route::post('auth/process', 'aksi_login');
+   // Rute Logout
     Route::get('logout', 'logout')->name('logout');
 });
 

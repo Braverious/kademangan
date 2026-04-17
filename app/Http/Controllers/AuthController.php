@@ -39,10 +39,16 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        // 1. Keluarkan user dari status autentikasi Laravel
         Auth::logout();
+
+        // 2. Hancurkan semua data session yang tersisa
         $request->session()->invalidate();
+
+        // 3. Buat ulang token CSRF baru demi keamanan
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        // 4. Arahkan kembali ke halaman home (root)
+        return redirect()->route('home');
     }
 }
