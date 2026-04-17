@@ -162,7 +162,7 @@
                             ['slug' => 'users', 'url' => 'admin/users', 'label' => 'Manajemen User'],
                             [
                                 'slug' => 'settings',
-                                'url' => 'admin/settings/footer',
+                                'route' => 'admin.settings.footer', // Menggunakan nama route
                                 'label' => 'Footer',
                                 'seg3' => 'footer',
                             ],
@@ -195,7 +195,14 @@
                                             (!empty($it['seg3']) && $seg2 === $it['slug'] && $seg3 === $it['seg3']);
                                     @endphp
                                     <li class="{{ $active ? 'active' : '' }}">
-                                        <a href="{{ url($it['url']) }}">
+                                        @php
+                                            // Logika cerdas: Jika ada 'route', pakai route(). Jika ada 'url', pakai url().
+                                            $linkTarget = isset($it['route'])
+                                                ? route($it['route'])
+                                                : url($it['url'] ?? '#');
+                                        @endphp
+
+                                        <a href="{{ $linkTarget }}">
                                             <span class="sub-item">{{ $it['label'] }}</span>
                                         </a>
                                     </li>

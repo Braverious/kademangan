@@ -38,7 +38,13 @@
             </a>
 
             <div class="d-none d-lg-block ms-auto">
-                <a href="{{ route('login') }}" class="btn btn-outline-primary px-3">Login</a>
+                @auth
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-primary px-3">Dashboard</a>
+                @endauth
+
+                @guest
+                    <a href="{{ route('login') }}" class="btn btn-outline-primary px-3">Login</a>
+                @endguest
             </div>
         </div>
     </nav>
