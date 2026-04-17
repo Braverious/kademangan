@@ -27,6 +27,8 @@
         });
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
     <link rel="stylesheet" href="{{ asset('assets/admin/css/bootstrap.min.css') }}">
@@ -39,7 +41,8 @@
         <div class="main-header">
             <div class="logo-header" data-background-color="blue">
                 <a href="{{ route('admin.dashboard') }}" class="logo">
-                    <img src="{{ asset('assets/img/logo.svg') }}" alt="navbar brand" class="navbar-brand" style="width: 150px;">
+                    <img src="{{ asset('assets/img/logo.svg') }}" alt="navbar brand" class="navbar-brand"
+                        style="width: 150px;">
                 </a>
                 <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
                     data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,9 +64,8 @@
                             <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
                                 aria-expanded="false">
                                 <div class="avatar-sm">
-                                    {{-- STATIS: Foto Profil --}}
-                                    <img src="{{ asset('uploads/profil/default.jpg') }}" alt="..."
-                                        class="avatar-img rounded-circle">
+                                    <img src="{{ asset('uploads/profil/' . (Auth::user()->foto ?? 'default.jpg')) }}"
+                                        alt="Profile" class="avatar-img rounded-circle">
                                 </div>
                             </a>
                             <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -71,9 +73,8 @@
                                     <li>
                                         <div class="user-box">
                                             <div class="avatar-lg">
-                                                {{-- STATIS: Foto Profil --}}
-                                                <img src="{{ asset('uploads/profil/default.jpg') }}"
-                                                    alt="image profile" class="avatar-img rounded">
+                                                <img src="{{ asset('uploads/profil/' . (Auth::user()->foto ?? 'default.jpg')) }}"
+                                                    alt="Profile" class="avatar-img rounded">
                                             </div>
                                             <div class="u-text">
                                                 {{-- STATIS: Nama dan Level --}}
@@ -84,7 +85,13 @@
                                     </li>
                                     <li>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Profil Saya</a> {{-- STATIS: Route Profil --}}
+
+                                        {{-- MENU BARU: KEMBALI KE HOME --}}
+                                        <a class="dropdown-item" href="{{ route('home') }}" target="_blank">
+                                           Kembali
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{{ route('admin.profile') }}">Profil Saya</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                                     </li>

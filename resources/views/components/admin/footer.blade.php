@@ -40,57 +40,57 @@
 <script src="{{ asset('assets/admin/js/custom.js') }}"></script>
 
 <script>
-    let ck;
-    ClassicEditor.create(document.querySelector('#isi_berita'), {
-        language: 'id',
-        toolbar: {
-            items: [
-                'heading', '|',
-                'bold', 'italic', 'underline', 'link', '|',
-                'bulletedList', 'numberedList', 'outdent', 'indent', '|',
-                'blockQuote', 'insertTable', 'mediaEmbed', '|',
-                'alignment', 'undo', 'redo', '|',
-                'imageUpload'
-            ]
-        },
-        simpleUpload: {
-            // STATIS: URL Dummy sementara
-            uploadUrl: '{{ url("admin/berita/upload_gambar") }}', 
-            withCredentials: false,
-            headers: {
-                // Laravel CSRF Token
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' 
-            }
-        }
-    }).then(editor => {
-        ck = editor;
-    }).catch(console.error);
-
-    function isEmptyHtml(html) {
-        if (!html) return true;
-        const text = html
-            .replace(/&nbsp;/g, ' ')
-            .replace(/<br\s*\/?>/gi, ' ')
-            .replace(/<[^>]*>/g, ' ') 
-            .trim();
-        return text.length === 0;
-    }
-
-    document.querySelector('form[action*="admin/berita/store"], form[action*="admin/berita/update"]')
-        ?.addEventListener('submit', function(e) {
-            try {
-                const data = ck.getData();
-                if (isEmptyHtml(data)) {
-                    e.preventDefault();
-                    alert('Isi berita wajib diisi.');
-                    ck.editing.view.focus();
-                    return false;
+    // 1. Cek dulu apakah ada elemen #isi_berita di halaman ini
+    let textareaBerita = document.querySelector('#isi_berita');
+    
+    // 2. Jalankan CKEditor HANYA jika elemennya ada (mencegah error di Dashboard)
+    if (textareaBerita) {
+        let ck;
+        ClassicEditor.create(textareaBerita, {
+            language: 'id',
+            toolbar: {
+                items: [
+                    'heading', '|',
+                    'bold', 'italic', 'underline', 'link', '|',
+                    'bulletedList', 'numberedList', 'outdent', 'indent', '|',
+                    'blockQuote', 'insertTable', 'mediaEmbed', '|',
+                    'alignment', 'undo', 'redo', '|',
+                    'imageUpload'
+                ]
+            },
+            simpleUpload: {
+                uploadUrl: '{{ url("admin/berita/upload_gambar") }}', 
+                withCredentials: false,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' 
                 }
-                document.getElementById('isi_berita').value = data;
-            } catch (err) {
-                console.warn(err);
             }
-        });
+        }).then(editor => {
+            ck = editor;
+        }).catch(console.error);
+
+        function isEmptyHtml(html) {
+            if (!html) return true;
+            const text = html.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]*>/g, ' ').trim();
+            return text.length === 0;
+        }
+
+        document.querySelector('form[action*="admin/berita/store"], form[action*="admin/berita/update"]')
+            ?.addEventListener('submit', function(e) {
+                try {
+                    const data = ck.getData();
+                    if (isEmptyHtml(data)) {
+                        e.preventDefault();
+                        alert('Isi berita wajib diisi.');
+                        ck.editing.view.focus();
+                        return false;
+                    }
+                    document.getElementById('isi_berita').value = data;
+                } catch (err) {
+                    console.warn(err);
+                }
+            });
+    }
 </script>
 </body>
 </html>
