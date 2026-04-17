@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('home', ['title' => 'KKelurahan Kademangan']);
+});
+
+// Grouping Authentication
+Route::controller(AuthController::class)->group(function () {
+    Route::get('auth/login', 'index')->name('login');
+    Route::post('auth/process', 'aksi_login');
+    Route::get('logout', 'logout')->name('logout');
+});
+
+// Grouping Admin (Hanya bisa diakses jika sudah login)
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
 });

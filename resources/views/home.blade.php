@@ -262,6 +262,19 @@
                     <div class="ratio ratio-16x9">
                         <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player"
                             frameborder="0" allowfullscreen></iframe>
+                                            <!-- Bar info bawah -->
+                                <div class="video-info d-flex justify-content-between align-items-center px-4 py-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <span class="yt-badge" aria-hidden="true">
+                                            <i class="bi bi-play-fill"></i>
+                                        </span>
+                                        <div>
+                                            {{-- <h5 class="video-title mb-1"><?= html_escape($video_meta['title']); ?></h5>
+                                            <p class="video-channel mb-0 text-muted"><?= html_escape($video_meta['author_name']); ?></p> --}}
+                                             <h5 class="video-title mb-1">test</h5>
+                                            <p class="video-channel mb-0 text-muted">test</p>
+                                        </div>
+                                    </div>
                     </div>
                 </div>
             </div>

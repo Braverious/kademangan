@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="id">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     {{-- Menggunakan variabel $title dari Route, default ke 'Kelurahan' --}}
     <title>{{ $title ?? 'Kelurahan' }}</title>
 
@@ -13,7 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-    
+
     {{-- Menggunakan helper asset() untuk memanggil file di folder public --}}
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/informasi_custom.css') }}">
@@ -24,9 +25,8 @@
 <body class="is-home has-abstract-bg">
     <nav class="navbar navbar-light bg-white shadow-sm nav-topbar sticky-top">
         <div class="container align-items-center position-relative">
-            <button class="navbar-toggler d-lg-none me-2" type="button"
-                data-bs-toggle="collapse" data-bs-target="#mainNav"
-                aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler d-lg-none me-2" type="button" data-bs-toggle="collapse"
+                data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -36,7 +36,7 @@
             </a>
 
             <div class="d-none d-lg-block ms-auto">
-                <a href="#" class="btn btn-outline-primary px-3">Login</a>
+                <a href="{{ route('login') }}" class="btn btn-outline-primary px-3">Login</a>
             </div>
         </div>
     </nav>
@@ -76,9 +76,12 @@
                                         <i class="fas fa-envelope-open-text me-2"></i>Pilih Jenis Surat
                                     </h6>
                                 </li>
-                                <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i class="fas fa-shield-alt me-2"></i>SKTM</a></li>
-                                <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i class="fas fa-user me-2"></i>Ket. Belum Bekerja</a></li>
-                                <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i class="fas fa-university me-2"></i>Domisili Yayasan</a></li>
+                                <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i
+                                            class="fas fa-shield-alt me-2"></i>SKTM</a></li>
+                                <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i
+                                            class="fas fa-user me-2"></i>Ket. Belum Bekerja</a></li>
+                                <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i
+                                            class="fas fa-university me-2"></i>Domisili Yayasan</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -95,9 +98,12 @@
                                 <span>LKK</span>
                             </a>
                             <ul class="dropdown-menu shadow rounded-3 border-0 p-2">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-users me-2"></i>RT dan RW</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-hand-holding-heart me-2"></i>PKK</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-hands-helping me-2"></i>Karang Taruna</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-users me-2"></i>RT dan
+                                        RW</a></li>
+                                <li><a class="dropdown-item" href="#"><i
+                                            class="fas fa-hand-holding-heart me-2"></i>PKK</a></li>
+                                <li><a class="dropdown-item" href="#"><i
+                                            class="fas fa-hands-helping me-2"></i>Karang Taruna</a></li>
                             </ul>
                         </li>
 
