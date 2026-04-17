@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>{{ $title }} - Admin Kelurahan</title>
@@ -15,8 +16,10 @@
                 "families": ["Lato:300,400,700,900"]
             },
             custom: {
-                "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"],
-                urls: ['{{ asset("assets/css/fonts.min.css") }}']
+                "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands",
+                    "simple-line-icons"
+                ],
+                urls: ['{{ asset('assets/css/fonts.min.css') }}']
             },
             active: function() {
                 sessionStorage.fonts = true;
@@ -25,7 +28,7 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
+
     <link rel="stylesheet" href="{{ asset('assets/admin/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/atlantis.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/style.css?v=1') }}">
@@ -36,9 +39,10 @@
         <div class="main-header">
             <div class="logo-header" data-background-color="blue">
                 <a href="{{ route('admin.dashboard') }}" class="logo">
-                    <img src="{{ asset('assets/img/logo.svg') }}" alt="navbar brand" class="navbar-brand">
+                    <img src="{{ asset('assets/img/logo.svg') }}" alt="navbar brand" class="navbar-brand" style="width: 150px;">
                 </a>
-                <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
+                    data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon">
                         <i class="icon-menu"></i>
                     </span>
@@ -54,10 +58,12 @@
                 <div class="container-fluid">
                     <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
                         <li class="nav-item dropdown hidden-caret">
-                            <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
+                                aria-expanded="false">
                                 <div class="avatar-sm">
                                     {{-- STATIS: Foto Profil --}}
-                                    <img src="{{ asset('uploads/profil/default.jpg') }}" alt="..." class="avatar-img rounded-circle">
+                                    <img src="{{ asset('uploads/profil/default.jpg') }}" alt="..."
+                                        class="avatar-img rounded-circle">
                                 </div>
                             </a>
                             <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -66,11 +72,12 @@
                                         <div class="user-box">
                                             <div class="avatar-lg">
                                                 {{-- STATIS: Foto Profil --}}
-                                                <img src="{{ asset('uploads/profil/default.jpg') }}" alt="image profile" class="avatar-img rounded">
+                                                <img src="{{ asset('uploads/profil/default.jpg') }}"
+                                                    alt="image profile" class="avatar-img rounded">
                                             </div>
                                             <div class="u-text">
                                                 {{-- STATIS: Nama dan Level --}}
-                                                <h4>Administrator</h4> 
+                                                <h4>Administrator</h4>
                                                 <p class="text-muted">Superadmin</p>
                                             </div>
                                         </div>
