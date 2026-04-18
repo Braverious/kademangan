@@ -43,3 +43,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/settings/footer/save', [SettingsController::class, 'footerSave'])->name('admin.settings.footer.save');
     Route::get('/settings/runningtext', [RunningTextController::class, 'index'])->name('admin.settings.runningtext');
 Route::post('/settings/runningtext', [RunningTextController::class, 'update'])->name('admin.settings.runningtext.update');});
+
+
+// Uji coba error handling
+// Route::get('/test-403', function () {
+//     abort(403);
+// });
+
+// Route::get('/test-500', function () {
+//     abort(500);
+// });
