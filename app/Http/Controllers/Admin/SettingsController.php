@@ -14,7 +14,7 @@ class SettingsController extends Controller
         $settings = SiteSetting::firstOrNew(['id' => 1]);
 
         return view('admin.settings', [
-            'title' => 'Pengaturan Footer',
+            'title' => 'Web Settings',
             'footer' => [
                 'about_html' => $settings->about_html,
                 'related_links' => $settings->related_links ?? [],

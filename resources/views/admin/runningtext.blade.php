@@ -109,5 +109,4 @@
         updatePreview('bottom');
     });
 </script>
-
 <x-admin.footer />
