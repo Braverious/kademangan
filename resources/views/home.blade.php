@@ -1,4 +1,5 @@
 <x-header :title="$title" />
+<main>
 <section id="home" class="py-5 d-flex align-items-center mb-5 mt-5">
     <div class="container-fluid px-lg-5">
         <div class="row align-items-center">
@@ -13,19 +14,31 @@
     </div>
 </section>
 
-<section id="marquee-info" class="py-2">
-    <div class="container-fluid px-lg-5">
-        <marquee behavior="scroll" direction="left" scrollamount="5"
-            style="display:block;background:#0d6efd;color:#fff;padding:.45rem .75rem;border-radius:8px;">
-            PENGUMUMAN: Jadwal Kerja Bakti Serentak tingkat RW akan dilaksanakan pada hari Minggu besok.
-        </marquee>
-        <div style="height:.5rem"></div>
-        <marquee behavior="scroll" direction="left" scrollamount="4"
-            style="display:block;background:#ffc107;color:#212529;padding:.45rem .75rem;border-radius:8px;">
-            INFO: Pelayanan administrasi kependudukan kini bisa diakses hingga pukul 16.00 WIB.
-        </marquee>
-    </div>
-</section>
+@if ($runningTexts->count() > 0)
+    <section id="marquee-info" class="py-2">
+        <div class="container-fluid px-lg-5">
+
+            {{-- Bagian Atas (Top) --}}
+            @if (isset($runningTexts['top']))
+                <marquee behavior="scroll" direction="{{ $runningTexts['top']->direction }}"
+                    scrollamount="{{ $runningTexts['top']->speed }}"
+                    style="display:block;background:#0d6efd;color:#fff;padding:.45rem .75rem;border-radius:8px;margin-bottom:10px;">
+                    {{ $runningTexts['top']->content }}
+                </marquee>
+            @endif
+
+            {{-- Bagian Bawah (Bottom) --}}
+            @if (isset($runningTexts['bottom']))
+                <marquee behavior="scroll" direction="{{ $runningTexts['bottom']->direction }}"
+                    scrollamount="{{ $runningTexts['bottom']->speed }}"
+                    style="display:block;background:#ffc107;color:#212529;padding:.45rem .75rem;border-radius:8px;">
+                    {{ $runningTexts['bottom']->content }}
+                </marquee>
+            @endif
+
+        </div>
+    </section>
+@endif
 
 <section id="Layanan" class="py-5 section-abstract">
     <div class="container-fluid px-lg-5">
@@ -149,8 +162,7 @@
         </div>
 
         {{-- Carousel Statis untuk Preview --}}
-        <div id="carouselGaleri"
-            class="carousel slide carousel-smooth force-motion shadow-sm rounded-4 overflow-hidden"
+        <div id="carouselGaleri" class="carousel slide carousel-smooth force-motion shadow-sm rounded-4 overflow-hidden"
             data-bs-ride="carousel" data-bs-interval="9000" data-bs-touch="true" data-bs-keyboard="true"
             data-bs-pause="hover" data-bs-wrap="true">
 
@@ -262,23 +274,24 @@
                     <div class="ratio ratio-16x9">
                         <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player"
                             frameborder="0" allowfullscreen></iframe>
-                                            <!-- Bar info bawah -->
-                                <div class="video-info d-flex justify-content-between align-items-center px-4 py-3">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <span class="yt-badge" aria-hidden="true">
-                                            <i class="bi bi-play-fill"></i>
-                                        </span>
-                                        <div>
-                                            {{-- <h5 class="video-title mb-1"><?= html_escape($video_meta['title']); ?></h5>
-                                            <p class="video-channel mb-0 text-muted"><?= html_escape($video_meta['author_name']); ?></p> --}}
-                                             <h5 class="video-title mb-1">test</h5>
-                                            <p class="video-channel mb-0 text-muted">test</p>
-                                        </div>
-                                    </div>
+                        <!-- Bar info bawah -->
+                        <div class="video-info d-flex justify-content-between align-items-center px-4 py-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="yt-badge" aria-hidden="true">
+                                    <i class="bi bi-play-fill"></i>
+                                </span>
+                                <div>
+                                    {{-- <h5 class="video-title mb-1"><?= html_escape($video_meta['title']) ?></h5>
+                                            <p class="video-channel mb-0 text-muted"><?= html_escape($video_meta['author_name']) ?></p> --}}
+                                    <h5 class="video-title mb-1">test</h5>
+                                    <p class="video-channel mb-0 text-muted">test</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </section>
+</main>
 <x-footer></x-footer>

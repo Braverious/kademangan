@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\RunningTextController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,4 +41,5 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/profil/update', [ProfileController::class, 'update'])->name('admin.profile.update');
     Route::get('/settings/footer', [SettingsController::class, 'footer'])->name('admin.settings.footer');
     Route::post('/settings/footer/save', [SettingsController::class, 'footerSave'])->name('admin.settings.footer.save');
-});
+    Route::get('/settings/runningtext', [RunningTextController::class, 'index'])->name('admin.settings.runningtext');
+Route::post('/settings/runningtext', [RunningTextController::class, 'update'])->name('admin.settings.runningtext.update');});

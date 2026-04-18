@@ -158,7 +158,11 @@
                             ['slug' => 'layanan', 'url' => 'admin/layanan', 'label' => 'Layanan'],
                             ['slug' => 'uploadvideo', 'url' => 'admin/uploadvideo', 'label' => 'Pengaturan Video'],
                             ['slug' => 'coverage', 'url' => 'admin/coverage', 'label' => 'Jangkauan Layanan'],
-                            ['slug' => 'runningtext', 'url' => 'admin/runningtext', 'label' => 'Running Text'],
+                            [
+                                'slug' => 'runningtext',
+                                'route' => 'admin.settings.runningtext', // Menggunakan nama route
+                                'label' => 'Running Text'
+                            ],
                             ['slug' => 'users', 'url' => 'admin/users', 'label' => 'Manajemen User'],
                             [
                                 'slug' => 'settings',

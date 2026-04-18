@@ -25,6 +25,7 @@
 </head>
 
 <body class="is-home has-abstract-bg">
+
     <nav class="navbar navbar-light bg-white shadow-sm nav-topbar sticky-top">
         <div class="container align-items-center position-relative">
             <button class="navbar-toggler d-lg-none me-2" type="button" data-bs-toggle="collapse"
@@ -48,7 +49,7 @@
             </div>
         </div>
     </nav>
-
+<header class="sticky-top bg-transparent">
     <nav class="navbar navbar-expand-lg nav-menubar">
         <div class="container container-menu">
             <div class="menubar-floating">
@@ -132,3 +133,4 @@
             </div>
         </div>
     </nav>
+</header>
