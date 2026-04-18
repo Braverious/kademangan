@@ -30,7 +30,13 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::controller(AuthController::class)->group(function () {
     Route::get('auth/login', 'index')->name('login');
     Route::post('auth/process', 'aksi_login');
-    // Rute Logout
+
+    // Rute apabila akses via GET, lemparin aja ke login lagi
+    Route::get('auth/process', function () {
+        return redirect()->route('login');
+    });
+
+    // Rute logout
     Route::get('logout', 'logout')->name('logout');
 });
 
@@ -42,7 +48,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/settings/footer', [SettingsController::class, 'footer'])->name('admin.settings.footer');
     Route::post('/settings/footer/save', [SettingsController::class, 'footerSave'])->name('admin.settings.footer.save');
     Route::get('/settings/runningtext', [RunningTextController::class, 'index'])->name('admin.settings.runningtext');
-Route::post('/settings/runningtext', [RunningTextController::class, 'update'])->name('admin.settings.runningtext.update');});
+    Route::post('/settings/runningtext', [RunningTextController::class, 'update'])->name('admin.settings.runningtext.update');
+});
 
 
 // Uji coba error handling
