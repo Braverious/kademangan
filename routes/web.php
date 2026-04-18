@@ -60,3 +60,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 // Route::get('/test-500', function () {
 //     abort(500);
 // });
+
+// Route::get('/test-405', function () {
+//     abort(405);
+// });

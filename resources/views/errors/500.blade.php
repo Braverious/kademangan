@@ -45,13 +45,13 @@
                     memperbaikinya sesegera mungkin.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ url('/') }}"
+                    <a href="javascript:history.back()"
                         class="bg-[#1F6FEB] hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md">
-                        Kembali ke Home
+                        Kembali
                     </a>
-                    <a href="https://wa.me/your-number"
+                    <a href="{{ route('home') }}"
                         class="bg-white border-2 border-[#F5B301] text-slate-700 hover:bg-[#F5B301] hover:text-white font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-sm">
-                        Lapor Admin
+                        Kembali ke Home
                     </a>
                 </div>
             </div>
