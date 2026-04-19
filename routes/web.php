@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\RunningTextController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\CoverageController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,6 +56,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::put('/users/{id}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/users/{id}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
     // --- END RUTE USER MANAGEMENT DI SINI ---
+    Route::get('/coverage', [CoverageController::class, 'index'])->name('admin.coverage');
+    Route::post('/coverage', [CoverageController::class, 'update'])->name('admin.coverage.update');
 });
 
 
