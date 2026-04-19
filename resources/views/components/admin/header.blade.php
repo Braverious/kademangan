@@ -77,9 +77,8 @@
                                                     alt="Profile" class="avatar-img rounded">
                                             </div>
                                             <div class="u-text">
-                                                {{-- STATIS: Nama dan Level --}}
-                                                <h4>Administrator</h4>
-                                                <p class="text-muted">Superadmin</p>
+                                                <h4>{{ Auth::user()->nama_lengkap ?? 'Administrator' }}</h4>
+                                                <p class="text-muted">{{ Auth::user()->id_level == 1 ? 'Superadmin' : 'Admin/Staff' }}</p>
                                             </div>
                                         </div>
                                     </li>

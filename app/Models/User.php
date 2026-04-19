@@ -24,6 +24,8 @@ class User extends Authenticatable
     // 4. Kolom yang boleh diisi (Mass Assignment)
     protected $fillable = [
         'nama_lengkap',
+        'nip',
+        'jabatan_id',
         'username',
         'password',
         'foto',
@@ -42,5 +44,19 @@ class User extends Authenticatable
     public function getAuthIdentifierName()
     {
         return 'id_user';
+    }
+
+    /**
+     * Relasi ke tabel Level
+     */
+    public function level()
+    {
+        return $this->belongsTo(Level::class, 'id_level', 'id_level');
+    }
+
+    public function relasiJabatan()
+    {
+        // Relasi belongsTo(NamaModel, foreign_key_di_user, primary_key_di_referensi)
+        return $this->belongsTo(RefJabatan::class, 'jabatan_id', 'id');
     }
 }

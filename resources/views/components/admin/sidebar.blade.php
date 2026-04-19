@@ -16,9 +16,10 @@
                 <div class="info">
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                         <span>
-                            {{-- STATIS: Nama dan Level Sidebar --}}
-                            Administrator
-                            <span class="user-level">Superadmin</span>
+                            {{ Auth::user()->nama_lengkap ?? 'Administrator' }}
+                            <span class="user-level">
+                                {{ Auth::user()->id_level == 1 ? 'Superadmin' : 'Admin/Staff' }}
+                            </span>
                         </span>
                     </a>
                     <div class="clearfix"></div>
@@ -145,8 +146,8 @@
                     </li>
                 @endforeach
 
-                {{-- STATIS: Logic if id_level == 1 (Superadmin) dibypass jadi true dulu --}}
-                @if (true)
+                {{-- DINAMIS: Hanya Superadmin (ID Level = 1) yang bisa melihat menu ini --}}
+                @if (Auth::user()->id_level == 1)
                     <li class="nav-section">
                         <span class="sidebar-mini-icon"><i class="fas fa-ellipsis-h"></i></span>
                         <h4 class="text-section">ADMINISTRATOR</h4>
@@ -154,21 +155,29 @@
 
                     @php
                         $settingsItems = [
-                            ['slug' => 'pejabat', 'url' => 'admin/pejabat', 'label' => 'Pejabat'],
                             ['slug' => 'layanan', 'url' => 'admin/layanan', 'label' => 'Layanan'],
                             ['slug' => 'uploadvideo', 'url' => 'admin/uploadvideo', 'label' => 'Pengaturan Video'],
-                            ['slug' => 'coverage', 'url' => 'admin/coverage', 'label' => 'Jangkauan Layanan'],
                             [
-                                'slug' => 'runningtext',
+                                'slug' => 'coverage',
+                                'url' => 'admin/coverage',
+                                'label' => 'Jangkauan Layanan'
+                            ],
+                            [
+                                'slug' => 'settings',
+                                'seg3' => 'runningtext',
                                 'route' => 'admin.settings.runningtext', // Menggunakan nama route
                                 'label' => 'Running Text'
                             ],
-                            ['slug' => 'users', 'url' => 'admin/users', 'label' => 'Manajemen User'],
                             [
-                                'slug' => 'settings',
+                                'slug'  => 'users',
+                                'url'   => 'admin/users',
+                                'label' => 'Manajemen User'
+                            ],
+                            [
+                                'slug'  => 'settings',
+                                'seg3'  => 'footer',
                                 'route' => 'admin.settings.footer', // Menggunakan nama route
-                                'label' => 'Footer',
-                                'seg3' => 'footer',
+                                'label' => 'Footer'
                             ],
                         ];
 
