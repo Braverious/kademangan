@@ -49,6 +49,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/settings/footer/save', [SettingsController::class, 'footerSave'])->name('admin.settings.footer.save');
     Route::get('/settings/runningtext', [RunningTextController::class, 'index'])->name('admin.settings.runningtext');
     Route::post('/settings/runningtext', [RunningTextController::class, 'update'])->name('admin.settings.runningtext.update');
+    // --- RUTE USER MANAGEMENT DI SINI ---
+    Route::get('/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
+    Route::post('/users', [\App\Http\Controllers\Admin\UserController::class, 'store'])->name('admin.users.store');
+    Route::put('/users/{id}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/users/{id}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
+    // --- END RUTE USER MANAGEMENT DI SINI ---
 });
 
 
