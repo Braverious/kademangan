@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\RunningText;
 use Illuminate\Http\Request;
+use App\Models\Layanan;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $runningTexts = RunningText::where('is_active', 1)->get()->keyBy('position');
+        $layanan = Layanan::where('aktif', 1)
+            ->orderBy('urut')
+            ->orderByDesc('id')
+            ->get();
+
         return view('home', [
-            'title' => 'Kelurahan Kademangan',
-            'runningTexts' => $runningTexts
+            'title' => 'Home',
+            'layanan' => $layanan,
+            // 'runningTexts' => $this->getRunningText()
         ]);
     }
 }
