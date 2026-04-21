@@ -160,13 +160,13 @@
                             [
                                 'slug' => 'coverage',
                                 'url' => 'admin/coverage',
-                                'label' => 'Jangkauan Layanan'
+                                'label' => 'Jangkauan Wilayah'
                             ],
                             [
                                 'slug' => 'settings',
                                 'seg3' => 'runningtext',
                                 'route' => 'admin.settings.runningtext', // Menggunakan nama route
-                                'label' => 'Running Text'
+                                'label' => 'Teks Berjalan'
                             ],
                             [
                                 'slug'  => 'users',

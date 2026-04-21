@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\RunningTextController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\CoverageController;
 use App\Http\Controllers\Admin\LayananController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\PengumumanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -60,10 +62,17 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/settings/runningtext', [RunningTextController::class, 'update'])->name('admin.settings.runningtext.update');
 
     // ================= USER MANAGEMENT =================
-    Route::get('/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
-    Route::post('/users', [\App\Http\Controllers\Admin\UserController::class, 'store'])->name('admin.users.store');
-    Route::put('/users/{id}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.users.update');
-    Route::delete('/users/{id}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::prefix('users')->group(function () {
+
+        Route::get('/', [UserController::class, 'index'])->name('admin.users.index');
+        Route::get('/create', [UserController::class, 'create'])->name('admin.users.create');
+        Route::post('/', [UserController::class, 'store'])->name('admin.users.store');
+
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+        Route::put('/{id}', [UserController::class, 'update'])->name('admin.users.update');
+
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    });
 
     // ================= COVERAGE =================
     Route::get('/coverage', [CoverageController::class, 'index'])->name('admin.coverage');
@@ -72,15 +81,27 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // ================= LAYANAN (NEW) =================
     Route::prefix('layanan')->group(function () {
 
-        Route::get('/', [LayananController::class, 'index'])->name('admin.layanan');
+        Route::get('/', [LayananController::class, 'index'])->name('admin.layanan.index');
+        Route::get('/create', [LayananController::class, 'create'])->name('admin.layanan.create');
+        Route::post('/', [LayananController::class, 'store'])->name('admin.layanan.store');
 
-        Route::get('/tambah', [LayananController::class, 'create'])->name('admin.layanan.create');
-        Route::post('/store', [LayananController::class, 'store'])->name('admin.layanan.store');
+        Route::get('/{id}/edit', [LayananController::class, 'edit'])->name('admin.layanan.edit');
+        Route::put('/{id}', [LayananController::class, 'update'])->name('admin.layanan.update');
 
-        Route::get('/edit/{id}', [LayananController::class, 'edit'])->name('admin.layanan.edit');
-        Route::post('/update/{id}', [LayananController::class, 'update'])->name('admin.layanan.update');
+        Route::delete('/{id}', [LayananController::class, 'destroy'])->name('admin.layanan.destroy');
+    });
 
-        Route::get('/delete/{id}', [LayananController::class, 'delete'])->name('admin.layanan.delete');
+    // ================= PENGUMUMAN =================
+    Route::prefix('pengumuman')->group(function () {
+
+        Route::get('/', [PengumumanController::class, 'index'])->name('admin.pengumuman.index');
+        Route::get('/create', [PengumumanController::class, 'create'])->name('admin.pengumuman.create');
+        Route::post('/', [PengumumanController::class, 'store'])->name('admin.pengumuman.store');
+
+        Route::get('/{id}/edit', [PengumumanController::class, 'edit'])->name('admin.pengumuman.edit');
+        Route::put('/{id}', [PengumumanController::class, 'update'])->name('admin.pengumuman.update');
+
+        Route::delete('/{id}', [PengumumanController::class, 'destroy'])->name('admin.pengumuman.destroy');
     });
 });
 

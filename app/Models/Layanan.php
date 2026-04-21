@@ -11,9 +11,7 @@ class Layanan extends Model
     protected $fillable = [
         'judul',
         'deskripsi',
-        'gambar',
-        'urut',
-        'aktif'
+        'gambar'
     ];
 
     public $timestamps = false;

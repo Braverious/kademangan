@@ -9,9 +9,7 @@
                 <a href="#"><i class="flaticon-home"></i></a>
             </li>
             <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a>Manajemen Konten</a></li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a>Layanan</a></li>
+            <li class="nav-item"><a>Manajemen Layanan</a></li>
         </ul>
     </div>
 
@@ -43,13 +41,11 @@
                         <table class="display table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Gambar</th>
+                                    <th style="width: 5%">No</th>
+                                    <th style="width: 15%">Gambar</th>
                                     <th>Judul</th>
                                     <th>Deskripsi</th>
-                                    <th>Urut</th>
-                                    <th>Aktif</th>
-                                    <th style="width:10%">Aksi</th>
+                                    <th style="width: 10%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -59,36 +55,26 @@
 
                                         <td>
                                             @if ($r->gambar)
-                                                <img src="{{ asset('storage/' . $r->gambar) }}" width="100">
+                                                <img src="{{ asset('storage/' . $r->gambar) }}" width="100" class="img-thumbnail">
                                             @endif
                                         </td>
 
-                                        <td>{{ $r->judul }}</td>
+                                        <td><strong>{{ $r->judul }}</strong></td>
 
                                         <td class="text-muted" style="max-width:360px;">
                                             {{ \Illuminate\Support\Str::limit(strip_tags($r->deskripsi), 120) }}
                                         </td>
 
-                                        <td>{{ $r->urut }}</td>
-
                                         <td>
-                                            @if ($r->aktif == 1)
-                                                <span class="badge badge-success">Aktif</span>
-                                            @else
-                                                <span class="badge badge-secondary">Nonaktif</span>
-                                            @endif
-                                        </td>
-
-                                        <td>
-                                            <div class="form-button-action">
+                                            <div class="form-button-action d-flex">
                                                 <a href="{{ route('admin.layanan.edit', $r->id) }}"
-                                                    class="btn btn-link btn-primary btn-lg">
+                                                    class="btn btn-link btn-primary btn-lg" title="Edit">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
 
                                                 <a href="{{ route('admin.layanan.delete', $r->id) }}"
                                                     onclick="return confirm('Hapus layanan ini?')"
-                                                    class="btn btn-link btn-danger">
+                                                    class="btn btn-link btn-danger" title="Hapus">
                                                     <i class="fa fa-times"></i>
                                                 </a>
                                             </div>

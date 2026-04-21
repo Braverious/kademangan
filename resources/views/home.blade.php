@@ -107,34 +107,75 @@
         </div>
     </section>
 
-    <section id="BeritaDadakan" class="py-5 section-abstract">
+    <!-- ===== PENGUMUMAN ===== -->
+    <section id="pengumuman" class="py-5 section-abstract">
         <div class="container-fluid px-lg-5">
+
             <div class="row mb-3">
                 <div class="col-12 text-center">
-                    <h2 class="section-title mb-1">Breaking News</h2>
+                    <h2 class="section-title mb-1">Pengumuman</h2>
                     <p class="text-muted mb-0">Info penting/terbaru dari Kelurahan.</p>
                 </div>
             </div>
 
-            <div id="flashSlider" class="flash-track d-flex flex-nowrap gap-4 pb-1"
-                style="scroll-snap-type:x mandatory; scroll-behavior:smooth;">
-                <article class="flash-item flash-col" style="scroll-snap-align:start;">
-                    <div class="card flash-card h-100">
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <span class="flash-icon"><i class="bi bi-megaphone-fill"></i></span>
-                                <span class="badge bg-warning text-dark fw-semibold">Penting</span>
-                                <small class="text-muted ms-auto">20 Apr 2024</small>
+            @if ($pengumuman->count())
+                <div id="pengumumanSlider"
+                    class="flash-track d-flex flex-nowrap gap-4 pb-1"
+                    style="scroll-snap-type:x mandatory; scroll-behavior:smooth;">
+
+                    @foreach ($pengumuman as $p)
+
+                        @php
+                            $judul = trim($p->judul);
+                            $isi = strip_tags($p->isi);
+                            $ringkas = \Illuminate\Support\Str::limit($isi, 220);
+                            $tglStr = $p->mulai_tayang 
+                                ? \Carbon\Carbon::parse($p->mulai_tayang)->format('d M Y, H:i') 
+                                : null;
+                        @endphp
+
+                        <article class="flash-item flash-col" style="scroll-snap-align:start;">
+                            <div class="card flash-card h-100">
+
+                                <div class="card-body d-flex flex-column">
+
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <span class="flash-icon">
+                                            <i class="bi bi-megaphone-fill"></i>
+                                        </span>
+
+                                        <span class="badge bg-warning text-dark fw-semibold">
+                                            {{ $p->tipe ?? 'Info' }}
+                                        </span>
+
+                                        @if ($tglStr)
+                                            <small class="text-muted ms-auto">
+                                                {{ $tglStr }}
+                                            </small>
+                                        @endif
+                                    </div>
+
+                                    <h5 class="card-title mb-2 line-clamp-2">
+                                        {{ $judul }}
+                                    </h5>
+
+                                    <p class="card-text text-muted mb-3 line-clamp-3">
+                                        {{ $ringkas }}
+                                    </p>
+
+                                </div>
                             </div>
-                            <h5 class="card-title mb-2 line-clamp-2">Waspada Cuaca Ekstrem di Wilayah Kademangan</h5>
-                            <p class="card-text text-muted mb-3 line-clamp-3">Dihimbau kepada seluruh warga untuk tetap
-                                waspada terhadap potensi hujan lebat disertai angin kencang...</p>
-                            <div class="mt-auto"><a href="#" class="btn btn-primary btn-sm">Baca selengkapnya</a>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            </div>
+                        </article>
+
+                    @endforeach
+
+                </div>
+            @else
+                <div class="text-center text-muted py-4">
+                    Belum ada pengumuman.
+                </div>
+            @endif
+
         </div>
     </section>
 
@@ -174,6 +215,7 @@
             </div>
         </div>
     </section>
+    
     <section id="galeri" class="py-5">
         <div class="container-fluid px-lg-5">
             <div class="row mb-4">

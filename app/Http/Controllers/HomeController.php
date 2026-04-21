@@ -5,20 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\RunningText;
 use Illuminate\Http\Request;
 use App\Models\Layanan;
+use App\Models\Pengumuman;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $layanan = Layanan::where('aktif', 1)
-            ->orderBy('urut')
-            ->orderByDesc('id')
-            ->get();
+        $layanan = Layanan::orderByDesc('id')->get();
+
+        $pengumuman = Pengumuman::getActive(5);
 
         return view('home', [
             'title' => 'Home',
             'layanan' => $layanan,
-            // 'runningTexts' => $this->getRunningText()
+            'pengumuman' => $pengumuman,
         ]);
     }
 }

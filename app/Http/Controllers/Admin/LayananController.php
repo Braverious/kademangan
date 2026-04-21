@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Layanan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LayananController extends Controller
 {
     public function index()
     {
-        $rows = Layanan::orderBy('urut')->orderByDesc('id')->get();
+        // Hapus orderBy('urut'), cukup urutkan dari yang terbaru (id terbesar)
+        $rows = Layanan::orderByDesc('id')->get();
 
         return view('admin.layanan.layanan', [
-            'title' => 'Layanan',
+            'title' => 'Manajemen Layanan',
             'rows' => $rows
         ]);
     }
@@ -39,8 +41,7 @@ class LayananController extends Controller
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'gambar' => $gambar,
-            'urut' => $request->urut ?? 0,
-            'aktif' => $request->aktif ?? 1,
+            // urut dan aktif sudah dihapus dari sini
         ]);
 
         return redirect()->route('admin.layanan')->with('success', 'Berhasil ditambah');
@@ -60,9 +61,14 @@ class LayananController extends Controller
     {
         $row = Layanan::findOrFail($id);
 
-        $data = $request->only(['judul', 'deskripsi', 'urut', 'aktif']);
+        // Hapus urut dan aktif dari request->only
+        $data = $request->only(['judul', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
+            // Opsional: Hapus gambar lama dari storage sebelum ditimpa
+            if ($row->gambar) {
+                Storage::disk('public')->delete($row->gambar);
+            }
             $data['gambar'] = $request->file('gambar')->store('layanan', 'public');
         }
 
@@ -74,6 +80,12 @@ class LayananController extends Controller
     public function delete($id)
     {
         $row = Layanan::findOrFail($id);
+        
+        // Opsional: Hapus gambar fisiknya juga kalau datanya dihapus
+        if ($row->gambar) {
+            Storage::disk('public')->delete($row->gambar);
+        }
+        
         $row->delete();
 
         return redirect()->route('admin.layanan')->with('success', 'Berhasil dihapus');
