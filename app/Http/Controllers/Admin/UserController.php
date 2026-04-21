@@ -14,21 +14,47 @@ class UserController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->id_level != 1) {
-            return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
+        $guard = $this->ensureSuperadmin();
+        if ($guard) {
+            return $guard;
         }
 
         $title = "Manajemen User";
-        
-        // Load relasi level dan jabatan sekaligus pakai array
-        $user_list = User::with(['level', 'relasiJabatan'])->get();
-        
-        $levels = Level::all(); 
-        
-        // Ambil data jabatan yang aktif, urutkan berdasarkan kolom 'urut'
-        $jabatans = RefJabatan::where('is_active', 1)->orderBy('urut', 'ASC')->get(); 
 
-        return view('admin.users', compact('title', 'user_list', 'levels', 'jabatans'));
+        $user_list = User::with(['level', 'relasiJabatan'])->get();
+        $levels = Level::all();
+        $jabatans = RefJabatan::where('is_active', 1)->orderBy('urut', 'ASC')->get();
+
+        return view('admin.users.users', compact('title', 'user_list', 'levels', 'jabatans'));
+    }
+
+    public function create()
+    {
+        $guard = $this->ensureSuperadmin();
+        if ($guard) {
+            return $guard;
+        }
+
+        return view('admin.users.create', [
+            'title' => 'Tambah User',
+            'levels' => Level::all(),
+            'jabatans' => RefJabatan::where('is_active', 1)->orderBy('urut', 'ASC')->get(),
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $guard = $this->ensureSuperadmin();
+        if ($guard) {
+            return $guard;
+        }
+
+        return view('admin.users.edit', [
+            'title' => 'Edit User',
+            'user' => User::findOrFail($id),
+            'levels' => Level::all(),
+            'jabatans' => RefJabatan::where('is_active', 1)->orderBy('urut', 'ASC')->get(),
+        ]);
     }
 
     public function store(Request $request)
@@ -99,5 +125,14 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
+    }
+
+    private function ensureSuperadmin()
+    {
+        if (Auth::user()->id_level != 1) {
+            return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak!');
+        }
+
+        return null;
     }
 }

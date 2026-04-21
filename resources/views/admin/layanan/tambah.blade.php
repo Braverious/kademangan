@@ -11,8 +11,10 @@
                 <a href="#"><i class="flaticon-home"></i></a>
             </li>
             <li class="separator"><i class="flaticon-right-arrow"></i></li>
+            <li class="nav-item"><a>Pengaturan</a></li>
+            <li class="separator"><i class="flaticon-right-arrow"></i></li>
             <li class="nav-item">
-                <a href="{{ route('admin.layanan.index') }}">Layanan</a>
+                <a href="{{ route('admin.layanan.index') }}">Manajemen Layanan</a>
             </li>
             <li class="separator"><i class="flaticon-right-arrow"></i></li>
             <li class="nav-item">

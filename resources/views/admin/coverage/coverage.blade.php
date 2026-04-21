@@ -11,10 +11,10 @@
                     <i class="flaticon-home"></i>
                 </a>
             </li>
+            <li class="separator"><i class="flaticon-right-arrow"></i></li>
+            <li class="nav-item"><a href="#">Pengaturan</a></li>
             <li class="separator"><i class="flaticon-right-arrow text-muted"></i></li>
-            <li class="nav-item"><a href="#" class="text-muted">Manajemen Konten</a></li>
-            <li class="separator"><i class="flaticon-right-arrow text-muted"></i></li>
-            <li class="nav-item"><a href="#" class="text-primary font-weight-bold">Jangkauan Layanan</a></li>
+            <li class="nav-item"><a href="#">Jangkauan Layanan</a></li>
         </ul>
     </div>
 

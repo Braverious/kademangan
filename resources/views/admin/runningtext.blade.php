@@ -2,6 +2,20 @@
 <x-admin.sidebar />
 
 <div class="page-inner">
+
+    <div class="page-header">
+        <h4 class="page-title">{{ $title }}</h4>
+        <ul class="breadcrumbs">
+            <li class="nav-home">
+                <a href="#"><i class="flaticon-home"></i></a>
+            </li>
+            <li class="separator"><i class="flaticon-right-arrow"></i></li>
+            <li class="nav-item"><a>Pengaturan</a></li>
+            <li class="separator"><i class="flaticon-right-arrow"></i></li>
+            <li class="nav-item"><a>Running Text</a></li>
+        </ul>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
 
@@ -20,7 +34,7 @@
 
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h4 class="card-title">Pengaturan teks berjalan</h4>
+                    <h4 class="card-title">Running Text</h4>
                     <button form="form-runningtext" class="btn btn-primary btn-round">
                         <i class="fa fa-save mr-2"></i> Simpan
                     </button>

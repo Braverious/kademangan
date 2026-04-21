@@ -11,7 +11,6 @@ class LayananController extends Controller
 {
     public function index()
     {
-        // Hapus orderBy('urut'), cukup urutkan dari yang terbaru (id terbesar)
         $rows = Layanan::orderByDesc('id')->get();
 
         return view('admin.layanan.layanan', [
@@ -41,10 +40,9 @@ class LayananController extends Controller
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'gambar' => $gambar,
-            // urut dan aktif sudah dihapus dari sini
         ]);
 
-        return redirect()->route('admin.layanan')->with('success', 'Berhasil ditambah');
+        return redirect()->route('admin.layanan.index')->with('success', 'Berhasil ditambah');
     }
 
     public function edit($id)
@@ -61,11 +59,15 @@ class LayananController extends Controller
     {
         $row = Layanan::findOrFail($id);
 
-        // Hapus urut dan aktif dari request->only
+        $request->validate([
+            'judul' => 'required|min:3|max:120',
+            'deskripsi' => 'required|min:8',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
         $data = $request->only(['judul', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
-            // Opsional: Hapus gambar lama dari storage sebelum ditimpa
             if ($row->gambar) {
                 Storage::disk('public')->delete($row->gambar);
             }
@@ -74,10 +76,10 @@ class LayananController extends Controller
 
         $row->update($data);
 
-        return redirect()->route('admin.layanan')->with('success', 'Berhasil diupdate');
+        return redirect()->route('admin.layanan.index')->with('success', 'Berhasil diupdate');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $row = Layanan::findOrFail($id);
         
@@ -88,6 +90,6 @@ class LayananController extends Controller
         
         $row->delete();
 
-        return redirect()->route('admin.layanan')->with('success', 'Berhasil dihapus');
+        return redirect()->route('admin.layanan.index')->with('success', 'Berhasil dihapus');
     }
 }

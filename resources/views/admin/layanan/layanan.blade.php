@@ -9,6 +9,8 @@
                 <a href="#"><i class="flaticon-home"></i></a>
             </li>
             <li class="separator"><i class="flaticon-right-arrow"></i></li>
+            <li class="nav-item"><a>Pengaturan</a></li>
+            <li class="separator"><i class="flaticon-right-arrow"></i></li>
             <li class="nav-item"><a>Manajemen Layanan</a></li>
         </ul>
     </div>
@@ -72,11 +74,17 @@
                                                     <i class="fa fa-edit"></i>
                                                 </a>
 
-                                                <a href="{{ route('admin.layanan.delete', $r->id) }}"
-                                                    onclick="return confirm('Hapus layanan ini?')"
-                                                    class="btn btn-link btn-danger" title="Hapus">
-                                                    <i class="fa fa-times"></i>
-                                                </a>
+                                                <form action="{{ route('admin.layanan.destroy', $r->id) }}"
+                                                    method="POST"
+                                                    style="display:inline;"
+                                                    onsubmit="return confirm('Hapus layanan ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit" class="btn btn-link btn-danger" title="Hapus">
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </td>
 

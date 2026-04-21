@@ -156,6 +156,7 @@
                     @php
                         $settingsItems = [
                             ['slug' => 'layanan', 'url' => 'admin/layanan', 'label' => 'Layanan'],
+                            ['slug' => 'jabatan', 'url' => 'admin/jabatan', 'label' => 'Referensi Jabatan'],
                             ['slug' => 'uploadvideo', 'url' => 'admin/uploadvideo', 'label' => 'Pengaturan Video'],
                             [
                                 'slug' => 'coverage',
@@ -166,7 +167,7 @@
                                 'slug' => 'settings',
                                 'seg3' => 'runningtext',
                                 'route' => 'admin.settings.runningtext', // Menggunakan nama route
-                                'label' => 'Teks Berjalan'
+                                'label' => 'Running Text'
                             ],
                             [
                                 'slug'  => 'users',

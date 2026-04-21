@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\CoverageController;
 use App\Http\Controllers\Admin\LayananController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PengumumanController;
+use App\Http\Controllers\Admin\GaleriController;
+use App\Http\Controllers\Admin\RefJabatanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -74,6 +76,16 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
     });
 
+    Route::prefix('jabatan')->group(function () {
+        Route::get('/', [RefJabatanController::class, 'index'])->name('admin.jabatan.index');
+        Route::get('/create', [RefJabatanController::class, 'create'])->name('admin.jabatan.create');
+        Route::post('/', [RefJabatanController::class, 'store'])->name('admin.jabatan.store');
+        Route::get('/{id}/edit', [RefJabatanController::class, 'edit'])->name('admin.jabatan.edit');
+        Route::put('/{id}', [RefJabatanController::class, 'update'])->name('admin.jabatan.update');
+        Route::patch('/{id}/toggle', [RefJabatanController::class, 'toggle'])->name('admin.jabatan.toggle');
+        Route::delete('/{id}', [RefJabatanController::class, 'destroy'])->name('admin.jabatan.destroy');
+    });
+
     // ================= COVERAGE =================
     Route::get('/coverage', [CoverageController::class, 'index'])->name('admin.coverage');
     Route::post('/coverage', [CoverageController::class, 'update'])->name('admin.coverage.update');
@@ -102,6 +114,20 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::put('/{id}', [PengumumanController::class, 'update'])->name('admin.pengumuman.update');
 
         Route::delete('/{id}', [PengumumanController::class, 'destroy'])->name('admin.pengumuman.destroy');
+    });
+
+    // ================= GALERI =================
+    Route::prefix('galeri')->group(function () {
+
+        Route::get('/', [GaleriController::class, 'index'])->name('admin.galeri.index');
+
+        Route::get('/create', [GaleriController::class, 'create'])->name('admin.galeri.create');
+        Route::post('/', [GaleriController::class, 'store'])->name('admin.galeri.store');
+
+        Route::get('/{id}/edit', [GaleriController::class, 'edit'])->name('admin.galeri.edit');
+        Route::put('/{id}', [GaleriController::class, 'update'])->name('admin.galeri.update');
+
+        Route::delete('/{id}', [GaleriController::class, 'destroy'])->name('admin.galeri.destroy');
     });
 });
 
