@@ -94,16 +94,18 @@
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit"
-                                                        class="btn btn-link {{ $jabatan->is_active ? 'btn-warning' : 'btn-success' }}"
+                                                        class="btn btn-link {{ $jabatan->is_active ? 'btn-success' : 'btn-warning' }}"
                                                         title="{{ $jabatan->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
-                                                        <i class="fa {{ $jabatan->is_active ? 'fa-toggle-off' : 'fa-toggle-on' }}"></i>
+                                                        <i class="fa {{ $jabatan->is_active ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
                                                     </button>
                                                 </form>
 
                                                 <form action="{{ route('admin.jabatan.destroy', $jabatan->id) }}"
                                                     method="POST"
                                                     style="display:inline;"
-                                                    onsubmit="return confirm('Hapus jabatan ini?')">
+                                                    class="js-delete-form"
+                                                    data-delete-title="Hapus Jabatan?"
+                                                    data-delete-text="Apakah Anda yakin ingin menghapus jabatan ini?">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"

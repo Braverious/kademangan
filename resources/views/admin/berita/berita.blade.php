@@ -34,6 +34,15 @@
                         <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
 
+                    <form class="mb-3" id="searchBeritaForm">
+                        <div>
+                            <input type="text"
+                                id="searchBeritaInput"
+                                class="form-control"
+                                placeholder="Cari judul/kategori/penulis...">
+                        </div>
+                    </form>
+
                     <div class="table-responsive">
                         <table id="basic-datatables" class="display table table-striped table-hover">
                             <thead>
@@ -79,7 +88,9 @@
 
                                                 <form action="{{ route('admin.berita.destroy', $item->id_berita) }}"
                                                     method="POST"
-                                                    onsubmit="return confirm('Hapus berita ini?')">
+                                                    class="js-delete-form"
+                                                    data-delete-title="Hapus Berita?"
+                                                    data-delete-text="Apakah Anda yakin ingin menghapus berita ini?">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-link btn-danger" title="Hapus">

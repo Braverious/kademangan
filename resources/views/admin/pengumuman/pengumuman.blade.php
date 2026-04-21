@@ -139,7 +139,9 @@
                                                 <form action="{{ route('admin.pengumuman.destroy', $p->id) }}"
                                                     method="POST"
                                                     style="display:inline;"
-                                                    onsubmit="return confirm('Hapus pengumuman ini?')">
+                                                    class="js-delete-form"
+                                                    data-delete-title="Hapus Pengumuman?"
+                                                    data-delete-text="Apakah Anda yakin ingin menghapus pengumuman ini?">
 
                                                     @csrf
                                                     @method('DELETE')

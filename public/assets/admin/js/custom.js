@@ -3,10 +3,11 @@
 (function ($) {
   $(function () {
     var $tbl = $('#basic-datatables');
+    var $searchBeritaInput = $('#searchBeritaInput');
 
     // Table ada? plugin ada? sudah pernah init?
     if ($tbl.length && typeof $.fn.DataTable === 'function' && !$.fn.DataTable.isDataTable($tbl)) {
-      $tbl.DataTable({
+      var dataTable = $tbl.DataTable({
         pageLength: 10,
         lengthChange: false,
         ordering: true,
@@ -23,6 +24,14 @@
           processing:   "Memproses..."
         }
       });
+
+      if ($searchBeritaInput.length) {
+        $('.dataTables_filter').hide();
+
+        $searchBeritaInput.on('input', function () {
+          dataTable.search(this.value).draw();
+        });
+      }
     } else if (!$tbl.length) {
       // no-op: halaman ini tidak punya #basic-datatables
     } else if (typeof $.fn.DataTable !== 'function') {
@@ -121,6 +130,46 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteForms = document.querySelectorAll('.js-delete-form');
+
+    if (!deleteForms.length || typeof swal === 'undefined') {
+        return;
+    }
+
+    deleteForms.forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const title = form.dataset.deleteTitle || 'Konfirmasi Hapus';
+            const text = form.dataset.deleteText || 'Data ini akan dihapus secara permanen.';
+
+            swal({
+                title: title,
+                text: text,
+                icon: 'warning',
+                buttons: {
+                    cancel: {
+                        text: 'Batal',
+                        visible: true,
+                        className: 'btn btn-secondary'
+                    },
+                    confirm: {
+                        text: 'Ya, hapus',
+                        visible: true,
+                        className: 'btn btn-danger'
+                    }
+                },
+                dangerMode: true
+            }).then(function(willDelete) {
+                if (willDelete) {
+                    form.submit();
+                }
+            });
+        });
+    });
 });
 
 let textareaBerita = document.querySelector('#isi_berita');

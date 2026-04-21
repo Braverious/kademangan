@@ -188,26 +188,49 @@
 }
 
 /* tombol tindakan di tabel */
+.form-button-action{
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+}
 .form-button-action .btn-link{
   text-decoration:none !important;
-  padding:.38rem .55rem; line-height:1;
-  border-radius:10px; border:1px solid #e6e8ef;
-  background:#f7f9ff; transition:all .15s ease;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:36px;
+  min-height:36px;
+  padding:.45rem;
+  line-height:1;
+  border-radius:12px;
+  border:1px solid #e6e8ef;
+  background:#f7f9ff !important;
   box-shadow: 0 2px 8px rgba(24,28,33,.06);
+  transition:all .15s ease;
 }
-.form-button-action .btn-link i{ font-size:14px; vertical-align:middle; }
+.form-button-action .btn-link i{
+  font-size:14px;
+  vertical-align:middle;
+  color:currentColor !important;
+}
 .form-button-action .btn-link:hover{
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(24,28,33,.10);
 }
 .form-button-action .btn-link.btn-info{
-  background:#eef5ff; color:var(--blue-700); border-color:#d8e6ff;
+  background:#eef5ff !important;
+  color:var(--blue-700) !important;
+  border-color:#d8e6ff !important;
 }
 .form-button-action .btn-link.btn-primary{
-  background:var(--blue-600); color:#fff !important; border-color:var(--blue-600);
+  background:#eaf2ff !important;
+  color:var(--blue-700) !important;
+  border-color:#cfe0ff !important;
 }
 .form-button-action .btn-link.btn-danger{
-  background:#fff4f4; color:#b42318 !important; border-color:#ffdede;
+  background:#fff1f2 !important;
+  color:#c62828 !important;
+  border-color:#ffd5d8 !important;
 }
 
 /* link di tabel & lampiran */
@@ -353,6 +376,26 @@ input[type="file"].form-control::file-selector-button:hover{ filter:brightness(.
 }
 .form-button-action .btn-link.btn-danger{
   background:#fff4f4; color:#b42318; border-color:#ffdede;
+}
+
+.form-button-action .btn-link.btn-primary:hover{
+  background:#dce9ff !important;
+  color:var(--blue-900) !important;
+  border-color:#bfd5ff !important;
+}
+
+.form-button-action .btn-link.btn-danger:hover{
+  background:#ffe5e8 !important;
+  color:#a61b1b !important;
+  border-color:#ffc5cb !important;
+}
+
+.form-button-action .btn-link[disabled],
+.form-button-action .btn-link.disabled,
+.form-button-action button.btn-link:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  box-shadow:none;
 }
 
 /* Hover kecil */

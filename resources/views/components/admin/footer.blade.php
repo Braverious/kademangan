@@ -12,7 +12,7 @@
                 </ul>
             </nav>
             <div class="copyright ml-auto">
-                {{ date('Y') }}, made by Andrian Fakih
+                <i class="far fa-copyright mr-1"></i>{{ date('Y') }} Crafted by Team Vanguard
             </div>
         </div>
     </footer>

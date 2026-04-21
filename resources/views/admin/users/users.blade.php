@@ -80,7 +80,7 @@
                                                 </a>
                                                 
                                                 @if($user->id_user != 1)
-                                                    <form action="{{ route('admin.users.destroy', $user->id_user) }}" method="POST" onsubmit="return confirm('Yakin ingin hapus user ini?')">
+                                                    <form action="{{ route('admin.users.destroy', $user->id_user) }}" method="POST" class="js-delete-form" data-delete-title="Hapus User?" data-delete-text="Apakah Anda yakin ingin menghapus user ini?">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" title="Hapus" class="btn btn-link btn-danger">

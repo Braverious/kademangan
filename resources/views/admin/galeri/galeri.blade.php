@@ -73,7 +73,9 @@
                                                 <form action="{{ route('admin.galeri.destroy', $item->id_galeri) }}"
                                                     method="POST"
                                                     style="display:inline;"
-                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus foto ini?')">
+                                                    class="js-delete-form"
+                                                    data-delete-title="Hapus Foto?"
+                                                    data-delete-text="Apakah Anda yakin ingin menghapus foto ini?">
                                                     @csrf
                                                     @method('DELETE')
 

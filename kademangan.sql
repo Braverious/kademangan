@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 21, 2026 at 07:58 AM
+-- Generation Time: Apr 21, 2026 at 11:33 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.30
 
@@ -43,7 +43,7 @@ CREATE TABLE `berita` (
 --
 
 INSERT INTO `berita` (`id_berita`, `judul_berita`, `slug_berita`, `isi_berita`, `kategori`, `gambar`, `tgl_publish`, `id_user`) VALUES
-(2, 'Antusiasme Warga Kelurahan Jayabakti dalam Penyuluhan Program Bank Sampah', 'antusiasme-warga-kelurahan-jayabakti-dalam-penyuluhan-program-bank-sampah', '<p><strong>Jayabakti, 14 November 2025</strong> – Aula Kelurahan Jayabakti dipenuhi warga yang antusias mengikuti \"Penyuluhan dan Sosialisasi Program Bank Sampah\" pagi ini (14/11). Acara ini dibuka langsung oleh Bapak Lurah Jayabakti, Budi Santoso, S.Sos.</p><p>Dalam sambutannya, beliau menekankan pentingnya pengelolaan sampah yang baik dari tingkat rumah tangga untuk mengurangi volume sampah di TPA dan memberikan nilai ekonomis bagi warga.</p><p>\"Kami berharap program bank sampah ini tidak hanya membuat lingkungan kita lebih bersih, tapi juga bisa menambah sedikit pemasukan untuk kas RT atau bahkan untuk warga sendiri,\" ujar Bapak Budi.<br>Penyuluhan ini menghadirkan narasumber dari Dinas Lingkungan Hidup Kota Bekasi yang memberikan pelatihan praktis tentang pemilahan sampah organik, anorganik, dan residu. Warga juga diajarkan cara mencatat dan menimbang sampah yang akan disetorkan ke bank sampah unit RW masing-masing.</p>', 'Kegiatan', 'ea5742f21c68ea75392a7e65a1653f2a.jpg', '2025-11-14 06:23:54', 1);
+(2, 'Antusiasme Warga Kelurahan Jayabakti dalam Penyuluhan Program Bank Sampah', 'antusiasme-warga-kelurahan-jayabakti-dalam-penyuluhan-program-bank-sampah', '<p><strong>Jayabakti, 14 November 2025</strong> – Aula Kelurahan Jayabakti dipenuhi warga yang antusias mengikuti \"Penyuluhan dan Sosialisasi Program Bank Sampah\" pagi ini (14/11). Acara ini dibuka langsung oleh Bapak Lurah Jayabakti, Budi Santoso, S.Sos.</p><p>Dalam sambutannya, beliau menekankan pentingnya pengelolaan sampah yang baik dari tingkat rumah tangga untuk mengurangi volume sampah di TPA dan memberikan nilai ekonomis bagi warga.</p><p>\"Kami berharap program bank sampah ini tidak hanya membuat lingkungan kita lebih bersih, tapi juga bisa menambah sedikit pemasukan untuk kas RT atau bahkan untuk warga sendiri,\" ujar Bapak Budi.<br>Penyuluhan ini menghadirkan narasumber dari Dinas Lingkungan Hidup Kota Bekasi yang memberikan pelatihan praktis tentang pemilahan sampah organik, anorganik, dan residu. Warga juga diajarkan cara mencatat dan menimbang sampah yang akan disetorkan ke bank sampah unit RW masing-masing. ss</p>', 'Kegiatan', 'ea5742f21c68ea75392a7e65a1653f2a.jpg', '2025-11-14 06:23:54', 1);
 
 -- --------------------------------------------------------
 
@@ -106,7 +106,7 @@ CREATE TABLE `galeri` (
 --
 
 INSERT INTO `galeri` (`id_galeri`, `judul_foto`, `foto`, `tgl_upload`, `id_user`) VALUES
-(3, 'PALEM SERPONG INDAH', '539a26ae19faafc93820a60fbaf47d85.jpg', '2025-10-29 10:39:52', 1);
+(4, 'Logo Tangerang Selatan', 'galeri/FIDfruc0S4u18ZWRoFfoWbV2hlQehbtD5pMKzxJb.png', '2026-04-21 16:21:17', 1);
 
 -- --------------------------------------------------------
 
@@ -121,6 +121,13 @@ CREATE TABLE `layanan` (
   `gambar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `layanan`
+--
+
+INSERT INTO `layanan` (`id`, `judul`, `deskripsi`, `gambar`, `created_at`) VALUES
+(2, 'Tangsel', 'Logo Tangerang Selatan', 'layanan/9sn9ycfpi69lcLFXmvOQFImqQ7RiQHRo6G5SsC1W.png', '2026-04-21 16:14:50');
 
 -- --------------------------------------------------------
 
@@ -194,6 +201,13 @@ CREATE TABLE `pengumuman` (
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `pengumuman`
+--
+
+INSERT INTO `pengumuman` (`id`, `judul`, `isi`, `tipe`, `mulai_tayang`, `berakhir_tayang`, `status`, `created_by`, `created_at`, `updated_at`) VALUES
+(8, 'dddddddddddddddd', 'sssssssssssssssssss', 'info', '2026-04-21 18:26:00', '2026-04-21 18:26:00', 'publish', 1, '2026-04-21 18:26:45', '2026-04-21 18:26:45');
+
 -- --------------------------------------------------------
 
 --
@@ -232,7 +246,8 @@ CREATE TABLE `ref_jabatan` (
 
 INSERT INTO `ref_jabatan` (`id`, `nama`, `urut`, `is_active`) VALUES
 (1, 'Lurah', 1, 1),
-(2, 'Sekretaris Kelurahan', 2, 1);
+(2, 'Sekretaris Kelurahan', 2, 1),
+(8, 'KASI', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -827,13 +842,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `galeri`
 --
 ALTER TABLE `galeri`
-  MODIFY `id_galeri` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_galeri` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `layanan`
 --
 ALTER TABLE `layanan`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `level`
@@ -851,7 +866,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `pengumuman`
 --
 ALTER TABLE `pengumuman`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -863,7 +878,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `ref_jabatan`
 --
 ALTER TABLE `ref_jabatan`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `running_texts`

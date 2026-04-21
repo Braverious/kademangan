@@ -77,7 +77,9 @@
                                                 <form action="{{ route('admin.layanan.destroy', $r->id) }}"
                                                     method="POST"
                                                     style="display:inline;"
-                                                    onsubmit="return confirm('Hapus layanan ini?')">
+                                                    class="js-delete-form"
+                                                    data-delete-title="Hapus Layanan?"
+                                                    data-delete-text="Apakah Anda yakin ingin menghapus layanan ini?">
                                                     @csrf
                                                     @method('DELETE')
 
