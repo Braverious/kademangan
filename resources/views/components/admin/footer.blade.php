@@ -37,7 +37,7 @@
 <script src="{{ asset('assets/admin/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
 
 <script src="{{ asset('assets/admin/js/atlantis.min.js') }}"></script>
-<script src="{{ asset('assets/admin/js/custom.js') }}"></script>
+<script src="{{ asset('assets/admin/js/custom.js?v=2') }}"></script>
 
 </body>
 </html>

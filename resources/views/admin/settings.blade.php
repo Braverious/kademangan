@@ -38,7 +38,7 @@
                     @csrf
 
                     <div class="card mb-3">
-                        <div class="card-body fw-semibold" style="margin-bottom: -25px">Tentang Web (opsional)</div>
+                        <div class="card-body fw-semibold settings-about-title">Tentang Web (opsional)</div>
                         <div class="card-body">
                             <p class="text-muted small mb-2">Boleh dikosongkan. Tag HTML dasar diizinkan.</p>
                             <textarea name="about_html" class="form-control" rows="6"
@@ -70,7 +70,7 @@
                                             </div>
                                             <div class="col-md-1 text-center">
                                                 <button type="button"
-                                                    class="btn btn-icon btn-round btn-danger btn-sm btnRemoveSocial"
+                                                    class="btn btn-icon btn-round btn-danger btn-sm btnRemoveLink"
                                                     data-toggle="tooltip" title="Hapus Baris">
                                                     <i class="fas fa-times"></i>
                                                 </button>
@@ -94,7 +94,7 @@
                                     </div>
                                     <div class="col-md-1 text-center">
                                         <button type="button"
-                                            class="btn btn-icon btn-round btn-danger btn-sm btnRemoveSocial"
+                                            class="btn btn-icon btn-round btn-danger btn-sm btnRemoveLink"
                                             data-toggle="tooltip" title="Hapus Baris">
                                             <i class="fas fa-times"></i>
                                         </button>
@@ -204,39 +204,5 @@
                 </form>
             </div>
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                // Repeater: Links
-                const linksWrap = document.getElementById('linksRepeater');
-                const linkTpl = document.getElementById('linkTemplate');
-                const addLink = document.getElementById('btnAddLink');
-                if (addLink && linksWrap && linkTpl) {
-                    addLink.addEventListener('click', () => {
-                        linksWrap.appendChild(linkTpl.content.cloneNode(true));
-                    });
-                    linksWrap.addEventListener('click', (e) => {
-                        if (e.target.closest('.btnRemoveLink')) {
-                            e.target.closest('.link-item').remove();
-                        }
-                    });
-                }
-
-                // Repeater: Social
-                const socialWrap = document.getElementById('socialRepeater');
-                const socialTpl = document.getElementById('socialTemplate');
-                const addSocial = document.getElementById('btnAddSocial');
-                if (addSocial && socialWrap && socialTpl) {
-                    addSocial.addEventListener('click', () => {
-                        socialWrap.appendChild(socialTpl.content.cloneNode(true));
-                    });
-                    socialWrap.addEventListener('click', (e) => {
-                        if (e.target.closest('.btnRemoveSocial')) {
-                            e.target.closest('.social-item').remove();
-                        }
-                    });
-                }
-            });
-        </script>
 
         <x-admin.footer />

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PengumumanController;
 use App\Http\Controllers\Admin\GaleriController;
 use App\Http\Controllers\Admin\RefJabatanController;
+use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -128,6 +129,21 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::put('/{id}', [GaleriController::class, 'update'])->name('admin.galeri.update');
 
         Route::delete('/{id}', [GaleriController::class, 'destroy'])->name('admin.galeri.destroy');
+    });
+
+    // ================= BERITA =================
+    Route::prefix('berita')->group(function () {
+
+        Route::get('/', [BeritaController::class, 'index'])->name('admin.berita.index');
+        Route::get('/create', [BeritaController::class, 'create'])->name('admin.berita.create');
+        Route::post('/', [BeritaController::class, 'store'])->name('admin.berita.store');
+
+        Route::post('/upload-gambar', [BeritaController::class, 'uploadGambar'])->name('admin.berita.upload-gambar');
+
+        Route::get('/{id}/edit', [BeritaController::class, 'edit'])->name('admin.berita.edit');
+        Route::put('/{id}', [BeritaController::class, 'update'])->name('admin.berita.update');
+        
+        Route::delete('/{id}', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
     });
 });
 

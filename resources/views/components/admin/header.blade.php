@@ -7,25 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>{{ $title }} - Admin Kelurahan</title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="icon" href="{{ asset('assets/img/icon.ico') }}" type="image/x-icon" />
 
     <script src="{{ asset('assets/js/plugin/webfont/webfont.min.js') }}"></script>
-    <script>
-        WebFont.load({
-            google: {
-                "families": ["Lato:300,400,700,900"]
-            },
-            custom: {
-                "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands",
-                    "simple-line-icons"
-                ],
-                urls: ['{{ asset('assets/css/fonts.min.css') }}']
-            },
-            active: function() {
-                sessionStorage.fonts = true;
-            }
-        });
-    </script>
+    <script src="{{ asset('assets/admin/js/head.js?v=2') }}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css">
@@ -33,7 +19,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/admin/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin/css/atlantis.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/admin/css/style.css?v=1') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/style.css?v=2') }}">
 </head>
 
 <body>
@@ -41,8 +27,7 @@
         <div class="main-header">
             <div class="logo-header" data-background-color="blue">
                 <a href="{{ route('admin.dashboard') }}" class="logo">
-                    <img src="{{ asset('assets/img/logo.svg') }}" alt="navbar brand" class="navbar-brand"
-                        style="width: 150px;">
+                    <img src="{{ asset('assets/img/logo.svg') }}" alt="navbar brand" class="admin-logo-image">
                 </a>
                 <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
                     data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">

@@ -46,18 +46,12 @@
                     @endif
 
                     {{-- SEARCH --}}
-                    <form class="mb-3" method="GET">
-                        <div class="input-group">
-                            <input type="text" name="q"
+                    <form class="mb-3" method="GET" id="searchPengumumanForm">
+                        <div>
+                            <input type="text" name="q" id="searchPengumumanInput"
                                 class="form-control"
                                 value="{{ request('q') }}"
                                 placeholder="Cari judul/isi...">
-
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="submit">
-                                    Cari
-                                </button>
-                            </div>
                         </div>
                     </form>
 

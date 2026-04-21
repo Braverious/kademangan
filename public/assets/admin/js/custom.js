@@ -70,13 +70,70 @@ document.addEventListener('DOMContentLoaded', function() {
     
 });
 
-// 1. Cek dulu apakah ada elemen #isi_berita di halaman ini
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('searchPengumumanForm');
+    const input = document.getElementById('searchPengumumanInput');
+
+    if (!form || !input) {
+        return;
+    }
+
+    let timeoutId;
+
+    input.addEventListener('input', function() {
+        clearTimeout(timeoutId);
+
+        timeoutId = setTimeout(function() {
+            form.submit();
+        }, 350);
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const linksWrap = document.getElementById('linksRepeater');
+    const linkTpl = document.getElementById('linkTemplate');
+    const addLink = document.getElementById('btnAddLink');
+
+    if (addLink && linksWrap && linkTpl) {
+        addLink.addEventListener('click', function() {
+            linksWrap.appendChild(linkTpl.content.cloneNode(true));
+        });
+
+        linksWrap.addEventListener('click', function(e) {
+            if (e.target.closest('.btnRemoveLink')) {
+                e.target.closest('.link-item')?.remove();
+            }
+        });
+    }
+
+    const socialWrap = document.getElementById('socialRepeater');
+    const socialTpl = document.getElementById('socialTemplate');
+    const addSocial = document.getElementById('btnAddSocial');
+
+    if (addSocial && socialWrap && socialTpl) {
+        addSocial.addEventListener('click', function() {
+            socialWrap.appendChild(socialTpl.content.cloneNode(true));
+        });
+
+        socialWrap.addEventListener('click', function(e) {
+            if (e.target.closest('.btnRemoveSocial')) {
+                e.target.closest('.social-item')?.remove();
+            }
+        });
+    }
+});
+
 let textareaBerita = document.querySelector('#isi_berita');
-    
-// 2. Jalankan CKEditor HANYA jika elemennya ada (mencegah error di Dashboard)
-if (textareaBerita) {
+
+if (textareaBerita && typeof ClassicEditor !== 'undefined') {
     let ck;
-    ClassicEditor.create(textareaBerita, {
+    const uploadUrl = textareaBerita.dataset.uploadUrl;
+    const csrfToken =
+        document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ||
+        document.querySelector('input[name="_token"]')?.value ||
+        '';
+
+    const editorConfig = {
         language: 'id',
         toolbar: {
             items: [
@@ -87,15 +144,20 @@ if (textareaBerita) {
                 'alignment', 'undo', 'redo', '|',
                 'imageUpload'
             ]
-        },
-        simpleUpload: {
-            uploadUrl: '{{ url("admin/berita/upload_gambar") }}', 
+        }
+    };
+
+    if (uploadUrl) {
+        editorConfig.simpleUpload = {
+            uploadUrl: uploadUrl,
             withCredentials: false,
             headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                'X-CSRF-TOKEN': csrfToken
             }
-        }
-    }).then(editor => {
+        };
+    }
+
+    ClassicEditor.create(textareaBerita, editorConfig).then(editor => {
         ck = editor;
     }).catch(console.error);
 
@@ -105,21 +167,20 @@ if (textareaBerita) {
         return text.length === 0;
     }
 
-    document.querySelector('form[action*="admin/berita/store"], form[action*="admin/berita/update"]')
-        ?.addEventListener('submit', function(e) {
-            try {
-                const data = ck.getData();
-                if (isEmptyHtml(data)) {
-                    e.preventDefault();
-                    alert('Isi berita wajib diisi.');
-                    ck.editing.view.focus();
-                    return false;
-                }
-                document.getElementById('isi_berita').value = data;
-            } catch (err) {
-                console.warn(err);
+    textareaBerita.closest('form')?.addEventListener('submit', function(e) {
+        try {
+            const data = ck.getData();
+            if (isEmptyHtml(data)) {
+                e.preventDefault();
+                alert('Isi berita wajib diisi.');
+                ck.editing.view.focus();
+                return false;
             }
-        });
+            textareaBerita.value = data;
+        } catch (err) {
+            console.warn(err);
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -149,4 +210,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setupLivePreview('top');
     setupLivePreview('bottom');
+});
+
+window.addEventListener('load', function() {
+    if (typeof Chart === 'undefined') {
+        return;
+    }
+
+    const elCov = document.getElementById('coverageChart');
+    if (elCov) {
+        new Chart(elCov, {
+            type: 'bar',
+            data: {
+                labels: ['Jumlah KK', 'Penduduk', 'RW', 'RT'],
+                datasets: [{
+                    label: 'Jumlah',
+                    data: [7884, 25724, 12, 48],
+                    backgroundColor: '#1147a7'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+
+    const elSurat = document.getElementById('suratChart');
+    if (elSurat) {
+        new Chart(elSurat, {
+            type: 'bar',
+            data: {
+                labels: ['Nov', 'Des', 'Jan', 'Feb', 'Mar', 'Apr'],
+                datasets: [{
+                    label: 'Pengajuan',
+                    data: [50, 80, 45, 90, 110, 60],
+                    backgroundColor: '#ffc107'
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    }
 });
