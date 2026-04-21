@@ -20,7 +20,7 @@
             <div class="card">
 
                 <div class="card-header">
-                    <div class="d-flex align-items-center w-100">
+                    <div class="d-flex align-items-center flex-wrap gap-2 w-100">
                         <h4 class="card-title mb-0">Daftar Pengumuman</h4>
 
                         <a class="btn btn-primary btn-round ml-auto"
@@ -56,7 +56,7 @@
                     </form>
 
                     <div class="table-responsive">
-                        <table class="table table-striped table-hover">
+                        <table class="display table table-striped table-hover w-100 admin-table-wide">
                             <thead>
                                 <tr>
                                     <th>No</th>

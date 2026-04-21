@@ -528,19 +528,35 @@ input[type="file"].form-control::file-selector-button:hover{ filter:brightness(.
     padding: 2px;
 }
 
+/* =========================================================
+   CUSTOM STYLES: HEADER LOGO ADMIN
+   ========================================================= */
+
 .admin-logo-image {
   width: 150px;
 }
 
+/* =========================================================
+   CUSTOM STYLES: FOOTER SETTINGS HELPERS
+   ========================================================= */
+
 .settings-about-title {
   margin-bottom: -25px;
 }
+
+/* =========================================================
+   CUSTOM STYLES: PROFILE PAGE
+   ========================================================= */
 
 .profile-avatar-preview {
   width: 150px;
   height: 150px;
   object-fit: cover;
 }
+
+/* =========================================================
+   CUSTOM STYLES: DASHBOARD PAGE
+   ========================================================= */
 
 .admin-dashboard .page-header {
   display: flex;
@@ -735,4 +751,112 @@ input[type="file"].form-control::file-selector-button:hover{ filter:brightness(.
 
 .dashboard-col-aksi {
   min-width: 120px;
+}
+
+/* =========================================================
+   CUSTOM STYLES: RESPONSIVE TABLE HELPERS
+   ========================================================= */
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-table-wide {
+  min-width: 900px;
+}
+
+.admin-table-wide th,
+.admin-table-wide td {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.admin-table-wide td:nth-child(2) img {
+  max-width: 100px;
+  height: auto;
+}
+
+.admin-table-wide td:nth-child(3) {
+  white-space: normal;
+  min-width: 260px;
+}
+
+.admin-table-wide td:nth-child(5) {
+  white-space: normal;
+  min-width: 160px;
+}
+
+.admin-table-wide td:nth-child(6) {
+  min-width: 140px;
+}
+
+.dataTables_wrapper {
+  width: 100%;
+}
+
+.dataTables_scroll {
+  width: 100%;
+}
+
+.dataTables_scrollBody {
+  overflow-x: auto !important;
+}
+
+@media (max-width: 767.98px) {
+  .card-header .btn-round.ml-auto {
+    margin-left: 0 !important;
+  }
+
+  .card-header .d-flex.flex-wrap {
+    justify-content: space-between;
+  }
+
+  .page-header {
+    gap: 8px 12px;
+  }
+
+  .page-header .breadcrumbs {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 4px;
+  }
+
+  .card-header .d-flex.flex-wrap {
+    align-items: flex-start !important;
+  }
+
+  .card-header .card-title,
+  .card-header .btn {
+    width: 100%;
+  }
+
+  .card-header .btn {
+    text-align: center;
+  }
+
+  .admin-table-wide {
+    min-width: 760px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-inner {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .card-body,
+  .card-header,
+  .card-action,
+  .card-footer {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .admin-table-wide {
+    min-width: 700px;
+  }
 }

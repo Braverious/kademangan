@@ -17,7 +17,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center flex-wrap gap-2">
                         <h4 class="card-title">Daftar Foto Galeri</h4>
                         <a class="btn btn-primary btn-round ml-auto" href="{{ route('admin.galeri.create') }}">
                             <i class="fa fa-plus"></i> Tambah Foto
@@ -35,7 +35,7 @@
                     @endif
 
                     <div class="table-responsive">
-                        <table id="add-row" class="display table table-striped table-hover">
+                        <table id="add-row" class="display table table-striped table-hover w-100 admin-table-wide">
                             <thead>
                                 <tr>
                                     <th>No</th>

@@ -20,7 +20,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center flex-wrap gap-2">
                         <h4 class="card-title">Daftar Layanan</h4>
 
                         <a href="{{ route('admin.layanan.create') }}" class="btn btn-primary btn-round ml-auto">
@@ -40,7 +40,7 @@
                     @endif
 
                     <div class="table-responsive">
-                        <table class="display table table-striped table-hover">
+                        <table class="display table table-striped table-hover w-100 admin-table-wide">
                             <thead>
                                 <tr>
                                     <th style="width: 5%">No</th>

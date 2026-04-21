@@ -17,7 +17,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center flex-wrap gap-2">
                         <h4 class="card-title">Daftar Berita</h4>
                         <a href="{{ route('admin.berita.create') }}" class="btn btn-primary btn-round ml-auto">
                             <i class="fa fa-plus"></i> Tambah Berita
@@ -44,7 +44,7 @@
                     </form>
 
                     <div class="table-responsive">
-                        <table id="basic-datatables" class="display table table-striped table-hover">
+                        <table id="basic-datatables" class="display table table-striped table-hover w-100 admin-table-wide">
                             <thead>
                                 <tr>
                                     <th>No</th>
