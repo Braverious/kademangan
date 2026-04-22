@@ -13,7 +13,8 @@ class SiteSetting extends Model
     'about_html', 
     'related_links', 
     'social_links',
-    'favicon' 
+    'favicon' ,
+    'youtube_link'
 ];
 
     // Ini akan otomatis mengubah array menjadi JSON di database, dan sebaliknya

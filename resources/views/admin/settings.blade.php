@@ -49,7 +49,6 @@
                                             style="width: 64px; height: 64px;">
                                             <i class="fas fa-image text-muted"></i>
                                         </div>
-                                        
                                     @endif
                                 </div>
                                 <div class="col-md-10">
@@ -61,7 +60,7 @@
                         </div>
                     </div>
                     <div class="card mb-3">
-                        <div class="card-body fw-semibold settings-about-title">Tentang Web (opsional)</div>
+                        <div class="card-header d-flex align-items-center justify-content-between">Tentang Web (opsional)</div>
                         <div class="card-body">
                             <p class="text-muted small mb-2">Boleh dikosongkan. Tag HTML dasar diizinkan.</p>
                             <textarea name="about_html" class="form-control" rows="6"
@@ -220,7 +219,31 @@
                             </template>
                         </div>
                     </div>
+                    <div class="card mb-3">
+                        <div class="card-header d-flex align-items-center justify-content-between">Video Beranda (YouTube)</div>
+                        <div class="card-body">
+                            <div class="form-group p-0">
+                                <label for="youtube_link">Link Video YouTube</label>
+                                <input type="url" class="form-control" id="youtube_link" name="youtube_link"
+                                    value="{{ old('youtube_link', $footer['youtube_link']) }}"
+                                    placeholder="https://www.youtube.com/watch?v=xxxx" onkeyup="updateVideoPreview()">
+                                <small class="form-text text-muted">Tempelkan URL video YouTube yang ingin ditampilkan
+                                    di halaman utama.</small>
+                            </div>
 
+                            <div class="mt-3">
+                                <label class="d-block mb-2">Preview Video</label>
+                                <div id="video_preview_container"
+                                    class="embed-responsive embed-responsive-16by9 border rounded d-none"
+                                    style="max-width: 500px;">
+                                    <iframe id="video_preview" class="embed-responsive-item" src=""
+                                        frameborder="0" allowfullscreen style="width: 100%; height: 280px;"></iframe>
+                                </div>
+                                <small id="video_preview_message" class="text-muted d-block mt-2">Masukkan link
+                                    YouTube untuk melihat preview.</small>
+                            </div>
+                        </div>
+                    </div>  
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-success">Simpan</button>
                     </div>

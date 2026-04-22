@@ -157,7 +157,7 @@
                         $settingsItems = [
                             ['slug' => 'layanan', 'url' => 'admin/layanan', 'label' => 'Layanan'],
                             ['slug' => 'jabatan', 'url' => 'admin/jabatan', 'label' => 'Referensi Jabatan'],
-                            ['slug' => 'uploadvideo', 'url' => 'admin/uploadvideo', 'label' => 'Pengaturan Video'],
+                            // ['slug' => 'uploadvideo', 'url' => 'admin/uploadvideo', 'label' => 'Pengaturan Video'],
                             [
                                 'slug' => 'coverage',
                                 'url' => 'admin/coverage',

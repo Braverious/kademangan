@@ -1,21 +1,21 @@
 </div> {{-- Penutup class content --}}
-    
-    <footer class="footer">
-        <div class="container-fluid">
-            <nav class="pull-left">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            Website Kelurahan
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="copyright ml-auto">
-                <i class="far fa-copyright mr-1"></i>{{ date('Y') }} Crafted by Team Vanguard
-            </div>
+
+<footer class="footer">
+    <div class="container-fluid">
+        <nav class="pull-left">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        Website Kelurahan
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="copyright ml-auto">
+            <i class="far fa-copyright mr-1"></i>{{ date('Y') }} Crafted by Team Vanguard
         </div>
-    </footer>
+    </div>
+</footer>
 </div> {{-- Penutup main-panel --}}
 </div> {{-- Penutup wrapper --}}
 
@@ -38,6 +38,46 @@
 
 <script src="{{ asset('assets/admin/js/atlantis.min.js') }}"></script>
 <script src="{{ asset('assets/admin/js/custom.js?v=2') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        updateVideoPreview(); // Jalankan preview saat halaman dimuat
+    });
 
+    function getYoutubeVideoId(url) {
+        let videoId = null;
+        const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
+        const match = url.match(regExp);
+        if (match && match[1]) {
+            videoId = match[1];
+        }
+        return videoId;
+    }
+
+    function updateVideoPreview() {
+        const url = document.getElementById('youtube_link').value;
+        const container = document.getElementById('video_preview_container');
+        const iframe = document.getElementById('video_preview');
+        const msg = document.getElementById('video_preview_message');
+        const videoId = getYoutubeVideoId(url);
+
+        if (videoId) {
+            iframe.src = `https://www.youtube.com/embed/${videoId}`;
+            container.classList.remove('d-none');
+            msg.classList.add('d-none');
+        } else {
+            iframe.src = "";
+            container.classList.add('d-none');
+            msg.classList.remove('d-none');
+            if (url) {
+                msg.textContent = 'Link YouTube tidak valid.';
+                msg.className = 'text-danger small mt-2';
+            } else {
+                msg.textContent = 'Masukkan link YouTube untuk melihat preview.';
+                msg.className = 'text-muted small mt-2';
+            }
+        }
+    }
+</script>
 </body>
+
 </html>
