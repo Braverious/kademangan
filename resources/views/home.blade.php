@@ -266,7 +266,6 @@
                         </div>
                     </div>
                 </div>
-
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselGaleri"
                     data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -335,30 +334,34 @@
                     <p class="text-muted">Kenali lebih dekat Kelurahan Kademangan.</p>
                 </div>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="video-card brand-card shadow-sm rounded-4 overflow-hidden">
-                        <div class="ratio ratio-16x9">
-                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player"
-                                frameborder="0" allowfullscreen></iframe>
-                            <!-- Bar info bawah -->
-                            <div class="video-info d-flex justify-content-between align-items-center px-4 py-3">
+            @if (!empty($video_id))
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="video-card brand-card shadow-sm rounded-4 overflow-hidden">
+                            <div class="ratio ratio-16x9">
+                                <iframe src="https://www.youtube.com/embed/{{ $video_id }}"
+                                    title="{{ $video_meta['title'] }}" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen></iframe>
+                            </div>
+
+                            <div
+                                class="video-info d-flex justify-content-between align-items-center px-4 py-3 bg-white">
                                 <div class="d-flex align-items-center gap-3">
-                                    <span class="yt-badge" aria-hidden="true">
-                                        <i class="bi bi-play-fill"></i>
+                                    <span class="yt-badge text-light" aria-hidden="true" style="font-size: 1.5rem;">
+                                        <i class="bi bi-play-btn-fill"></i>
                                     </span>
                                     <div>
-                                        {{-- <h5 class="video-title mb-1"><?= html_escape($video_meta['title']) ?></h5>
-                                            <p class="video-channel mb-0 text-muted"><?= html_escape($video_meta['author_name']) ?></p> --}}
-                                        <h5 class="video-title mb-1">test</h5>
-                                        <p class="video-channel mb-0 text-muted">test</p>
+                                        <h5 class="video-title mb-1 fw-bold">{{ $video_meta['title'] }}</h5>
+                                        <p class="video-channel mb-0 text-muted small">
+                                            {{ $video_meta['author_name'] }}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
     </section>
 </main>
 <x-footer></x-footer>

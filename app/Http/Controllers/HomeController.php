@@ -6,6 +6,7 @@ use App\Models\RunningText;
 use Illuminate\Http\Request;
 use App\Models\Layanan;
 use App\Models\Pengumuman;
+use App\Models\SiteSetting;
 
 class HomeController extends Controller
 {
@@ -17,11 +18,38 @@ class HomeController extends Controller
 
         $runningTexts = RunningText::where('is_active', 1)->get()->keyBy('position');
 
+        $settings = SiteSetting::find(1);
+        $youtube_link = $settings->youtube_link ?? '';
+
+        $video_id = '';
+        if ($youtube_link) {
+            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_link, $match);
+            $video_id = $match[1] ?? '';
+        }
+
+        $video_meta = [
+            'title' => 'Video Kelurahan Kademangan',
+            'author_name' => 'Kelurahan Kademangan'
+        ];
+
+        // Opsional: Jika ingin ambil judul asli dari YouTube (oEmbed)
+        if ($video_id) {
+            $oembed_url = "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={$video_id}&format=json";
+            $oembed_data = @file_get_contents($oembed_url);
+            if ($oembed_data) {
+                $oembed = json_decode($oembed_data, true);
+                $video_meta['title'] = $oembed['title'] ?? $video_meta['title'];
+                $video_meta['author_name'] = $oembed['author_name'] ?? $video_meta['author_name'];
+            }
+        }
+
         return view('home', [
             'title' => 'Home',
             'layanan' => $layanan,
             'pengumuman' => $pengumuman,
             'runningTexts' => $runningTexts,
+            'video_id' => $video_id,
+            'video_meta' => $video_meta,
         ]);
     }
 }

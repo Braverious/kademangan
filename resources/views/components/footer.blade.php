@@ -1,30 +1,27 @@
 @php
     /**
-     * Footer Dinamis Laravel Version
-     * Data dummy disiapkan agar tampilan muncul tanpa error database
+     * Footer Dinamis - Terhubung ke Database
+     * Mengambil data dari tabel site_settings ID 1
      */
+    $settings = \App\Models\SiteSetting::firstOrNew(['id' => 1]);
     
-    // --- Data Dummy (Gantikan dengan data dari Controller/View Composer nantinya) ---
-    $about = "Kelurahan Kademangan berkomitmen memberikan pelayanan publik yang transparan, cepat, dan inovatif untuk seluruh warga.";
-    
-    $links = [
-        ['title' => 'Portal Kota Tangsel', 'url' => 'https://tangerangselatankota.go.id'],
-        ['title' => 'Layanan Kependudukan', 'url' => '#'],
-        ['title' => 'Cek Pajak PBB', 'url' => '#'],
-    ];
+    // --- Data Asli dari Database ---
+    $about = $settings->about_html;
+    $links = $settings->related_links ?? [];
+    $social = $settings->social_links ?? [];
 
-    $social = [
-        ['label' => 'Instagram', 'url' => 'https://instagram.com', 'icon' => 'fa-instagram'],
-        ['label' => 'WhatsApp', 'url' => 'https://wa.me/628123456789', 'icon' => 'fa-whatsapp'],
-        ['label' => 'YouTube', 'url' => '#', 'icon' => 'fa-youtube'],
-    ];
-
-    // --- Logic Helper ---
+    // --- Logic Helper (Tetap dipertahankan) ---
     $detectIconSet = function ($icon) {
         $icon = trim((string)$icon);
         if ($icon === '') return ['set' => 'fa-solid', 'icon' => 'fa-link'];
+        
+        // Cek apakah icon termasuk kategori brand (FontAwesome 6 standards)
         $isBrand = (bool)preg_match('/^(fa-)?(facebook|facebook-f|instagram|x-twitter|twitter|youtube|tiktok|whatsapp|linkedin|linkedin-in|telegram)/i', $icon);
-        return ['set' => $isBrand ? 'fa-brands' : 'fa-solid', 'icon' => $icon];
+        
+        return [
+            'set' => $isBrand ? 'fa-brands' : 'fa-solid', 
+            'icon' => $icon
+        ];
     };
 @endphp
 
@@ -40,6 +37,7 @@
                             <h5 class="fi-title">Tentang Web</h5>
                         </div>
                         <div class="fi-card-body text-muted">
+                            {{-- Gunakan {!! !!} karena data mengandung tag HTML --}}
                             {!! $about !!}
                         </div>
                     </div>
@@ -62,7 +60,7 @@
                                     $label = $linkTitle !== '' ? $linkTitle : $host;
                                 @endphp
                                 <li>
-                                    @if($linkUrl !== '#')
+                                    @if($linkUrl !== '' && $linkUrl !== '#')
                                         <a href="{{ $linkUrl }}" target="_blank" rel="noopener">{{ $label }}</a>
                                     @else
                                         <span class="text-muted">{{ $label }}</span>
@@ -89,14 +87,16 @@
                                     $sUrl = trim($it['url'] ?? '');
                                 @endphp
                                 <li>
-                                    @if($sUrl !== '#')
+                                    @if($sUrl !== '' && $sUrl !== '#')
                                         <a href="{{ $sUrl }}" target="_blank" rel="noopener">
                                             <span class="fi-ico"><i class="{{ $res['set'] }} {{ $res['icon'] }}"></i></span>
                                             <span class="fi-text">{{ $sLabel ?: $sUrl }}</span>
                                         </a>
                                     @else
-                                        <span class="fi-ico"><i class="{{ $res['set'] }} {{ $res['icon'] }}"></i></span>
-                                        <span class="fi-text text-muted">{{ $sLabel }}</span>
+                                        <div class="d-flex align-items-center text-muted">
+                                            <span class="fi-ico"><i class="{{ $res['set'] }} {{ $res['icon'] }}"></i></span>
+                                            <span class="fi-text">{{ $sLabel }}</span>
+                                        </div>
                                     @endif
                                 </li>
                             @endforeach
