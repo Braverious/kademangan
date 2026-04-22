@@ -182,10 +182,9 @@ document.addEventListener('DOMContentLoaded', function() {
           confirm: {
             text: 'Ya, hapus',
             visible: true,
-            className: 'btn btn-danger'
+            className: 'btn btn-primary'
           }
-        },
-        dangerMode: true
+        }
       }).then(function(willDelete) {
         if (willDelete) {
           form.submit();
