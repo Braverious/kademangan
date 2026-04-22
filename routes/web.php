@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PengumumanController;
 use App\Http\Controllers\Admin\GaleriController;
 use App\Http\Controllers\Admin\RefJabatanController;
 use App\Http\Controllers\Admin\BeritaController;
+use App\Http\Controllers\Admin\SuratSktmController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -142,8 +143,26 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
         Route::get('/{id}/edit', [BeritaController::class, 'edit'])->name('admin.berita.edit');
         Route::put('/{id}', [BeritaController::class, 'update'])->name('admin.berita.update');
-        
+
         Route::delete('/{id}', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
+    });
+
+    // ================= SKTM =================
+    Route::prefix('surat-sktm')->group(function () {
+
+        Route::get('/', [SuratSktmController::class, 'index'])->name('admin.sktm.index');
+
+        Route::get('/export', [SuratSktmController::class, 'export'])->name('admin.sktm.export');
+
+        Route::get('/{id}', [SuratSktmController::class, 'detail'])->name('admin.sktm.detail');
+
+        Route::get('/{id}/edit', [SuratSktmController::class, 'edit'])->name('admin.sktm.edit');
+
+        Route::put('/{id}', [SuratSktmController::class, 'update'])->name('admin.sktm.update');
+
+        Route::delete('/{id}', [SuratSktmController::class, 'destroy'])->name('admin.sktm.delete');
+
+        Route::get('/{id}/cetak', [SuratSktmController::class, 'cetak'])->name('admin.sktm.cetak');
     });
 });
 

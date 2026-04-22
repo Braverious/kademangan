@@ -45,7 +45,7 @@
                     $services = [
                         [
                             'slug' => 'surat_sktm',
-                            'url' => 'admin/surat_sktm',
+                            'url' => 'admin/surat-sktm',
                             'label' => 'Surat Keterangan Tidak Mampu (SKTM)',
                         ],
                         [
@@ -161,24 +161,24 @@
                             [
                                 'slug' => 'coverage',
                                 'url' => 'admin/coverage',
-                                'label' => 'Jangkauan Wilayah'
+                                'label' => 'Jangkauan Wilayah',
                             ],
                             [
                                 'slug' => 'settings',
                                 'seg3' => 'runningtext',
                                 'route' => 'admin.settings.runningtext', // Menggunakan nama route
-                                'label' => 'Running Text'
+                                'label' => 'Running Text',
                             ],
                             [
-                                'slug'  => 'users',
-                                'url'   => 'admin/users',
-                                'label' => 'Manajemen User'
+                                'slug' => 'users',
+                                'url' => 'admin/users',
+                                'label' => 'Manajemen User',
                             ],
                             [
-                                'slug'  => 'settings',
-                                'seg3'  => 'footer',
+                                'slug' => 'settings',
+                                'seg3' => 'footer',
                                 'route' => 'admin.settings.footer', // Menggunakan nama route
-                                'label' => 'Footer'
+                                'label' => 'Footer',
                             ],
                         ];
 
