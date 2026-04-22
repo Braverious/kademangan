@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\SiteSetting;
 
 class SettingsController extends Controller
 {
-    public function footer()
+    // Mengubah footer() menjadi settings()
+    public function settings()
     {
-        // Ambil data ID 1. Jika belum ada di database, buat instance baru yang kosong
         $settings = SiteSetting::firstOrNew(['id' => 1]);
 
         return view('admin.settings', [
@@ -19,18 +20,37 @@ class SettingsController extends Controller
                 'about_html' => $settings->about_html,
                 'related_links' => $settings->related_links ?? [],
                 'social_links' => $settings->social_links ?? [],
+                'favicon'       => $settings->favicon,
             ]
         ]);
     }
 
-    public function footerSave(Request $request)
+    // Mengubah footerSave() menjadi settingsSave()
+    public function settingsSave(Request $request)
     {
-        // Bersihkan tag HTML
+$request->validate([
+        'favicon' => 'nullable|image|mimes:ico,png,jpg,jpeg|max:2048',
+    ]);
+    $settings = SiteSetting::find(1);
+
+    // 2. Handle Upload Favicon
+    $faviconPath = $settings->favicon ?? null;
+
+    if ($request->hasFile('favicon')) {
+        // Hapus favicon lama jika ada
+        if ($faviconPath) {
+            Storage::disk('public')->delete($faviconPath);
+        }
+        
+        // Simpan file baru ke folder public/uploads/settings
+        $file = $request->file('favicon');
+        $faviconPath = $file->store('uploads/settings', 'public');
+    }
+
         $allowed_tags = '<p><b><strong><i><em><u><br><ul><ol><li><a><small><span><h1><h2><h3><h4><h5><h6>';
         $about_html_raw = $request->input('about_html', '');
         $about_html = trim(strip_tags($about_html_raw, $allowed_tags));
 
-        // Proses Tautan Terkait
         $related_links = [];
         $links_title = $request->input('links_title', []);
         $links_url   = $request->input('links_url', []);
@@ -46,7 +66,6 @@ class SettingsController extends Controller
             ];
         }
 
-        // Proses Sosial Media
         $social_links = [];
         $social_icon  = $request->input('social_icon', []);
         $social_label = $request->input('social_label', []);
@@ -65,17 +84,18 @@ class SettingsController extends Controller
             ];
         }
 
-        // Simpan ke database (otomatis update jika ID 1 sudah ada)
-        SiteSetting::updateOrCreate(
-            ['id' => 1],
-            [
-                'about_html'    => $about_html ?: null,
-                'related_links' => $related_links,
-                'social_links'  => $social_links,
-            ]
-        );
+       SiteSetting::updateOrCreate(
+        ['id' => 1],
+        [
+            'about_html'    => $about_html ?: null,
+            'related_links' => $related_links,
+            'social_links'  => $social_links,
+            'favicon'       => $faviconPath, // Simpan path ke database
+        ]
+    );
 
-        return redirect()->route('admin.settings.footer')->with('success', 'Footer berhasil disimpan.');
+        // Update route redirect ke nama route yang baru
+        return redirect()->route('admin.settings.index')->with('success', 'Pengaturan berhasil diperbarui.');
     }
 
     private function normalizeUrl($url)

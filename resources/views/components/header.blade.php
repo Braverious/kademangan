@@ -9,7 +9,16 @@
 
     {{-- Menggunakan variabel $title dari Route, default ke 'Kelurahan' --}}
     <title>{{ $title ?? 'Kelurahan' }}</title>
+    @php
+        // Mengambil data setting ID 1 langsung di component
+        $siteSettings = \App\Models\SiteSetting::find(1);
+    @endphp
 
+    @if ($siteSettings && $siteSettings->favicon)
+        {{-- Tambahkan ?v=time() agar browser tidak melakukan caching pada favicon lama --}}
+        <link rel="icon" href="{{ asset('storage/' . $siteSettings->favicon) }}?v={{ time() }}"
+            type="image/x-icon">
+    @endif
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -49,88 +58,89 @@
             </div>
         </div>
     </nav>
-<header class="sticky-top bg-transparent">
-    <nav class="navbar navbar-expand-lg nav-menubar">
-        <div class="container container-menu">
-            <div class="menubar-floating">
-                <div class="collapse navbar-collapse justify-content-center" id="mainNav">
-                    <ul class="navbar-nav nav-justified gap-lg-1">
+    <header class="sticky-top bg-transparent">
+        <nav class="navbar navbar-expand-lg nav-menubar">
+            <div class="container container-menu">
+                <div class="menubar-floating">
+                    <div class="collapse navbar-collapse justify-content-center" id="mainNav">
+                        <ul class="navbar-nav nav-justified gap-lg-1">
 
-                        <li class="nav-item">
-                            {{-- Menggunakan request()->is() untuk deteksi menu aktif --}}
-                            <a class="nav-link px-3 d-flex align-items-center gap-2 {{ request()->is('/') || request()->is('home') ? 'active' : '' }}"
-                                href="#">
-                                <i class="fa-solid fa-house" aria-hidden="true"></i>
-                                <span>Home</span>
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                {{-- Menggunakan request()->is() untuk deteksi menu aktif --}}
+                                <a class="nav-link px-3 d-flex align-items-center gap-2 {{ request()->is('/') || request()->is('home') ? 'active' : '' }}"
+                                    href="#">
+                                    <i class="fa-solid fa-house" aria-hidden="true"></i>
+                                    <span>Home</span>
+                                </a>
+                            </li>
 
-                        <li class="nav-item dropdown">
-                            <a href="#"
-                                class="nav-link d-none d-lg-flex align-items-center gap-2 px-3 {{ request()->is('pelayanan*') ? 'active' : '' }}">
-                                <i class="fa-solid fa-file-signature" aria-hidden="true"></i>
-                                <span>Pelayanan</span>
-                            </a>
+                            <li class="nav-item dropdown">
+                                <a href="#"
+                                    class="nav-link d-none d-lg-flex align-items-center gap-2 px-3 {{ request()->is('pelayanan*') ? 'active' : '' }}">
+                                    <i class="fa-solid fa-file-signature" aria-hidden="true"></i>
+                                    <span>Pelayanan</span>
+                                </a>
 
-                            <a href="#"
-                                class="nav-link dropdown-toggle d-lg-none d-flex align-items-center gap-2 px-3"
-                                data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="fa-solid fa-file-signature" aria-hidden="true"></i>
-                                <span>Pelayanan</span>
-                            </a>
+                                <a href="#"
+                                    class="nav-link dropdown-toggle d-lg-none d-flex align-items-center gap-2 px-3"
+                                    data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                                    <i class="fa-solid fa-file-signature" aria-hidden="true"></i>
+                                    <span>Pelayanan</span>
+                                </a>
 
-                            <ul class="dropdown-menu shadow rounded-3 border-0 p-2">
-                                <li>
-                                    <h6 class="dropdown-header fw-bold text-primary">
-                                        <i class="fas fa-envelope-open-text me-2"></i>Pilih Jenis Surat
-                                    </h6>
-                                </li>
-                                <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i
-                                            class="fas fa-shield-alt me-2"></i>SKTM</a></li>
-                                <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i
-                                            class="fas fa-user me-2"></i>Ket. Belum Bekerja</a></li>
-                                <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i
-                                            class="fas fa-university me-2"></i>Domisili Yayasan</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item text-center fw-semibold text-primary" href="#">
-                                        <i class="fas fa-ellipsis-h me-1"></i>Layanan Lainnya
-                                    </a></li>
-                            </ul>
-                        </li>
+                                <ul class="dropdown-menu shadow rounded-3 border-0 p-2">
+                                    <li>
+                                        <h6 class="dropdown-header fw-bold text-primary">
+                                            <i class="fas fa-envelope-open-text me-2"></i>Pilih Jenis Surat
+                                        </h6>
+                                    </li>
+                                    <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i
+                                                class="fas fa-shield-alt me-2"></i>SKTM</a></li>
+                                    <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i
+                                                class="fas fa-user me-2"></i>Ket. Belum Bekerja</a></li>
+                                    <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i
+                                                class="fas fa-university me-2"></i>Domisili Yayasan</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item text-center fw-semibold text-primary" href="#">
+                                            <i class="fas fa-ellipsis-h me-1"></i>Layanan Lainnya
+                                        </a></li>
+                                </ul>
+                            </li>
 
-                        <li class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle d-flex align-items-center gap-2 px-3"
-                                data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="fa-solid fa-people-group" aria-hidden="true"></i>
-                                <span>LKK</span>
-                            </a>
-                            <ul class="dropdown-menu shadow rounded-3 border-0 p-2">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-users me-2"></i>RT dan
-                                        RW</a></li>
-                                <li><a class="dropdown-item" href="#"><i
-                                            class="fas fa-hand-holding-heart me-2"></i>PKK</a></li>
-                                <li><a class="dropdown-item" href="#"><i
-                                            class="fas fa-hands-helping me-2"></i>Karang Taruna</a></li>
-                            </ul>
-                        </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle d-flex align-items-center gap-2 px-3"
+                                    data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                                    <i class="fa-solid fa-people-group" aria-hidden="true"></i>
+                                    <span>LKK</span>
+                                </a>
+                                <ul class="dropdown-menu shadow rounded-3 border-0 p-2">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-users me-2"></i>RT
+                                            dan
+                                            RW</a></li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="fas fa-hand-holding-heart me-2"></i>PKK</a></li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="fas fa-hands-helping me-2"></i>Karang Taruna</a></li>
+                                </ul>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link px-3 d-flex align-items-center gap-2 {{ request()->is('berita*') ? 'active' : '' }}"
-                                href="#">
-                                <i class="fa-regular fa-newspaper" aria-hidden="true"></i>
-                                <span>Berita</span>
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link px-3 d-flex align-items-center gap-2 {{ request()->is('berita*') ? 'active' : '' }}"
+                                    href="#">
+                                    <i class="fa-regular fa-newspaper" aria-hidden="true"></i>
+                                    <span>Berita</span>
+                                </a>
+                            </li>
 
-                        <li class="nav-item d-lg-none mt-2">
-                            <a href="#" class="btn btn-outline-primary w-100">Login</a>
-                        </li>
+                            <li class="nav-item d-lg-none mt-2">
+                                <a href="#" class="btn btn-outline-primary w-100">Login</a>
+                            </li>
 
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
-</header>
+        </nav>
+    </header>

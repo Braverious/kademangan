@@ -177,8 +177,8 @@
                             [
                                 'slug' => 'settings',
                                 'seg3' => 'footer',
-                                'route' => 'admin.settings.footer', // Menggunakan nama route
-                                'label' => 'Footer',
+                                'route' => 'admin.settings.index', // Menggunakan nama route
+                                'label' => 'Web Settings',
                             ],
                         ];
 

@@ -7,8 +7,9 @@
                     <h1 class="display-5 fw-bold mb-3">Layanan Publik Kelurahan yang Mudah & Transparan</h1>
                     <p class="lead text-muted">Akses informasi, ajukan layanan, dan baca berita terbaru seputar kelurahan
                         Anda dalam satu halaman.</p>
-                    <a href="#" class="btn btn-primary btn-lg me-2">Ajukan Layanan</a>
-                    <a href="#Layanan" class="btn btn-outline-primary btn-lg">Layanan kami</a>
+                    <a href="#" class="btn btn-primary btn-lg me-2" style="border-radius: 20px;">Ajukan Layanan</a>
+                    <a href="#Layanan" class="btn btn-outline-primary btn-lg" style="border-radius: 20px;">Layanan
+                        kami</a>
                 </div>
             </div>
         </div>
@@ -119,18 +120,16 @@
             </div>
 
             @if ($pengumuman->count())
-                <div id="pengumumanSlider"
-                    class="flash-track d-flex flex-nowrap gap-4 pb-1"
+                <div id="pengumumanSlider" class="flash-track d-flex flex-nowrap gap-4 pb-1"
                     style="scroll-snap-type:x mandatory; scroll-behavior:smooth;">
 
                     @foreach ($pengumuman as $p)
-
                         @php
                             $judul = trim($p->judul);
                             $isi = strip_tags($p->isi);
                             $ringkas = \Illuminate\Support\Str::limit($isi, 220);
-                            $tglStr = $p->mulai_tayang 
-                                ? \Carbon\Carbon::parse($p->mulai_tayang)->format('d M Y, H:i') 
+                            $tglStr = $p->mulai_tayang
+                                ? \Carbon\Carbon::parse($p->mulai_tayang)->format('d M Y, H:i')
                                 : null;
                         @endphp
 
@@ -166,7 +165,6 @@
                                 </div>
                             </div>
                         </article>
-
                     @endforeach
 
                 </div>
@@ -215,7 +213,7 @@
             </div>
         </div>
     </section>
-    
+
     <section id="galeri" class="py-5">
         <div class="container-fluid px-lg-5">
             <div class="row mb-4">

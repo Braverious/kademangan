@@ -15,10 +15,13 @@ class HomeController extends Controller
 
         $pengumuman = Pengumuman::getActive(5);
 
+        $runningTexts = RunningText::where('is_active', 1)->get()->keyBy('position');
+
         return view('home', [
             'title' => 'Home',
             'layanan' => $layanan,
             'pengumuman' => $pengumuman,
+            'runningTexts' => $runningTexts,
         ]);
     }
 }

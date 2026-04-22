@@ -59,8 +59,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/profil/update', [ProfileController::class, 'update'])->name('admin.profile.update');
 
     // ================= SETTINGS =================
-    Route::get('/settings/footer', [SettingsController::class, 'footer'])->name('admin.settings.footer');
-    Route::post('/settings/footer/save', [SettingsController::class, 'footerSave'])->name('admin.settings.footer.save');
+    Route::get('/settings', [SettingsController::class, 'settings'])->name('admin.settings.index');
+    Route::post('/settings/save', [SettingsController::class, 'settingsSave'])->name('admin.settings.save');
 
     Route::get('/settings/runningtext', [RunningTextController::class, 'index'])->name('admin.settings.runningtext');
     Route::post('/settings/runningtext', [RunningTextController::class, 'update'])->name('admin.settings.runningtext.update');

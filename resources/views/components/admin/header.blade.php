@@ -8,8 +8,17 @@
     <title>{{ $title }} - Admin Kelurahan</title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <link rel="icon" href="{{ asset('assets/img/icon.ico') }}" type="image/x-icon" />
+    {{-- <link rel="icon" href="{{ asset('assets/img/icon.ico') }}" type="image/x-icon" /> --}}
+    @php
+        // Mengambil data setting ID 1 langsung di component
+        $siteSettings = \App\Models\SiteSetting::find(1);
+    @endphp
 
+    @if ($siteSettings && $siteSettings->favicon)
+        {{-- Tambahkan ?v=time() agar browser tidak melakukan caching pada favicon lama --}}
+        <link rel="icon" href="{{ asset('storage/' . $siteSettings->favicon) }}?v={{ time() }}"
+            type="image/x-icon">
+    @endif
     <script src="{{ asset('assets/js/plugin/webfont/webfont.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/head.js?v=2') }}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -63,7 +72,9 @@
                                             </div>
                                             <div class="u-text">
                                                 <h4>{{ Auth::user()->nama_lengkap ?? 'Administrator' }}</h4>
-                                                <p class="text-muted">{{ Auth::user()->id_level == 1 ? 'Superadmin' : 'Admin/Staff' }}</p>
+                                                <p class="text-muted">
+                                                    {{ Auth::user()->id_level == 1 ? 'Superadmin' : 'Admin/Staff' }}
+                                                </p>
                                             </div>
                                         </div>
                                     </li>
@@ -72,7 +83,7 @@
 
                                         {{-- MENU BARU: KEMBALI KE HOME --}}
                                         <a class="dropdown-item" href="{{ route('home') }}" target="_blank">
-                                           Kembali
+                                            Kembali
                                         </a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{ route('admin.profile') }}">Profil Saya</a>

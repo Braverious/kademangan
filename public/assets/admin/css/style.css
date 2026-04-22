@@ -322,8 +322,8 @@ input[type="file"].form-control::file-selector-button:hover{ filter:brightness(.
 
 .swal-button--danger {
   color: #fff !important;
-  background-color: #007bff !important;
-  border-color: #007bff !important;
+  background-color: #c62828 !important;
+  border-color: #c62828 !important;
 }
 
 .swal-button--danger:hover,
@@ -331,21 +331,21 @@ input[type="file"].form-control::file-selector-button:hover{ filter:brightness(.
 .swal-button--danger:active,
 .swal-button--danger:focus:active {
   color: #fff !important;
-  background-color: #0069d9 !important;
-  border-color: #0062cc !important;
+  background-color: #c62828 !important;
+  border-color: #c62828 !important;
   box-shadow: 0 0 0 .2rem rgba(38, 143, 255, .5) !important;
 }
 
 .btn-secondary {
   color: #fff;
-  background-color: #dc3545 !important;
-  border-color: #dc3545 !important;
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
 }
 
 .btn-secondary:hover {
   color: #fff;
-  background-color: #c82333 !important;
-  border-color: #bd2130 !important;
+  background-color: #5a6268 !important;
+  border-color: #5a6268 !important;
 }
 
 .btn-secondary:focus {

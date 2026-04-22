@@ -34,9 +34,32 @@
                     </div>
                 </div>
 
-                <form action="{{ route('admin.settings.footer.save') }}" method="post">
-                    @csrf
-
+                <form action="{{ route('admin.settings.save') }}" method="POST" enctype="multipart/form-data"> @csrf
+                    <div class="card mb-3">
+                        <div class="card-body fw-semibold">Favicon / Icon Website</div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 text-center">
+                                    @if (!empty($footer['favicon']))
+                                        <img src="{{ asset('storage/' . $footer['favicon']) }}" alt="Favicon"
+                                            class="img-thumbnail"
+                                            style="width: 64px; height: 64px; object-fit: contain;">
+                                    @else
+                                        <div class="bg-light d-flex align-items-center justify-content-center border"
+                                            style="width: 64px; height: 64px;">
+                                            <i class="fas fa-image text-muted"></i>
+                                        </div>
+                                        
+                                    @endif
+                                </div>
+                                <div class="col-md-10">
+                                    <p class="text-muted small mb-2">Pilih file gambar (.ico atau .png). Maksimal 2MB.
+                                    </p>
+                                    <input type="file" name="favicon" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card mb-3">
                         <div class="card-body fw-semibold settings-about-title">Tentang Web (opsional)</div>
                         <div class="card-body">

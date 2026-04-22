@@ -58,12 +58,12 @@
    CUSTOM SCRIPT: IMAGE UPLOAD PREVIEW (JANGKAUAN LAYANAN)
    ========================================================= */
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Tangkap semua input file yang memiliki class spesifik ini
   const fileInputs = document.querySelectorAll('.coverage-file-input');
 
-  fileInputs.forEach(function(input) {
-    input.addEventListener('change', function() {
+  fileInputs.forEach(function (input) {
+    input.addEventListener('change', function () {
       // Ambil ID tujuan preview dari attribute data-preview
       const targetPreviewId = this.getAttribute('data-preview');
       const previewElement = document.getElementById(targetPreviewId);
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (this.files && this.files[0]) {
         const reader = new FileReader();
 
-        reader.onload = function(event) {
+        reader.onload = function (event) {
           // Masukkan base64 image ke source img
           previewElement.src = event.target.result;
           // Tampilkan element img
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
    CUSTOM SCRIPT: LIVE SEARCH PENGUMUMAN
    ========================================================= */
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('searchPengumumanForm');
   const input = document.getElementById('searchPengumumanInput');
 
@@ -104,10 +104,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let timeoutId;
 
-  input.addEventListener('input', function() {
+  input.addEventListener('input', function () {
     clearTimeout(timeoutId);
 
-    timeoutId = setTimeout(function() {
+    timeoutId = setTimeout(function () {
       form.submit();
     }, 350);
   });
@@ -117,17 +117,17 @@ document.addEventListener('DOMContentLoaded', function() {
    CUSTOM SCRIPT: REPEATER FIELD PENGATURAN FOOTER
    ========================================================= */
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const linksWrap = document.getElementById('linksRepeater');
   const linkTpl = document.getElementById('linkTemplate');
   const addLink = document.getElementById('btnAddLink');
 
   if (addLink && linksWrap && linkTpl) {
-    addLink.addEventListener('click', function() {
+    addLink.addEventListener('click', function () {
       linksWrap.appendChild(linkTpl.content.cloneNode(true));
     });
 
-    linksWrap.addEventListener('click', function(e) {
+    linksWrap.addEventListener('click', function (e) {
       if (e.target.closest('.btnRemoveLink')) {
         e.target.closest('.link-item')?.remove();
       }
@@ -139,11 +139,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const addSocial = document.getElementById('btnAddSocial');
 
   if (addSocial && socialWrap && socialTpl) {
-    addSocial.addEventListener('click', function() {
+    addSocial.addEventListener('click', function () {
       socialWrap.appendChild(socialTpl.content.cloneNode(true));
     });
 
-    socialWrap.addEventListener('click', function(e) {
+    socialWrap.addEventListener('click', function (e) {
       if (e.target.closest('.btnRemoveSocial')) {
         e.target.closest('.social-item')?.remove();
       }
@@ -155,15 +155,15 @@ document.addEventListener('DOMContentLoaded', function() {
    CUSTOM SCRIPT: SWEETALERT KONFIRMASI HAPUS
    ========================================================= */
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const deleteForms = document.querySelectorAll('.js-delete-form');
 
   if (!deleteForms.length || typeof swal === 'undefined') {
     return;
   }
 
-  deleteForms.forEach(function(form) {
-    form.addEventListener('submit', function(e) {
+  deleteForms.forEach(function (form) {
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
 
       const title = form.dataset.deleteTitle || 'Konfirmasi Hapus';
@@ -177,15 +177,15 @@ document.addEventListener('DOMContentLoaded', function() {
           cancel: {
             text: 'Batal',
             visible: true,
-            className: 'btn btn-secondary'
+            className: 'btn btn-warning'
           },
           confirm: {
-            text: 'Ya, hapus',
+            text: 'Ya, Hapus',
             visible: true,
-            className: 'btn btn-primary'
+            className: 'btn btn-danger'
           }
         }
-      }).then(function(willDelete) {
+      }).then(function (willDelete) {
         if (willDelete) {
           form.submit();
         }
@@ -242,7 +242,7 @@ if (textareaBerita && typeof ClassicEditor !== 'undefined') {
     return text.length === 0;
   }
 
-  textareaBerita.closest('form')?.addEventListener('submit', function(e) {
+  textareaBerita.closest('form')?.addEventListener('submit', function (e) {
     try {
       const data = ck.getData();
       if (isEmptyHtml(data)) {
@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
    CUSTOM SCRIPT: CHART DASHBOARD
    ========================================================= */
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
   if (typeof Chart === 'undefined') {
     return;
   }
