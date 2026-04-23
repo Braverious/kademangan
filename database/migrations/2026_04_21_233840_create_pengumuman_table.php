@@ -21,9 +21,8 @@ return new class extends Migration
             $table->enum('status', ['draft', 'publish'])->default('publish');
             $table->unsignedBigInteger('created_by')->nullable();
 
-            $table->timestamps();
-
             $table->foreign('created_by')->references('id_user')->on('user');
+            $table->timestamps();
         });
     }
 

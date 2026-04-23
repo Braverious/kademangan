@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama', 100)->unique();
             $table->unsignedTinyInteger('urut')->default(0);
             $table->boolean('is_active')->default(true);
-
+            
             $table->timestamps();
         });
     }

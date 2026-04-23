@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('judul', 120);
             $table->text('deskripsi');
             $table->string('gambar')->nullable();
+            
             $table->timestamps();
         });
     }
