@@ -9,6 +9,8 @@ use App\Models\Level;
 use App\Models\RefJabatan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UsersImport;
 
 class UserController extends Controller
 {
@@ -124,6 +126,20 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('admin.settings.users.index')->with('success', 'Data User berhasil diperbarui.');
+    }
+
+    public function importExcel(Request $request)
+    {
+        $request->validate([
+            'file_excel' => 'required|mimes:xlsx,xls,csv|max:2048'
+        ]);
+
+        try {
+            Excel::import(new UsersImport, $request->file('file_excel'));
+            return redirect()->back()->with('success', 'Data User dari Excel berhasil diimport!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal import! Pastikan format Excel benar. Error: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)

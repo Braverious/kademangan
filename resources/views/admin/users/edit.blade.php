@@ -86,9 +86,8 @@
                             <input type="password" name="password" class="form-control">
                             <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah password.</small>
                         </div>
-
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">Update</button>
+                        <div class="d-flex">
+                            <button type="submit" class="btn btn-primary me-2 mr-1">Update</button>
                             <a href="{{ route('admin.settings.users.index') }}" class="btn btn-secondary">Batal</a>
                         </div>
                     </form>

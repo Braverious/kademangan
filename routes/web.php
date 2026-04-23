@@ -58,7 +58,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // ================= PROFILE =================
     Route::get('/profil', [ProfileController::class, 'index'])->name('admin.profile');
     Route::post('/profil/update', [ProfileController::class, 'update'])->name('admin.profile.update');
-    
+
     // ================= SETTINGS MASTER GROUP =================
     Route::prefix('pengaturan')->name('admin.settings.')->group(function () {
 
@@ -78,6 +78,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::prefix('users')->controller(UserController::class)->name('users.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
+            Route::post('/import', [UserController::class, 'importExcel'])->name('import');
             Route::post('/', 'store')->name('store');
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}', 'update')->name('update');

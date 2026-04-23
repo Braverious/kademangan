@@ -81,8 +81,8 @@
                             <input type="password" name="password" class="form-control" required>
                         </div>
 
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        <div class="d-flex">
+                            <button type="submit" class="btn btn-primary me-2 mr-1">Simpan</button>
                             <a href="{{ route('admin.settings.users.index') }}" class="btn btn-secondary">Batal</a>
                         </div>
                     </form>

@@ -19,7 +19,7 @@ class User extends Authenticatable
     protected $primaryKey = 'id_user';
 
     // 3. Matikan timestamps karena di struktur tabel Anda tidak ada created_at/updated_at
-    public $timestamps = false;
+    // public $timestamps = false;
 
     // 4. Kolom yang boleh diisi (Mass Assignment)
     protected $fillable = [
