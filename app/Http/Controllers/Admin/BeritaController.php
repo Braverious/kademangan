@@ -18,8 +18,14 @@ class BeritaController extends Controller
 
     public function index()
     {
+        $breadcrumbs = [
+            ['label' => 'Beranda', 'url' => route('admin.dashboard')],
+            ['label' => 'Manajemen Berita', 'url' => null],
+        ];
+
         return view('admin.berita.berita', [
             'title' => 'Manajemen Berita',
+            'breadcrumbs' => $breadcrumbs,
             'berita_list' => Berita::with('user')
                 ->orderByDesc('tgl_publish')
                 ->get(),
@@ -28,8 +34,14 @@ class BeritaController extends Controller
 
     public function create()
     {
+        $breadcrumbs = [
+            ['label' => 'Beranda', 'url' => route('admin.dashboard')],
+            ['label' => 'Manajemen Berita', 'url' => route('admin.berita.index')],
+            ['label' => 'Tambah Berita', 'url' => null],
+        ];
         return view('admin.berita.tambah', [
             'title' => 'Tambah Berita',
+            'breadcrumbs' => $breadcrumbs,
             'kategoriOptions' => $this->kategoriOptions(),
         ]);
     }
@@ -61,10 +73,16 @@ class BeritaController extends Controller
 
     public function edit($id)
     {
+        $breadcrumbs = [
+            ['label' => 'Beranda', 'url' => route('admin.dashboard')],
+            ['label' => 'Manajemen Berita', 'url' => route('admin.berita.index')],
+            ['label' => 'Edit Berita', 'url' => null],
+        ];
         return view('admin.berita.edit', [
             'title' => 'Edit Berita',
             'berita' => Berita::findOrFail($id),
             'kategoriOptions' => $this->kategoriOptions(),
+            'breadcrumbs' => $breadcrumbs,
         ]);
     }
 
@@ -144,10 +162,10 @@ class BeritaController extends Controller
 
         while (
             Berita::where('slug_berita', $slug)
-                ->when($ignoreId, function ($query) use ($ignoreId) {
-                    $query->where('id_berita', '!=', $ignoreId);
-                })
-                ->exists()
+            ->when($ignoreId, function ($query) use ($ignoreId) {
+                $query->where('id_berita', '!=', $ignoreId);
+            })
+            ->exists()
         ) {
             $slug = $baseSlug . '-' . $counter;
             $counter++;

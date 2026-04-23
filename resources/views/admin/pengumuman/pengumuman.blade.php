@@ -2,19 +2,7 @@
 <x-admin.sidebar />
 
 <div class="page-inner">
-    <div class="page-header">
-        <h4 class="page-title">{{ $title }}</h4>
-        <ul class="breadcrumbs">
-            <li class="nav-home">
-                <a href="#"><i class="flaticon-home"></i></a>
-            </li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item">
-                <a href="#">Manajemen Pengumuman</a>
-            </li>
-        </ul>
-    </div>
-
+    <x-admin.breadcrumbs :title="$title" :breadcrumbs="$breadcrumbs" />
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -23,8 +11,7 @@
                     <div class="d-flex align-items-center flex-wrap gap-2 w-100">
                         <h4 class="card-title mb-0">Daftar Pengumuman</h4>
 
-                        <a class="btn btn-primary btn-round ml-auto"
-                           href="{{ route('admin.pengumuman.create') }}">
+                        <a class="btn btn-primary btn-round ml-auto" href="{{ route('admin.pengumuman.create') }}">
                             <i class="fa fa-plus"></i> Tambah
                         </a>
                     </div>
@@ -48,10 +35,8 @@
                     {{-- SEARCH --}}
                     <form class="mb-3" method="GET" id="searchPengumumanForm">
                         <div>
-                            <input type="text" name="q" id="searchPengumumanInput"
-                                class="form-control"
-                                value="{{ request('q') }}"
-                                placeholder="Cari judul/isi...">
+                            <input type="text" name="q" id="searchPengumumanInput" class="form-control"
+                                value="{{ request('q') }}" placeholder="Cari judul/isi...">
                         </div>
                     </form>
 
@@ -72,13 +57,13 @@
 
                             <tbody>
                                 @forelse ($pengumuman_list as $index => $p)
-
                                     @php
                                         $now = now();
 
-                                        $isActive = $p->status === 'publish'
-                                            && $p->mulai_tayang <= $now
-                                            && (!$p->berakhir_tayang || $p->berakhir_tayang > $now);
+                                        $isActive =
+                                            $p->status === 'publish' &&
+                                            $p->mulai_tayang <= $now &&
+                                            (!$p->berakhir_tayang || $p->berakhir_tayang > $now);
                                     @endphp
 
                                     <tr>
@@ -88,7 +73,8 @@
 
                                         {{-- TIPE --}}
                                         <td>
-                                            <span class="badge 
+                                            <span
+                                                class="badge 
                                                 {{ $p->tipe === 'penting' ? 'badge-danger' : ($p->tipe === 'peringatan' ? 'badge-warning' : 'badge-info') }}">
                                                 {{ ucfirst($p->tipe) }}
                                             </span>
@@ -131,15 +117,12 @@
                                             <div class="form-button-action">
 
                                                 <a href="{{ route('admin.pengumuman.edit', $p->id) }}"
-                                                class="btn btn-link btn-primary btn-lg"
-                                                title="Edit">
+                                                    class="btn btn-link btn-primary btn-lg" title="Edit">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
 
                                                 <form action="{{ route('admin.pengumuman.destroy', $p->id) }}"
-                                                    method="POST"
-                                                    style="display:inline;"
-                                                    class="js-delete-form"
+                                                    method="POST" style="display:inline;" class="js-delete-form"
                                                     data-delete-title="Hapus Pengumuman?"
                                                     data-delete-text="Apakah Anda yakin ingin menghapus pengumuman ini?">
 

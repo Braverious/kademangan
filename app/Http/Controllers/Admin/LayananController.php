@@ -11,18 +11,33 @@ class LayananController extends Controller
 {
     public function index()
     {
+        $title = 'Manajemen Layanan';
+        $breadcrumbs = [
+            ['label' => 'Pengaturan', 'url' => null],
+            ['label' => $title, 'url' => route('admin.settings.layanan.index')],
+        ];
+
         $rows = Layanan::orderByDesc('id')->get();
 
         return view('admin.layanan.layanan', [
-            'title' => 'Manajemen Layanan',
+            'title' => $title,
+            'breadcrumbs' => $breadcrumbs,
             'rows' => $rows
         ]);
     }
 
     public function create()
     {
+        $title = 'Tambah Layanan';
+        $breadcrumbs = [
+            ['label' => 'Pengaturan', 'url' => null],
+            ['label' => 'Manajemen Layanan', 'url' => route('admin.settings.layanan.index')],
+            ['label' => $title, 'url' => null],
+        ];
+
         return view('admin.layanan.tambah', [
-            'title' => 'Tambah Layanan'
+            'title' => $title,
+            'breadcrumbs' => $breadcrumbs
         ]);
     }
 
@@ -49,9 +64,17 @@ class LayananController extends Controller
     {
         $row = Layanan::findOrFail($id);
 
+        $title = 'Edit Layanan';
+        $breadcrumbs = [
+            ['label' => 'Pengaturan', 'url' => null],
+            ['label' => 'Manajemen Layanan', 'url' => route('admin.settings.layanan.index')],
+            ['label' => $title, 'url' => null],
+        ];
+
         return view('admin.layanan.edit', [
-            'title' => 'Edit Layanan',
-            'row' => $row
+            'title' => $title,
+            'row' => $row,
+            'breadcrumbs' => $breadcrumbs
         ]);
     }
 
@@ -82,14 +105,14 @@ class LayananController extends Controller
     public function destroy($id)
     {
         $row = Layanan::findOrFail($id);
-        
+
         // Opsional: Hapus gambar fisiknya juga kalau datanya dihapus
         if ($row->gambar) {
             Storage::disk('public')->delete($row->gambar);
         }
-        
+
         $row->delete();
 
-        return redirect()->route('admin.layanan.index')->with('success', 'Berhasil dihapus');
+        return redirect()->route('admin.settings.index')->with('success', 'Berhasil dihapus');
     }
 }

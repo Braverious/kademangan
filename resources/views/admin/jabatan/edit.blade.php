@@ -12,7 +12,7 @@
             <li class="nav-item"><a href="#">Pengaturan</a></li>
             <li class="separator"><i class="flaticon-right-arrow"></i></li>
             <li class="nav-item">
-                <a href="{{ route('admin.jabatan.index') }}">Manajemen Jabatan</a>
+                <a href="{{ route('admin.settings.jabatan.index') }}">Manajemen Jabatan</a>
             </li>
             <li class="separator"><i class="flaticon-right-arrow"></i></li>
             <li class="nav-item"><a href="#">Edit</a></li>
@@ -40,7 +40,7 @@
                     <h4 class="card-title">Form Edit Jabatan</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.jabatan.update', $jabatan->id) }}" method="POST">
+                    <form action="{{ route('admin.settings.jabatan.update', $jabatan->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 

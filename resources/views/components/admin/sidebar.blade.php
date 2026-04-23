@@ -155,49 +155,58 @@
 
                     @php
                         $settingsItems = [
-                            ['slug' => 'layanan', 'url' => 'admin/layanan', 'label' => 'Layanan'],
-                            ['slug' => 'jabatan', 'url' => 'admin/jabatan', 'label' => 'Referensi Jabatan'],
-                            // ['slug' => 'uploadvideo', 'url' => 'admin/uploadvideo', 'label' => 'Pengaturan Video'],
                             [
-                                'slug' => 'coverage',
-                                'url' => 'admin/coverage',
-                                'label' => 'Jangkauan Wilayah',
-                            ],
-                            [
-                                'slug' => 'settings',
-                                'seg3' => 'runningtext',
-                                'route' => 'admin.settings.runningtext', // Menggunakan nama route
-                                'label' => 'Running Text',
-                            ],
-                            [
-                                'slug' => 'users',
-                                'url' => 'admin/users',
+                                'slug' => 'pengaturan',
+                                'seg3' => 'users',
+                                'route' => 'admin.settings.users.index',
                                 'label' => 'Manajemen User',
                             ],
                             [
-                                'slug' => 'settings',
-                                'seg3' => 'footer',
-                                'route' => 'admin.settings.index', // Menggunakan nama route
-                                'label' => 'Web Settings',
+                                'slug' => 'pengaturan', // Samakan dengan prefix di route
+                                'seg3' => 'layanan',
+                                'route' => 'admin.settings.layanan.index',
+                                'label' => 'Manajemen Layanan',
+                            ],
+                            [
+                                'slug' => 'pengaturan',
+                                'seg3' => 'jabatan',
+                                'route' => 'admin.settings.jabatan.index',
+                                'label' => 'Manajemen Jabatan',
+                            ],
+                            [
+                                'slug' => 'pengaturan',
+                                'seg3' => 'jangkauan',
+                                'route' => 'admin.settings.jangkauan.index',
+                                'label' => 'Jangkauan Wilayah',
+                            ],
+                            [
+                                'slug' => 'pengaturan',
+                                'seg3' => 'runningtext',
+                                'route' => 'admin.settings.runningtext.index',
+                                'label' => 'Running Text',
+                            ],
+                            [
+                                'slug' => 'pengaturan',
+                                'seg3' => 'konfigurasi',
+                                'route' => 'admin.settings.index',
+                                'label' => 'Konfigurasi Aplikasi',
                             ],
                         ];
 
+                        // Logika active menu (Samakan variabel $seg2 dengan $it['slug'])
                         $isSettingsMenuActive = false;
                         foreach ($settingsItems as $it) {
-                            $matchPlain = $seg2 === $it['slug'] && empty($it['seg3']);
-                            $matchSeg3 = !empty($it['seg3']) && $seg2 === $it['slug'] && $seg3 === $it['seg3'];
-                            if ($matchPlain || $matchSeg3) {
+                            if ($seg2 === $it['slug'] && $seg3 === $it['seg3']) {
                                 $isSettingsMenuActive = true;
                                 break;
                             }
                         }
                     @endphp
-
                     <li class="nav-item {{ $isSettingsMenuActive ? 'active sub-menu' : '' }}">
                         <a data-toggle="collapse" href="#menuPengaturan" class="collapsed"
                             aria-expanded="{{ $isSettingsMenuActive ? 'true' : 'false' }}">
                             <i class="fas fa-cog"></i>
-                            <p>Pengaturan</p>
+                            <p>Settings</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse {{ $isSettingsMenuActive ? 'show' : '' }}" id="menuPengaturan">

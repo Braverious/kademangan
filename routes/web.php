@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RunningTextController;
 use App\Http\Controllers\Admin\SettingsController;
-use App\Http\Controllers\Admin\CoverageController;
+use App\Http\Controllers\Admin\JangkauanController;
 use App\Http\Controllers\Admin\LayananController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PengumumanController;
@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\SuratSktmController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Models\Jangkauan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,52 +58,58 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // ================= PROFILE =================
     Route::get('/profil', [ProfileController::class, 'index'])->name('admin.profile');
     Route::post('/profil/update', [ProfileController::class, 'update'])->name('admin.profile.update');
+    
+    // ================= SETTINGS MASTER GROUP =================
+    Route::prefix('pengaturan')->name('admin.settings.')->group(function () {
 
-    // ================= SETTINGS =================
-    Route::get('/settings', [SettingsController::class, 'settings'])->name('admin.settings.index');
-    Route::post('/settings/save', [SettingsController::class, 'settingsSave'])->name('admin.settings.save');
+        // 1. Web Settings (About, Links, Social, Video)
+        Route::controller(SettingsController::class)->group(function () {
+            Route::get('/konfigurasi', 'settings')->name('index'); // admin.settings.index
+            Route::post('/save', 'settingsSave')->name('save');    // admin.settings.save
+        });
 
-    Route::get('/settings/runningtext', [RunningTextController::class, 'index'])->name('admin.settings.runningtext');
-    Route::post('/settings/runningtext', [RunningTextController::class, 'update'])->name('admin.settings.runningtext.update');
+        // 2. Running Text
+        Route::prefix('runningtext')->controller(RunningTextController::class)->name('runningtext.')->group(function () {
+            Route::get('/', 'index')->name('index');  // admin.settings.runningtext.index
+            Route::post('/', 'update')->name('update');
+        });
 
-    // ================= USER MANAGEMENT =================
-    Route::prefix('users')->group(function () {
+        // 3. User Management
+        Route::prefix('users')->controller(UserController::class)->name('users.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+            Route::put('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'destroy')->name('destroy');
+        });
 
-        Route::get('/', [UserController::class, 'index'])->name('admin.users.index');
-        Route::get('/create', [UserController::class, 'create'])->name('admin.users.create');
-        Route::post('/', [UserController::class, 'store'])->name('admin.users.store');
+        // 4. Referensi Jabatan
+        Route::prefix('jabatan')->controller(RefJabatanController::class)->name('jabatan.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+            Route::put('/{id}', 'update')->name('update');
+            Route::patch('/{id}/toggle', 'toggle')->name('toggle');
+            Route::delete('/{id}', 'destroy')->name('destroy');
+        });
 
-        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-        Route::put('/{id}', [UserController::class, 'update'])->name('admin.users.update');
+        // 5. Jangkauan Area
+        Route::prefix('jangkauan')->controller(JangkauanController::class)->name('jangkauan.')->group(function () {
+            Route::get('/', 'index')->name('index'); // admin.pengaturan.jangkauan.index
+            Route::post('/', 'update')->name('update');
+        });
 
-        Route::delete('/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
-    });
-
-    Route::prefix('jabatan')->group(function () {
-        Route::get('/', [RefJabatanController::class, 'index'])->name('admin.jabatan.index');
-        Route::get('/create', [RefJabatanController::class, 'create'])->name('admin.jabatan.create');
-        Route::post('/', [RefJabatanController::class, 'store'])->name('admin.jabatan.store');
-        Route::get('/{id}/edit', [RefJabatanController::class, 'edit'])->name('admin.jabatan.edit');
-        Route::put('/{id}', [RefJabatanController::class, 'update'])->name('admin.jabatan.update');
-        Route::patch('/{id}/toggle', [RefJabatanController::class, 'toggle'])->name('admin.jabatan.toggle');
-        Route::delete('/{id}', [RefJabatanController::class, 'destroy'])->name('admin.jabatan.destroy');
-    });
-
-    // ================= COVERAGE =================
-    Route::get('/coverage', [CoverageController::class, 'index'])->name('admin.coverage');
-    Route::post('/coverage', [CoverageController::class, 'update'])->name('admin.coverage.update');
-
-    // ================= LAYANAN (NEW) =================
-    Route::prefix('layanan')->group(function () {
-
-        Route::get('/', [LayananController::class, 'index'])->name('admin.layanan.index');
-        Route::get('/create', [LayananController::class, 'create'])->name('admin.layanan.create');
-        Route::post('/', [LayananController::class, 'store'])->name('admin.layanan.store');
-
-        Route::get('/{id}/edit', [LayananController::class, 'edit'])->name('admin.layanan.edit');
-        Route::put('/{id}', [LayananController::class, 'update'])->name('admin.layanan.update');
-
-        Route::delete('/{id}', [LayananController::class, 'destroy'])->name('admin.layanan.destroy');
+        // 6. Layanan (Manajemen Kategori Layanan)
+        Route::prefix('layanan')->controller(LayananController::class)->name('layanan.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+            Route::put('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'destroy')->name('destroy');
+        });
     });
 
     // ================= PENGUMUMAN =================

@@ -12,7 +12,7 @@
             <li class="nav-item"><a href="#">Pengaturan</a></li>
             <li class="separator"><i class="flaticon-right-arrow"></i></li>
             <li class="nav-item">
-                <a href="{{ route('admin.jabatan.index') }}">Manajemen Jabatan</a>
+                <a href="{{ route('admin.settings.jabatan.index') }}">Manajemen Jabatan</a>
             </li>
             <li class="separator"><i class="flaticon-right-arrow"></i></li>
             <li class="nav-item"><a>Tambah</a></li>
@@ -40,7 +40,7 @@
                     <h4 class="card-title">Form Tambah Jabatan</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.jabatan.store') }}" method="POST">
+                    <form action="{{ route('admin.settings.jabatan.store') }}" method="POST">
                         @csrf
 
                         <div class="form-group">
@@ -63,7 +63,7 @@
 
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('admin.jabatan.index') }}" class="btn btn-secondary">Batal</a>
+                            <a href="{{ route('admin.settings.jabatan.index') }}" class="btn btn-secondary">Batal</a>
                         </div>
                     </form>
                 </div>

@@ -2,17 +2,7 @@
 <x-admin.sidebar />
 
 <div class="page-inner">
-    <div class="page-header">
-        <h4 class="page-title">{{ $title }}</h4>
-        <ul class="breadcrumbs">
-            <li class="nav-home"><a href="#"><i class="flaticon-home"></i></a></li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a href="{{ route('admin.berita.index') }}">Manajemen Berita</a></li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a href="#">Tambah</a></li>
-        </ul>
-    </div>
-
+    <x-admin.breadcrumbs :title="$title" :breadcrumbs="$breadcrumbs" />
     <div class="row">
         <div class="col-md-12">
             @if (session('error'))
@@ -39,18 +29,16 @@
 
                         <div class="form-group">
                             <label>Judul Berita</label>
-                            <input type="text"
-                                name="judul_berita"
-                                class="form-control"
-                                value="{{ old('judul_berita') }}"
-                                required>
+                            <input type="text" name="judul_berita" class="form-control"
+                                value="{{ old('judul_berita') }}" required>
                         </div>
 
                         <div class="form-group">
                             <label>Kategori</label>
                             <select name="kategori" class="form-control" required>
                                 @foreach ($kategoriOptions as $kategori)
-                                    <option value="{{ $kategori }}" {{ old('kategori', 'Umum') === $kategori ? 'selected' : '' }}>
+                                    <option value="{{ $kategori }}"
+                                        {{ old('kategori', 'Umum') === $kategori ? 'selected' : '' }}>
                                         {{ $kategori }}
                                     </option>
                                 @endforeach
@@ -59,17 +47,14 @@
 
                         <div class="form-group">
                             <label>Gambar Sampul</label>
-                            <input type="file" name="gambar" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp" required>
+                            <input type="file" name="gambar" class="form-control"
+                                accept=".jpg,.jpeg,.png,.gif,.webp" required>
                         </div>
 
                         <div class="form-group">
                             <label>Isi Berita</label>
-                            <textarea name="isi_berita"
-                                id="isi_berita"
-                                class="form-control"
-                                rows="10"
-                                data-upload-url="{{ route('admin.berita.upload-gambar') }}"
-                                required>{{ old('isi_berita') }}</textarea>
+                            <textarea name="isi_berita" id="isi_berita" class="form-control" rows="10"
+                                data-upload-url="{{ route('admin.berita.upload-gambar') }}" required>{{ old('isi_berita') }}</textarea>
                         </div>
 
                         <div class="d-flex gap-2">

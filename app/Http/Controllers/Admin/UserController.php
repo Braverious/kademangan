@@ -21,11 +21,16 @@ class UserController extends Controller
 
         $title = "Manajemen User";
 
+        $breadcrumbs = [
+            ['label' => 'Pengaturan', 'url' => null],
+            ['label' => $title, 'url' => route('admin.settings.users.index')],
+        ];
+
         $user_list = User::with(['level', 'relasiJabatan'])->get();
         $levels = Level::all();
         $jabatans = RefJabatan::where('is_active', 1)->orderBy('urut', 'ASC')->get();
 
-        return view('admin.users.users', compact('title', 'user_list', 'levels', 'jabatans'));
+        return view('admin.users.users', compact('title', 'user_list', 'levels', 'jabatans', 'breadcrumbs'));
     }
 
     public function create()
@@ -35,10 +40,17 @@ class UserController extends Controller
             return $guard;
         }
 
+        $breadcrumbs = [
+            ['label' => 'Pengaturan', 'url' => route('admin.settings.index')],
+            ['label' => 'Manajemen User', 'url' => route('admin.settings.users.index')],
+            ['label' => 'Tambah User', 'url' => null],
+        ];
+
         return view('admin.users.create', [
             'title' => 'Tambah User',
             'levels' => Level::all(),
             'jabatans' => RefJabatan::where('is_active', 1)->orderBy('urut', 'ASC')->get(),
+            'breadcrumbs' => $breadcrumbs,
         ]);
     }
 
@@ -49,11 +61,17 @@ class UserController extends Controller
             return $guard;
         }
 
+        $breadcrumbs = [
+            ['label' => 'Pengaturan', 'url' => route('admin.settings.index')],
+            ['label' => 'Manajemen User', 'url' => route('admin.settings.users.index')],
+            ['label' => 'Edit User', 'url' => null],
+        ];
         return view('admin.users.edit', [
             'title' => 'Edit User',
             'user' => User::findOrFail($id),
             'levels' => Level::all(),
             'jabatans' => RefJabatan::where('is_active', 1)->orderBy('urut', 'ASC')->get(),
+            'breadcrumbs' => $breadcrumbs,
         ]);
     }
 
@@ -77,7 +95,7 @@ class UserController extends Controller
             'password'     => Hash::make($request->password),
         ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'User baru berhasil ditambahkan.');
+        return redirect()->route('admin.settings.users.index')->with('success', 'User baru berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
@@ -105,26 +123,26 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('admin.users.index')->with('success', 'Data User berhasil diperbarui.');
+        return redirect()->route('admin.settings.users.index')->with('success', 'Data User berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
         // 1. BLOKIR MUTLAK: Jika yang dihapus adalah ID 1 (Kelurahan Kademangan)
         if ($id == 1) {
-            return redirect()->route('admin.users.index')->with('error', 'Akses Ditolak! Akun Superadmin Master tidak boleh dihapus oleh siapapun.');
+            return redirect()->route('admin.settings.users.index')->with('error', 'Akses Ditolak! Akun Superadmin Master tidak boleh dihapus oleh siapapun.');
         }
 
         // 2. BLOKIR DIRI SENDIRI: Mencegah admin menghapus akunnya sendiri yang sedang dipakai
         if (Auth::id() == $id) {
-            return redirect()->route('admin.users.index')->with('error', 'Anda tidak bisa menghapus akun yang sedang Anda gunakan saat ini!');
+            return redirect()->route('admin.settings.users.index')->with('error', 'Anda tidak bisa menghapus akun yang sedang Anda gunakan saat ini!');
         }
 
         // Jika lolos dari 2 blokir di atas, baru eksekusi hapus
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
+        return redirect()->route('admin.settings.users.index')->with('success', 'User berhasil dihapus.');
     }
 
     private function ensureSuperadmin()

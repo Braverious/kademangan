@@ -17,25 +17,39 @@ class PengumumanController extends Controller
     /* ===================== LIST ===================== */
     public function index(Request $request)
     {
+        $title = 'Manajemen Pengumuman';
         $q = $request->query('q');
 
         $pengumuman_list = Pengumuman::when($q, function ($query) use ($q) {
             $query->where('judul', 'like', "%{$q}%")
-                  ->orWhere('isi', 'like', "%{$q}%");
+                ->orWhere('isi', 'like', "%{$q}%");
         })->latest()->limit(500)->get();
 
+        $breadcrumbs = [
+            ['url' => route('admin.dashboard'), 'label' => 'Dashboard'],
+            ['url' => '#', 'label' => 'Manajemen Pengumuman']
+        ];
+
         return view('admin.pengumuman.pengumuman', [
-            'title' => 'Manajemen Pengumuman',
+            'title' => $title,
             'q' => $q,
-            'pengumuman_list' => $pengumuman_list
+            'pengumuman_list' => $pengumuman_list,
+            'breadcrumbs' => $breadcrumbs,
         ]);
     }
 
     /* ===================== CREATE ===================== */
     public function create()
     {
+        $title = 'Tambah Pengumuman';
+        $breadcrumbs = [
+            ['url' => route('admin.dashboard'), 'label' => 'Dashboard'],
+            ['url' => route('admin.pengumuman.index'), 'label' => 'Manajemen Pengumuman'],
+            ['url' => '#', 'label' => 'Tambah Pengumuman']
+        ];
         return view('admin.pengumuman.tambah', [
-            'title' => 'Tambah Pengumuman'
+            'title' => $title,
+            'breadcrumbs' => $breadcrumbs
         ]);
     }
 

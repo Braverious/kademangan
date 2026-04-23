@@ -2,20 +2,7 @@
 <x-admin.sidebar />
 
 <div class="page-inner">
-
-    <div class="page-header">
-        <h4 class="page-title">{{ $title }}</h4>
-        <ul class="breadcrumbs">
-            <li class="nav-home">
-                <a href="#"><i class="flaticon-home"></i></a>
-            </li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a>Pengaturan</a></li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a>Web Settings</a></li>
-        </ul>
-    </div>
-
+    <x-admin.breadcrumbs :title="$title" :breadcrumbs="$breadcrumbs" />
     <div class="row">
         <div class="col-md-12">
             {{-- <div class="container-fluid py-3"> --}}
@@ -30,7 +17,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center">
-                        <h4 class="card-title">{{ $title ?? 'Pengaturan Footer' }}</h4>
+                        <h4 class="card-title">{{ $title ?? 'Website Settings' }}</h4>
                     </div>
                 </div>
 
@@ -40,8 +27,8 @@
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-md-2 text-center">
-                                    @if (!empty($footer['favicon']))
-                                        <img src="{{ asset('storage/' . $footer['favicon']) }}" alt="Favicon"
+                                    @if (!empty($settings['favicon']))
+                                        <img src="{{ asset('storage/' . $settings['favicon']) }}" alt="Favicon"
                                             class="img-thumbnail"
                                             style="width: 64px; height: 64px; object-fit: contain;">
                                     @else
@@ -60,11 +47,12 @@
                         </div>
                     </div>
                     <div class="card mb-3">
-                        <div class="card-header d-flex align-items-center justify-content-between">Tentang Web (opsional)</div>
+                        <div class="card-header d-flex align-items-center justify-content-between">Tentang Web
+                            (opsional)</div>
                         <div class="card-body">
                             <p class="text-muted small mb-2">Boleh dikosongkan. Tag HTML dasar diizinkan.</p>
                             <textarea name="about_html" class="form-control" rows="6"
-                                placeholder="Tulis deskripsi singkat tentang website...">{{ old('about_html', $footer['about_html']) }}</textarea>
+                                placeholder="Tulis deskripsi singkat tentang website...">{{ old('about_html', $settings['about_html']) }}</textarea>
                         </div>
                     </div>
 
@@ -76,8 +64,8 @@
                         </div>
                         <div class="card-body">
                             <div id="linksRepeater" class="vstack gap-2">
-                                @if (!empty($footer['related_links']))
-                                    @foreach ($footer['related_links'] as $it)
+                                @if (!empty($settings['related_links']))
+                                    @foreach ($settings['related_links'] as $it)
                                         <div class="row g-2 align-items-end link-item mb-2">
                                             <div class="col-md-4">
                                                 <label class="form-label">Judul</label>
@@ -134,8 +122,8 @@
                         </div>
                         <div class="card-body">
                             <div id="socialRepeater" class="vstack gap-2">
-                                @if (!empty($footer['social_links']))
-                                    @foreach ($footer['social_links'] as $it)
+                                @if (!empty($settings['social_links']))
+                                    @foreach ($settings['social_links'] as $it)
                                         <div class="row g-2 align-items-end social-item mb-2">
                                             <div class="col-md-4">
                                                 <label class="form-label">Icon</label>
@@ -220,12 +208,13 @@
                         </div>
                     </div>
                     <div class="card mb-3">
-                        <div class="card-header d-flex align-items-center justify-content-between">Video Beranda (YouTube)</div>
+                        <div class="card-header d-flex align-items-center justify-content-between">Video Beranda
+                            (YouTube)</div>
                         <div class="card-body">
                             <div class="form-group p-0">
                                 <label for="youtube_link">Link Video YouTube</label>
                                 <input type="url" class="form-control" id="youtube_link" name="youtube_link"
-                                    value="{{ old('youtube_link', $footer['youtube_link']) }}"
+                                    value="{{ old('youtube_link', $settings['youtube_link']) }}"
                                     placeholder="https://www.youtube.com/watch?v=xxxx" onkeyup="updateVideoPreview()">
                                 <small class="form-text text-muted">Tempelkan URL video YouTube yang ingin ditampilkan
                                     di halaman utama.</small>
@@ -243,7 +232,7 @@
                                     YouTube untuk melihat preview.</small>
                             </div>
                         </div>
-                    </div>  
+                    </div>
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-success">Simpan</button>
                     </div>

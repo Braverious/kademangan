@@ -2,27 +2,7 @@
 <x-admin.sidebar />
 
 <div class="page-inner">
-
-    <!-- HEADER -->
-    <div class="page-header">
-        <h4 class="page-title">{{ $title }}</h4>
-        <ul class="breadcrumbs">
-            <li class="nav-home">
-                <a href="#"><i class="flaticon-home"></i></a>
-            </li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a>Pengaturan</a></li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item">
-                <a href="{{ route('admin.layanan.index') }}">Manajemen Layanan</a>
-            </li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item">
-                <a>Tambah</a>
-            </li>
-        </ul>
-    </div>
-
+    <x-admin.breadcrumbs :title="$title" :breadcrumbs="$breadcrumbs" />
     <div class="row">
         <div class="col-md-12">
 
@@ -51,17 +31,20 @@
 
                 <div class="card-body">
 
-                    <form action="{{ route('admin.layanan.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.settings.layanan.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group">
                             <label class="required">Judul</label>
-                            <input type="text" name="judul" class="form-control" value="{{ old('judul') }}" required>
+                            <input type="text" name="judul" class="form-control" value="{{ old('judul') }}"
+                                required>
                         </div>
 
                         <div class="form-group">
                             <label class="required">Gambar Layanan (jpg/jpeg/png/webp, max 2MB)</label>
-                            <input type="file" name="gambar" class="form-control" accept=".jpg,.jpeg,.png,.webp" required>
+                            <input type="file" name="gambar" class="form-control" accept=".jpg,.jpeg,.png,.webp"
+                                required>
                         </div>
 
                         <div class="form-group">
@@ -73,7 +56,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fa fa-save mr-2"></i> Simpan
                             </button>
-                            <a href="{{ route('admin.layanan.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('admin.settings.layanan.index') }}" class="btn btn-secondary">
                                 Batal
                             </a>
                         </div>

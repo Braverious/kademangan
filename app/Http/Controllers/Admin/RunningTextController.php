@@ -14,10 +14,16 @@ class RunningTextController extends Controller
         // Mengambil semua data running text dan diubah menjadi koleksi dengan key 'position'
         $runningTexts = RunningText::all()->keyBy('position');
 
+        $breadcrumbs = [
+            ['label' => 'Pengaturan', 'url' => null], // url null jika tidak ingin bisa diklik
+            ['label' => 'Running Text', 'url' => route('admin.settings.runningtext.index')],
+        ];
+
         return view('admin.runningtext', [
             'title' => 'Running Text Settings',
             'top' => $runningTexts->get('top'),
-            'bottom' => $runningTexts->get('bottom')
+            'bottom' => $runningTexts->get('bottom'),
+            'breadcrumbs' => $breadcrumbs,
         ]);
     }
 

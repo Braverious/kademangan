@@ -9,21 +9,26 @@ use App\Models\SiteSetting;
 
 class SettingsController extends Controller
 {
-    // Mengubah footer() menjadi settings()
     public function settings()
     {
-        $settings = SiteSetting::firstOrNew(['id' => 1]);
+        $siteData = SiteSetting::firstOrNew(['id' => 1]);
 
-        return view('admin.settings', [
-            'title' => 'Web Settings',
-            'footer' => [
-                'about_html' => $settings->about_html,
-                'related_links' => $settings->related_links ?? [],
-                'social_links' => $settings->social_links ?? [],
-                'favicon'       => $settings->favicon,
-                'youtube_link'  => $settings->youtube_link,
-            ]
-        ]);
+        $title = 'Konfigurasi Aplikasi';
+
+        $breadcrumbs = [
+            ['label' => 'Pengaturan', 'url' => null],
+            ['label' => $title, 'url' => route('admin.settings.index')],
+        ];
+
+        $settings = [
+            'about_html'    => $siteData->about_html,
+            'related_links' => $siteData->related_links ?? [],
+            'social_links'  => $siteData->social_links ?? [],
+            'favicon'       => $siteData->favicon,
+            'youtube_link'  => $siteData->youtube_link,
+        ];
+
+        return view('admin.settings', compact('title', 'breadcrumbs', 'settings'));
     }
 
     // Mengubah footerSave() menjadi settingsSave()
@@ -33,19 +38,18 @@ class SettingsController extends Controller
             'favicon' => 'nullable|image|mimes:ico,png,jpg,jpeg|max:2048',
             'youtube_link' => 'nullable|url',
         ]);
-        $settings = SiteSetting::find(1);
 
-        $faviconPath = $settings->favicon ?? null;
+        // Gunakan firstOrNew agar tidak error jika ID 1 belum ada
+        $settings = SiteSetting::firstOrNew(['id' => 1]);
+        $faviconPath = $settings->favicon;
 
         if ($request->hasFile('favicon')) {
-            // Hapus favicon lama jika ada
-            if ($faviconPath) {
+            // Hapus file lama jika ada
+            if ($faviconPath && Storage::disk('public')->exists($faviconPath)) {
                 Storage::disk('public')->delete($faviconPath);
             }
-
-            // Simpan file baru ke folder public/uploads/settings
-            $file = $request->file('favicon');
-            $faviconPath = $file->store('uploads/settings', 'public');
+            // Simpan file baruke public/uploads/settings dan simpan path-nya ke database
+            $faviconPath = $request->file('favicon')->store('uploads/settings', 'public');
         }
 
         $allowed_tags = '<p><b><strong><i><em><u><br><ul><ol><li><a><small><span><h1><h2><h3><h4><h5><h6>';
@@ -92,7 +96,7 @@ class SettingsController extends Controller
                 'related_links' => $related_links,
                 'social_links'  => $social_links,
                 'favicon'       => $faviconPath,
-                'youtube_link'  => $request->input('youtube_link'),
+                'youtube_link'  => $request->youtube_link,
             ]
         );
 

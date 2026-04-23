@@ -2,19 +2,7 @@
 <x-admin.sidebar />
 
 <div class="page-inner">
-    <div class="page-header">
-        <h4 class="page-title">{{ $title }}</h4>
-        <ul class="breadcrumbs">
-            <li class="nav-home">
-                <a href="#"><i class="flaticon-home"></i></a>
-            </li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a>Pengaturan</a></li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a>Manajemen Layanan</a></li>
-        </ul>
-    </div>
-
+    <x-admin.breadcrumbs :title="$title" :breadcrumbs="$breadcrumbs" />
     <div class="row">
         <div class="col-md-12">
 
@@ -23,7 +11,7 @@
                     <div class="d-flex align-items-center flex-wrap gap-2">
                         <h4 class="card-title">Daftar Layanan</h4>
 
-                        <a href="{{ route('admin.layanan.create') }}" class="btn btn-primary btn-round ml-auto">
+                        <a href="{{ route('admin.settings.layanan.create') }}" class="btn btn-primary btn-round ml-auto">
                             <i class="fa fa-plus"></i> Tambah Layanan
                         </a>
                     </div>
@@ -57,7 +45,8 @@
 
                                         <td>
                                             @if ($r->gambar)
-                                                <img src="{{ asset('storage/' . $r->gambar) }}" width="100" class="img-thumbnail">
+                                                <img src="{{ asset('storage/' . $r->gambar) }}" width="100"
+                                                    class="img-thumbnail">
                                             @endif
                                         </td>
 
@@ -69,21 +58,20 @@
 
                                         <td>
                                             <div class="form-button-action d-flex">
-                                                <a href="{{ route('admin.layanan.edit', $r->id) }}"
+                                                <a href="{{ route('admin.settings.layanan.edit', $r->id) }}"
                                                     class="btn btn-link btn-primary btn-lg" title="Edit">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
 
-                                                <form action="{{ route('admin.layanan.destroy', $r->id) }}"
-                                                    method="POST"
-                                                    style="display:inline;"
-                                                    class="js-delete-form"
+                                                <form action="{{ route('admin.settings.layanan.destroy', $r->id) }}"
+                                                    method="POST" style="display:inline;" class="js-delete-form"
                                                     data-delete-title="Hapus Layanan?"
                                                     data-delete-text="Apakah Anda yakin ingin menghapus layanan ini?">
                                                     @csrf
                                                     @method('DELETE')
 
-                                                    <button type="submit" class="btn btn-link btn-danger" title="Hapus">
+                                                    <button type="submit" class="btn btn-link btn-danger"
+                                                        title="Hapus">
                                                         <i class="fa fa-times"></i>
                                                     </button>
                                                 </form>

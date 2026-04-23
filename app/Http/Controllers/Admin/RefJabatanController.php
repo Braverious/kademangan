@@ -17,10 +17,16 @@ class RefJabatanController extends Controller
 
     public function index()
     {
+        $title = 'Manajemen Jabatan';
+        $breadcrumbs = [
+            ['label' => 'Pengaturan', 'url' => null],
+            ['label' => $title, 'url' => route('admin.settings.jabatan.index')],
+        ];
         $this->authorizeSuperadmin();
 
         return view('admin.jabatan.jabatan', [
-            'title' => 'Manajemen Jabatan',
+            'title' => $title,
+            'breadcrumbs' => $breadcrumbs,
             'jabatans' => RefJabatan::withCount('users')
                 ->orderBy('urut')
                 ->orderBy('nama')

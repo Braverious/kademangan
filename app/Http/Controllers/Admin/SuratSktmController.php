@@ -12,12 +12,10 @@ class SuratSktmController extends Controller
 {
     public function index()
     {
-        $data = [
-            'title' => 'Data Surat Keterangan Tidak Mampu (SKTM)',
-            'list'  => SuratSktm::latest()->get()
-        ];
+        $title = 'Data Surat SKTM';
+        $list = SuratSktm::latest()->get();
 
-        return view('admin.sktm.list', $data);
+        return view('admin.sktm.list', compact('title', 'list'));
     }
 
     public function detail($id)

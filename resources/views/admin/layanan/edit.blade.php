@@ -12,7 +12,7 @@
             <li class="nav-item"><a>Pengaturan</a></li>
             <li class="separator"><i class="flaticon-right-arrow"></i></li>
             <li class="nav-item">
-                <a href="{{ route('admin.layanan.index') }}">Manajemen Layanan</a>
+                <a href="{{ route('admin.settings.layanan.index') }}">Manajemen Layanan</a>
             </li>
             <li class="separator"><i class="flaticon-right-arrow"></i></li>
             <li class="nav-item">
@@ -42,7 +42,7 @@
                     <h4 class="card-title">Form Edit Layanan</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.layanan.update', $row->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.settings.layanan.update', $row->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -85,7 +85,7 @@
 
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                            <a href="{{ route('admin.layanan.index') }}" class="btn btn-secondary">Batal</a>
+                            <a href="{{ route('admin.settings.layanan.index') }}" class="btn btn-secondary">Batal</a>
                         </div>
                     </form>
                 </div>

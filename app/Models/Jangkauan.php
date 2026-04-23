@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Coverage extends Model
+class Jangkauan extends Model
 {
-    protected $table = 'coverage_stats';
+    protected $table = 'jangkauan';
 
     protected $fillable = [
         'jumlah_kk',
