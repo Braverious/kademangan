@@ -259,6 +259,31 @@ if (textareaBerita && typeof ClassicEditor !== 'undefined') {
 }
 
 /* =========================================================
+    CUSTOM SCRIPT: IS_ACTIVE RUNNING TEXT CHECKBOX
+    =========================================================
+*/
+// Tambahkan logika untuk merespon perubahan checkbox secara langsung
+document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+  checkbox.addEventListener('change', function () {
+    const position = this.name.includes('top') ? 'top' : 'bottom';
+    const marquee = document.getElementById(`preview_marquee_${position}`);
+
+    if (this.checked) {
+      marquee.style.opacity = "1";
+      marquee.style.filter = "grayscale(0%)";
+    } else {
+      marquee.style.opacity = "0.3";
+      marquee.style.filter = "grayscale(100%)";
+    }
+  });
+});
+
+// Jalankan saat pertama kali load
+window.addEventListener('load', function () {
+  document.querySelectorAll('input[type="checkbox"]').forEach(c => c.dispatchEvent(new Event('change')));
+});
+
+/* =========================================================
    CUSTOM SCRIPT: LIVE PREVIEW RUNNING TEXT
    ========================================================= */
 

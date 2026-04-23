@@ -37,7 +37,6 @@
                         <i class="fa fa-save mr-2"></i> Simpan
                     </button>
                 </div>
-
                 <div class="card-body">
                     <form action="{{ route('admin.settings.runningtext.update') }}" method="POST"
                         id="form-runningtext">
@@ -46,7 +45,19 @@
                         {{-- ================= BLOCK TOP ================= --}}
                         <div class="setting-block">
                             <h5 class="font-weight-bold text-primary mb-4">
-                                <i class="fa fa-arrow-up mr-2"></i> Posisi: Top
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h5 class="font-weight-bold text-primary mb-0">
+                                        <i class="fa fa-arrow-up mr-2"></i> Posisi: Top
+                                    </h5>
+                                    <div class="d-flex align-items-center">
+                                        <label class="switch mb-0">
+                                            <input type="checkbox" name="top_is_active"
+                                                {{ $top->is_active ? 'checked' : '' }}>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span class="status-label text-muted">Status Aktif</span>
+                                    </div>
+                                </div>
                             </h5>
 
                             <div class="row">
@@ -90,7 +101,19 @@
                         {{-- ================= BLOCK BOTTOM ================= --}}
                         <div class="setting-block mb-0">
                             <h5 class="font-weight-bold text-info mb-4">
-                                <i class="fa fa-arrow-down mr-2"></i> Posisi: Bottom
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h5 class="font-weight-bold text-info mb-0">
+                                        <i class="fa fa-arrow-down mr-2"></i> Posisi: Bottom
+                                    </h5>
+                                    <div class="d-flex align-items-center">
+                                        <label class="switch mb-0">
+                                            <input type="checkbox" name="bottom_is_active"
+                                                {{ $bottom->is_active ? 'checked' : '' }}>
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span class="status-label text-muted">Status Aktif</span>
+                                    </div>
+                                </div>
                             </h5>
 
                             <div class="row">
