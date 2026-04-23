@@ -146,7 +146,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('/', [BeritaController::class, 'index'])->name('admin.berita.index');
         Route::get('/create', [BeritaController::class, 'create'])->name('admin.berita.create');
         Route::post('/', [BeritaController::class, 'store'])->name('admin.berita.store');
-
+        Route::delete('/berita/bulk-delete', [BeritaController::class, 'bulkDestroy'])->name('admin.berita.bulkDestroy');
         Route::post('/upload-gambar', [BeritaController::class, 'uploadGambar'])->name('admin.berita.upload-gambar');
 
         Route::get('/{id}/edit', [BeritaController::class, 'edit'])->name('admin.berita.edit');

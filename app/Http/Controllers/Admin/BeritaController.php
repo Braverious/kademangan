@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class BeritaController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
     public function index()
     {
@@ -30,6 +31,28 @@ class BeritaController extends Controller
                 ->orderByDesc('tgl_publish')
                 ->get(),
         ]);
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->ids; // Ambil array ID yang dipilih
+
+        if (!$ids || count($ids) == 0) {
+            return redirect()->back()->with('error', 'Pilih minimal satu berita untuk dihapus.');
+        }
+
+        $beritas = Berita::whereIn('id_berita', $ids)->get();
+
+        foreach ($beritas as $berita) {
+            // Hapus Gambar Fisik
+            if ($berita->gambar && Storage::disk('public')->exists($berita->gambar)) {
+                Storage::disk('public')->delete($berita->gambar);
+            }
+            // Hapus Record
+            $berita->delete();
+        }
+
+        return redirect()->route('admin.berita.index')->with('success', count($ids) . ' Berita berhasil dihapus massal.');
     }
 
     public function create()
