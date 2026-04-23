@@ -35,8 +35,18 @@
     <div class="wrapper">
         <div class="main-header">
             <div class="logo-header" data-background-color="blue">
+                @php
+                    $siteSettings = \App\Models\SiteSetting::find(1);
+                @endphp
+
                 <a href="{{ route('admin.dashboard') }}" class="logo">
-                    <img src="{{ asset('assets/img/logo.svg') }}" alt="navbar brand" class="admin-logo-image">
+                    @if ($siteSettings && $siteSettings->logo)
+                        <img src="{{ asset('storage/' . $siteSettings->logo) }}" alt="navbar brand"
+                            class="admin-logo-image" style="max-height: 40px;">
+                    @else
+                        {{-- Fallback ke logo default assets jika di database kosong --}}
+                        <img src="{{ asset('assets/img/logo.svg') }}" alt="navbar brand" class="admin-logo-image">
+                    @endif
                 </a>
                 <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
                     data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">

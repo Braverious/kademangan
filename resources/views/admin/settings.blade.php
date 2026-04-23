@@ -7,7 +7,6 @@
         <div class="col-md-12">
             {{-- <div class="container-fluid py-3"> --}}
             {{-- <h3 class="mb-3">{{ $title ?? 'Pengaturan Footer' }}</h3> --}}
-
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
@@ -42,6 +41,29 @@
                                     <p class="text-muted small mb-2">Pilih file gambar (.ico atau .png). Maksimal 2MB.
                                     </p>
                                     <input type="file" name="favicon" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-body fw-semibold">Logo Dashboard Admin</div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 text-center">
+                                    @if (!empty($settings['logo']))
+                                        <img src="{{ asset('storage/' . $settings['logo']) }}" alt="Logo Admin"
+                                            class="img-thumbnail"
+                                            style="width: 120px; height: 64px; object-fit: contain; background: #eee;">
+                                    @else
+                                        <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo Default"
+                                            class="img-thumbnail"
+                                            style="width: 120px; height: 64px; object-fit: contain; background: #eee;">
+                                    @endif
+                                </div>
+                                <div class="col-md-10">
+                                    <p class="text-muted small mb-2">Logo yang muncul di pojok kiri atas dashboard.
+                                        Format: .png, .jpg, .svg. Maks 2MB.</p>
+                                    <input type="file" name="logo" class="form-control">
                                 </div>
                             </div>
                         </div>

@@ -14,6 +14,7 @@ class SiteSetting extends Model
     'related_links', 
     'social_links',
     'favicon' ,
+    'logo',
     'youtube_link'
 ];
 

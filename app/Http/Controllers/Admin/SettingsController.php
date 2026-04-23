@@ -12,7 +12,6 @@ class SettingsController extends Controller
     public function settings()
     {
         $siteData = SiteSetting::firstOrNew(['id' => 1]);
-
         $title = 'Konfigurasi Aplikasi';
 
         $breadcrumbs = [
@@ -25,31 +24,37 @@ class SettingsController extends Controller
             'related_links' => $siteData->related_links ?? [],
             'social_links'  => $siteData->social_links ?? [],
             'favicon'       => $siteData->favicon,
+            'logo'          => $siteData->logo,
             'youtube_link'  => $siteData->youtube_link,
         ];
 
         return view('admin.settings', compact('title', 'breadcrumbs', 'settings'));
     }
 
-    // Mengubah footerSave() menjadi settingsSave()
     public function settingsSave(Request $request)
     {
         $request->validate([
-            'favicon' => 'nullable|image|mimes:ico,png,jpg,jpeg|max:2048',
+            'favicon'      => 'nullable|image|mimes:ico,png,jpg,jpeg|max:2048',
+            'logo'         => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048', // Validasi Logo
             'youtube_link' => 'nullable|url',
         ]);
 
-        // Gunakan firstOrNew agar tidak error jika ID 1 belum ada
         $settings = SiteSetting::firstOrNew(['id' => 1]);
-        $faviconPath = $settings->favicon;
 
+        $faviconPath = $settings->favicon;
         if ($request->hasFile('favicon')) {
-            // Hapus file lama jika ada
             if ($faviconPath && Storage::disk('public')->exists($faviconPath)) {
                 Storage::disk('public')->delete($faviconPath);
             }
-            // Simpan file baruke public/uploads/settings dan simpan path-nya ke database
             $faviconPath = $request->file('favicon')->store('uploads/settings', 'public');
+        }
+
+        $logoPath = $settings->logo;
+        if ($request->hasFile('logo')) {
+            if ($logoPath && Storage::disk('public')->exists($logoPath)) {
+                Storage::disk('public')->delete($logoPath);
+            }
+            $logoPath = $request->file('logo')->store('uploads/settings', 'public');
         }
 
         $allowed_tags = '<p><b><strong><i><em><u><br><ul><ol><li><a><small><span><h1><h2><h3><h4><h5><h6>';
@@ -96,6 +101,7 @@ class SettingsController extends Controller
                 'related_links' => $related_links,
                 'social_links'  => $social_links,
                 'favicon'       => $faviconPath,
+                'logo'          => $logoPath, 
                 'youtube_link'  => $request->youtube_link,
             ]
         );
