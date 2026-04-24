@@ -1278,6 +1278,25 @@ input:checked+.slider:before {
   overflow-x: auto !important;
 }
 
+.table thead th {
+  vertical-align: middle !important;
+}
+
+table thead th .custom-control {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.5rem;
+}
+
+.table thead th .custom-control-label::before,
+.table thead th .custom-control-label::after {
+  top: 0;
+  transform: translateY(-50%);
+  top: 50%;
+}
+
 @media (max-width: 767.98px) {
   .card-header .btn-round.ml-auto {
     margin-left: 0 !important;

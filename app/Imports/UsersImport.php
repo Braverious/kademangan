@@ -6,8 +6,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 
-class UsersImport implements ToModel, WithHeadingRow
+class UsersImport implements ToModel, WithHeadingRow, SkipsEmptyRows
 {
     public function model(array $row)
     {
@@ -17,12 +18,14 @@ class UsersImport implements ToModel, WithHeadingRow
             return null; // Skip jika user sudah ada
         }
 
+        $defaultPassword = now()->format('d-m-Y');
+
         return new User([
             // Pastikan penamaan key array sesuai dengan judul kolom di Excel
             'nama_lengkap' => $row['nama_lengkap'],
             'username'     => $row['username'],
-            'password'     => Hash::make($row['password']),
-            'id_level'     => $row['id_level'],
+            'password'     => Hash::make($defaultPassword),
+            'id_level'     => ($row['id_level'] == 0 || empty($row['id_level'])) ? 2 : $row['id_level'],
             'nip'          => $row['nip'] ?? null,
             'jabatan_id'   => $row['jabatan_id'] ?? null,
             'foto'         => 'default.jpg', // Default sesuai struktur tabel

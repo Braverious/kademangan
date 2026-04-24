@@ -121,26 +121,20 @@
 <script>
     $(document).ready(function() {
 
+        // --- 1. LOGIKA FILTERING JAVASCRIPT ---
         function filterTable() {
-            // Ambil nilai input dan jadikan lowercase agar pencarian tidak sensitif huruf besar/kecil
             const searchText = $('#jsSearchInput').val().toLowerCase();
             const category = $('#jsKategoriFilter').val();
 
             $('#formBulkDelete tbody tr').each(function() {
                 const row = $(this);
-
-                // Ambil teks dari kolom Judul (kolom ke-3), Kategori (kolom ke-4), dan Penulis (kolom ke-5)
                 const title = row.find('td:nth-child(3)').text().toLowerCase();
                 const rowCategory = row.find('td:nth-child(4)').text().trim();
                 const author = row.find('td:nth-child(5)').text().toLowerCase();
 
-                // Cek apakah judul/penulis mengandung teks pencarian
                 const matchSearch = title.includes(searchText) || author.includes(searchText);
-
-                // Cek apakah kategori sesuai
                 const matchCategory = (category === "") || (rowCategory === category);
 
-                // Tampilkan baris jika keduanya cocok
                 if (matchSearch && matchCategory) {
                     row.show();
                 } else {
@@ -148,34 +142,35 @@
                 }
             });
 
-            // Reset "Check All" jika hasil filter berubah
+            // Reset status checkbox saat filter berubah agar tidak ada data "gaib" yang terhapus
             $('#checkAll').prop('checked', false);
             $('.checkbox-item').prop('checked', false);
             updateBulkDeleteButton();
         }
 
-        // Jalankan filter saat mengetik (search)
         $('#jsSearchInput').on('keyup', filterTable);
-
-        // Jalankan filter saat kategori diubah
         $('#jsKategoriFilter').on('change', filterTable);
 
 
-        // --- LOGIKA INTERAKSI TABEL (Tetap Pertahankan yang lama) ---
+        // --- 2. LOGIKA INTERAKSI TABEL ---
 
-        // Klik Baris (Edit) - td:not(.noclick) agar checkbox tidak ikut ke-klik
+        // Klik Baris (Edit) - td:not(.noclick) agar checkbox tidak memicu redirect
         $('.clickable-row td:not(.noclick)').on('click', function() {
             window.location = $(this).closest('tr').data('href');
         });
 
-        // Check All
+        // Check All - Menggunakan filter tr yang tidak hidden (display != none)
         $('#checkAll').on('click', function() {
-            // Hanya ceklis baris yang sedang tampil (tidak hidden oleh filter)
-            $('.checkbox-item:visible').prop('checked', this.checked);
+            // Kita cari TR yang sedang tampil, lalu cari checkbox di dalamnya
+            var targetCheckboxes = $('#formBulkDelete tbody tr').filter(function() {
+                return $(this).css('display') !== 'none';
+            }).find('.checkbox-item');
+
+            targetCheckboxes.prop('checked', this.checked);
             updateBulkDeleteButton();
         });
 
-        // Update Button Bulk Delete
+        // Update Button Bulk Delete (Hitung jumlah yang diceklis)
         function updateBulkDeleteButton() {
             const checkedCount = $('.checkbox-item:checked').length;
             if (checkedCount > 0) {
@@ -186,48 +181,44 @@
             }
         }
 
-        $('.checkbox-item').on('change', updateBulkDeleteButton);
+        // Pantau setiap perubahan pada checkbox item
+        $(document).on('change', '.checkbox-item', function() {
+            updateBulkDeleteButton();
+        });
 
-        // Ganti bagian event listener hapus massal kamu dengan ini:
+
+        // --- 3. LOGIKA SWEETALERT UNTUK HAPUS MASSAL ---
         $('#btnBulkDelete').on('click', function() {
             const total = $('.checkbox-item:checked').length;
 
             swal({
                 title: "Hapus Masal?",
                 text: "Anda akan menghapus " + total +
-                    " berita sekaligus. Data yang dihapus tidak bisa dikembalikan!",
+                    " berita sekaligus, data tidak bisa dikembalikan!",
                 icon: "warning",
                 buttons: {
                     cancel: {
-                        text: "Batal",
-                        value: null,
+                        text: 'Batal',
                         visible: true,
                         className: 'btn btn-warning'
-                        closeModal: true,
                     },
                     confirm: {
-                        text: "Ya, Hapus!",
-                        value: true,
+                        text: 'Ya, Hapus',
                         visible: true,
-                        className: "btn btn-danger",
-                        closeModal: true
+                        className: 'btn btn-danger'
                     }
                 },
                 dangerMode: true,
             }).then((willDelete) => {
                 if (willDelete) {
-                    // Tampilkan loading sebentar biar lebih smooth
+                    // Beri feedback loading pada tombol
                     $(this).html('<i class="fa fa-spinner fa-spin"></i> Menghapus...');
                     $(this).prop('disabled', true);
 
+                    // Submit form bulk delete
                     $('#formBulkDelete').submit();
                 }
             });
-        });
-
-        // Pastikan updateBulkDeleteButton juga terpantau dengan benar
-        $('.checkbox-item').on('change', function() {
-            updateBulkDeleteButton();
         });
     });
 </script>
