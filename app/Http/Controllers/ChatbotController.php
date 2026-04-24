@@ -12,7 +12,7 @@ class ChatbotController extends Controller
     {
         $settings = ChatbotSetting::pluck('value', 'key');
 
-        $title = "Konfigurasi AI Chatbot";
+        $title = "Konfigurasi Chatbot";
         $breadcrumbs = [
             ['label' => 'Pengaturan', 'route' => 'admin.dashboard'],
             ['label' => $title, 'route' => null]
@@ -42,7 +42,6 @@ class ChatbotController extends Controller
         $userMessage = $request->input('message');
         $apiKey = config('services.gemini.key');
 
-        // URL Model 2.5 Flash yang paling stabil
         $url = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-lite:generateContent?key={$apiKey}";
         $dbPrompt = ChatbotSetting::where('key', 'system_prompt')->first();
 
@@ -73,7 +72,7 @@ class ChatbotController extends Controller
                 ->post($url, $payload);
             if ($response->status() == 429) {
                 return response()->json([
-                    'reply' => "Waduh, saya lagi sibuk melayani banyak warga nih. Tunggu sekitar 5 menit lagi ya, baru tanya saya lagi! 🙏😊"
+                    'reply' => "Waduh, saya lagi sibuk melayani banyak warga nih. Tunggu sekitar 1 menit lagi ya, baru tanya saya lagi! 🙏😊"
                 ]);
             }
 
@@ -82,12 +81,11 @@ class ChatbotController extends Controller
                 $errorMessage = $errorData['error']['message'] ?? 'Unknown Error';
                 return response()->json(['reply' => "Maaf, sistem sedang sedikit gangguan teknis. Coba lagi nanti ya!"], 500);
             }
-
-            // if ($response->failed()) {
-            //     $errorData = $response->json();
-            //     $errorMessage = $errorData['error']['message'] ?? 'Unknown Error';
-            //     return response()->json(['reply' => "Google Error: " . $errorMessage], 500);
-            // }
+            if ($response->failed()) {
+                $errorData = $response->json();
+                $errorMessage = $errorData['error']['message'] ?? 'Unknown Error';
+                return response()->json(['reply' => "Google Error: " . $errorMessage], 500);
+            }
 
             $result = $response->json();
 
@@ -99,11 +97,8 @@ class ChatbotController extends Controller
             }
 
             return response()->json(['reply' => $reply]);
-            // } catch (\Exception $e) {
-            //     return response()->json(['reply' => 'Exception: ' . $e->getMessage()], 500);
-            // }
         } catch (\Exception $e) {
-            return response()->json(['reply' => 'Maaf, terjadi kesalahan pada server.'], 500);
+            return response()->json(['reply' => 'Exception: ' . $e->getMessage()], 500);
         }
     }
 }

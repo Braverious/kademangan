@@ -12,6 +12,12 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $setting = SiteSetting::where('id', 1)->first();
+        $homeContent = [
+            'title' => $setting->home_title ?? 'Layanan Publik Kelurahan yang Mudah & Transparan',
+            'description' => $setting->home_description ?? 'Akses informasi, ajukan layanan, dan baca berita terbaru seputar kelurahan Anda dalam satu halaman.',
+        ];
+
         $layanan = Layanan::orderByDesc('id')->get();
 
         $pengumuman = Pengumuman::getActive(5);
@@ -53,6 +59,8 @@ class HomeController extends Controller
             'video_id' => $video_id,
             'video_meta' => $video_meta,
             'botSettings' => $botSettings,
+            'homeContent' => $homeContent,
+            'setting' => $setting,
         ]);
     }
 }

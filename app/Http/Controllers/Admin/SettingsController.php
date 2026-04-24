@@ -20,12 +20,15 @@ class SettingsController extends Controller
         ];
 
         $settings = [
-            'about_html'    => $siteData->about_html,
-            'related_links' => $siteData->related_links ?? [],
-            'social_links'  => $siteData->social_links ?? [],
-            'favicon'       => $siteData->favicon,
-            'logo'          => $siteData->logo,
-            'youtube_link'  => $siteData->youtube_link,
+            'about_html'       => $siteData->about_html,
+            'related_links'    => $siteData->related_links ?? [],
+            'social_links'     => $siteData->social_links ?? [],
+            'favicon'          => $siteData->favicon,
+            'logo'             => $siteData->logo,
+            'home_title'       => $siteData->home_title,      
+            'home_description' => $siteData->home_description, 
+            'section_order' => $siteData->section_order,
+            'youtube_link'     => $siteData->youtube_link,
         ];
 
         return view('admin.settings', compact('title', 'breadcrumbs', 'settings'));
@@ -35,12 +38,14 @@ class SettingsController extends Controller
     {
         $request->validate([
             'favicon'      => 'nullable|image|mimes:ico,png,jpg,jpeg|max:2048',
-            'logo'         => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048', // Validasi Logo
+            'logo'         => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
+            'home_title' => 'nullable|string|max:255',
+            'home_description' => 'nullable|string',
             'youtube_link' => 'nullable|url',
         ]);
 
         $settings = SiteSetting::firstOrNew(['id' => 1]);
-
+        $section_order = $request->input('section_order', []);
         $faviconPath = $settings->favicon;
         if ($request->hasFile('favicon')) {
             if ($faviconPath && Storage::disk('public')->exists($faviconPath)) {
@@ -101,7 +106,12 @@ class SettingsController extends Controller
                 'related_links' => $related_links,
                 'social_links'  => $social_links,
                 'favicon'       => $faviconPath,
-                'logo'          => $logoPath, 
+                'logo'          => $logoPath,
+                'home_title' => $request->home_title,
+                'home_description' => $request->home_description,
+                'related_links'    => $related_links,
+                'social_links'     => $social_links,
+                'section_order' => $section_order,
                 'youtube_link'  => $request->youtube_link,
             ]
         );
