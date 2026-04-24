@@ -225,7 +225,6 @@
         @endphp
 
         @foreach ($sections as $section)
-
             {{-- SECTION: HERO / HOME --}}
             @if ($section == 'home')
                 <section id="home" class="py-5 d-flex align-items-center mb-5 mt-5">
@@ -244,8 +243,8 @@
                 </section>
             @endif
 
-            {{-- SECTION: RUNNING TEXT (Sesuaikan ID dengan Database) --}}
-            @if ($section == 'marquee-info')
+            {{-- SECTION: RUNNING TEXT --}}
+            @if ($section == 'runningtext')
                 @if (isset($runningTexts) && $runningTexts->count() > 0)
                     <section id="marquee-info" class="py-2">
                         <div class="container-fluid px-lg-5">
@@ -293,125 +292,195 @@
             {{-- SECTION: PENGUMUMAN --}}
             @if ($section == 'pengumuman')
                 <section id="pengumuman" class="py-5 section-abstract">
+                <div class="container-fluid px-lg-5">
+
+                    <div class="row mb-3">
+                        <div class="col-12 text-center">
+                            <h2 class="section-title mb-1">Pengumuman</h2>
+                            <p class="text-muted mb-0">Info penting/terbaru dari Kelurahan.</p>
+                        </div>
+                    </div>
+
+                    @if ($pengumuman->count())
+                        <div id="pengumumanSlider" class="flash-track d-flex flex-nowrap gap-4 pb-1"
+                            style="scroll-snap-type:x mandatory; scroll-behavior:smooth;">
+
+                            @foreach ($pengumuman as $p)
+                                @php
+                                    $judul = trim($p->judul);
+                                    $isi = strip_tags($p->isi);
+                                    $ringkas = \Illuminate\Support\Str::limit($isi, 220);
+                                    $tglStr = $p->mulai_tayang
+                                        ? \Carbon\Carbon::parse($p->mulai_tayang)->format('d M Y, H:i')
+                                        : null;
+                                @endphp
+
+                                <article class="flash-item flash-col" style="scroll-snap-align:start;">
+                                    <div class="card flash-card h-100">
+
+                                        <div class="card-body d-flex flex-column">
+
+                                            <div class="d-flex align-items-center gap-2 mb-2">
+                                                <span class="flash-icon">
+                                                    <i class="bi bi-megaphone-fill"></i>
+                                                </span>
+
+                                                <span class="badge bg-warning text-dark fw-semibold">
+                                                    {{ $p->tipe ?? 'Info' }}
+                                                </span>
+
+                                                @if ($tglStr)
+                                                    <small class="text-muted ms-auto">
+                                                        {{ $tglStr }}
+                                                    </small>
+                                                @endif
+                                            </div>
+
+                                            <h5 class="card-title mb-2 line-clamp-2">
+                                                {{ $judul }}
+                                            </h5>
+
+                                            <p class="card-text text-muted mb-3 line-clamp-3">
+                                                {{ $ringkas }}
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </article>
+                            @endforeach
+                        </div>
                 </section>
             @endif
 
             {{-- SECTION: SKALA / COVERAGE --}}
             @if ($section == 'coverage')
                 <section id="coverage" class="py-5 section-abstract">
-                </section>
-            @endif
-
-            {{-- SECTION: GALERI (DINAMIS) --}}
-            @if ($section == 'galeri')
-                <section id="galeri" class="py-5">
-                    <div class="container-fluid px-lg-5">
-                        <div class="row mb-4">
-                            <div class="col-12 text-center">
-                                <h2 class="section-title">Galeri Kademangan</h2>
-                                <p class="text-muted">Foto kegiatan dan area Kelurahan.</p>
-                            </div>
-                        </div>
-                        @if (isset($galeri) && $galeri->count() > 0)
-                            <div id="carouselGaleri" class="carousel slide shadow-sm rounded-4 overflow-hidden"
-                                data-bs-ride="carousel">
-                                <div class="carousel-indicators">
-                                    @foreach ($galeri as $key => $item)
-                                        <button type="button" data-bs-target="#carouselGaleri"
-                                            data-bs-slide-to="{{ $key }}"
-                                            class="{{ $loop->first ? 'active' : '' }}"></button>
-                                    @endforeach
-                                </div>
-                                <div class="carousel-inner">
-                                    @foreach ($galeri as $item)
-                                        <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                            <img src="{{ asset('storage/' . $item->foto) }}" class="d-block w-100"
-                                                style="height: 500px; object-fit: cover;">
-                                            <div class="carousel-caption d-none d-md-block text-start">
-                                                <h5>{{ $item->judul_foto }}</h5>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselGaleri"
-                                    data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselGaleri"
-                                    data-bs-slide-to="next"><span class="carousel-control-next-icon"></span></button>
-                            </div>
-                        @else
-                            <p class="text-center text-muted">Galeri belum tersedia.</p>
-                        @endif
-                    </div>
-                </section>
-            @endif
-
-            {{-- SECTION: BERITA --}}
-            @if ($section == 'berita')
-                <section id="berita" class="py-5 bg-light section-abstract">
-                    @if ($section == 'berita')
-                        <section id="berita" class="py-5 bg-light section-abstract">
+                    @if ($section == 'coverage')
+                        <section id="coverage" class="py-5 section-abstract">
                             <div class="container-fluid px-lg-5">
                                 <div class="row mb-4">
                                     <div class="col-12 text-center">
-                                        <h2 class="section-title">Berita Terbaru</h2>
-                                        <p class="text-muted">Kegiatan kelurahan dan informasi aktual untuk warga.</p>
+                                        <h2 class="section-title mb-1">Skala Kami</h2>
+                                        <p class="text-muted">Berpengalaman melayani lingkungan pemerintahan & warga
+                                            secara
+                                            transparan.</p>
                                     </div>
                                 </div>
-
-                                <div class="row g-4">
-                                    {{-- Loop Statis untuk Preview (3 Berita) --}}
-                                    @for ($i = 1; $i <= 3; $i++)
-                                        <div class="col-md-4">
-                                            <div class="card news-card h-100 overflow-hidden rounded-4 shadow-sm">
-                                                <img src="https://placehold.co/600x400?text=Berita+Kelurahan+{{ $i }}"
-                                                    class="card-img-top news-img" alt="Berita {{ $i }}"
-                                                    style="height: 200px; object-fit: cover;">
-
-                                                <div class="card-body d-flex flex-column">
-                                                    <span
-                                                        class="badge bg-primary-subtle text-primary align-self-start mb-2">
-                                                        Pengumuman
-                                                    </span>
-
-                                                    <div class="text-muted small mb-1">
-                                                        Dipublikasikan oleh
-                                                        <span class="fw-semibold text-primary">Admin Kelurahan</span>
-                                                        • <time datetime="2024-04-17">17 Apr 2024</time>
-                                                    </div>
-
-                                                    <h5 class="card-title mb-2">Kegiatan Kerja Bakti Rutin Lingkungan
-                                                        Kademangan
-                                                    </h5>
-
-                                                    <p
-                                                        class="card-text small text-muted mb-3 flex-grow-1 home-news-excerpt">
-                                                        Ini adalah contoh teks ringkasan berita kelurahan. Warga
-                                                        diharapkan
-                                                        berpartisipasi
-                                                        dalam
-                                                        menjaga kebersihan lingkungan sekitar demi kenyamanan bersama...
-                                                    </p>
-
-                                                    <a href="#" class="btn btn-outline-primary btn-sm mt-auto">
-                                                        Baca Selengkapnya
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endfor
-                                </div>
-                            </div>
                         </section>
                     @endif
-                </section>
             @endif
+            </section>
+        @endif
 
-            {{-- SECTION: VIDEO --}}
-            @if ($section == 'video')
-                <section id="video" class="py-5">
-                </section>
-            @endif
+        {{-- SECTION: GALERI (DINAMIS) --}}
+        @if ($section == 'galeri')
+            <section id="galeri" class="py-5">
+                <div class="container-fluid px-lg-5">
+                    <div class="row mb-4">
+                        <div class="col-12 text-center">
+                            <h2 class="section-title">Galeri Kademangan</h2>
+                            <p class="text-muted">Foto kegiatan dan area Kelurahan.</p>
+                        </div>
+                    </div>
+                    @if (isset($galeri) && $galeri->count() > 0)
+                        <div id="carouselGaleri" class="carousel slide shadow-sm rounded-4 overflow-hidden"
+                            data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                @foreach ($galeri as $key => $item)
+                                    <button type="button" data-bs-target="#carouselGaleri"
+                                        data-bs-slide-to="{{ $key }}"
+                                        class="{{ $loop->first ? 'active' : '' }}"></button>
+                                @endforeach
+                            </div>
+                            <div class="carousel-inner">
+                                @foreach ($galeri as $item)
+                                    <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                        <img src="{{ asset('storage/' . $item->foto) }}" class="d-block w-100"
+                                            style="height: 500px; object-fit: cover;">
+                                        <div class="carousel-caption d-none d-md-block text-start">
+                                            <h5>{{ $item->judul_foto }}</h5>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselGaleri"
+                                data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselGaleri"
+                                data-bs-slide-to="next"><span class="carousel-control-next-icon"></span></button>
+                        </div>
+                    @else
+                        <p class="text-center text-muted">Galeri belum tersedia.</p>
+                    @endif
+                </div>
+            </section>
+        @endif
 
+        {{-- SECTION: BERITA --}}
+        @if ($section == 'berita')
+            <section id="berita" class="py-5 bg-light section-abstract">
+                @if ($section == 'berita')
+                    <section id="berita" class="py-5 bg-light section-abstract">
+                        <div class="container-fluid px-lg-5">
+                            <div class="row mb-4">
+                                <div class="col-12 text-center">
+                                    <h2 class="section-title">Berita Terbaru</h2>
+                                    <p class="text-muted">Kegiatan kelurahan dan informasi aktual untuk warga.</p>
+                                </div>
+                            </div>
+
+                            <div class="row g-4">
+                                {{-- Loop Statis untuk Preview (3 Berita) --}}
+                                @for ($i = 1; $i <= 3; $i++)
+                                    <div class="col-md-4">
+                                        <div class="card news-card h-100 overflow-hidden rounded-4 shadow-sm">
+                                            <img src="https://placehold.co/600x400?text=Berita+Kelurahan+{{ $i }}"
+                                                class="card-img-top news-img" alt="Berita {{ $i }}"
+                                                style="height: 200px; object-fit: cover;">
+
+                                            <div class="card-body d-flex flex-column">
+                                                <span
+                                                    class="badge bg-primary-subtle text-primary align-self-start mb-2">
+                                                    Pengumuman
+                                                </span>
+
+                                                <div class="text-muted small mb-1">
+                                                    Dipublikasikan oleh
+                                                    <span class="fw-semibold text-primary">Admin Kelurahan</span>
+                                                    • <time datetime="2024-04-17">17 Apr 2024</time>
+                                                </div>
+
+                                                <h5 class="card-title mb-2">Kegiatan Kerja Bakti Rutin Lingkungan
+                                                    Kademangan
+                                                </h5>
+
+                                                <p
+                                                    class="card-text small text-muted mb-3 flex-grow-1 home-news-excerpt">
+                                                    Ini adalah contoh teks ringkasan berita kelurahan. Warga
+                                                    diharapkan
+                                                    berpartisipasi
+                                                    dalam
+                                                    menjaga kebersihan lingkungan sekitar demi kenyamanan bersama...
+                                                </p>
+
+                                                <a href="#" class="btn btn-outline-primary btn-sm mt-auto">
+                                                    Baca Selengkapnya
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endfor
+                            </div>
+                        </div>
+                    </section>
+                @endif
+            </section>
+        @endif
+
+        {{-- SECTION: VIDEO --}}
+        @if ($section == 'video')
+            <section id="video" class="py-5">
+            </section>
+        @endif
         @endforeach
     </main>
 </main>
