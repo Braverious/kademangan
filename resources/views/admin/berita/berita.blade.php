@@ -3,7 +3,6 @@
 
 <div class="page-inner">
     <x-admin.breadcrumbs :title="$title" :breadcrumbs="$breadcrumbs" />
-
     <div class="row">
         <div class="col-md-12">
             <div class="card">

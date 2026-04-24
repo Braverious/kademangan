@@ -261,5 +261,4 @@
                 </form>
             </div>
         </div>
-
         <x-admin.footer />

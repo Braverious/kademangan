@@ -191,6 +191,12 @@
                                 'route' => 'admin.settings.index',
                                 'label' => 'Konfigurasi Aplikasi',
                             ],
+                            [
+                                'slug' => 'chatbot',
+                                'seg3' => null,
+                                'route' => 'admin.chatbot.index',
+                                'label' => 'Konfigurasi Chatbot',
+                            ],
                         ];
 
                         // Logika active menu (Samakan variabel $seg2 dengan $it['slug'])

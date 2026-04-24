@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\ChatbotSetting;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +18,11 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             LayananSeeder::class,
             SuratSktmSeeder::class
+        ]);
+
+        ChatbotSetting::create([
+            'key' => 'system_prompt',
+            'value' => 'Anda adalah asisten virtual resmi Kelurahan Kademangan...'
         ]);
     }
 }

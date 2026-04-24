@@ -1,5 +1,17 @@
+@php
+    // Mengambil warna dari database, jika tidak ada pakai default biru (#0d6efd)
+    $themeColor = $botSettings['chatbot_color'] ?? '#0d6efd';
+@endphp
+
 <style>
-    /* Container Utama */
+    /* 1. VARIABEL WARNA DINAMIS */
+    :root {
+        --bot-color: {{ $themeColor }};
+        --bot-color-dark: {{ $themeColor }}dd;
+        /* Memberi transparansi untuk efek hover */
+    }
+
+    /* 2. STRUKTUR UTAMA (TULANG) */
     #chatbot-wrapper {
         position: fixed;
         bottom: 25px;
@@ -8,25 +20,26 @@
         font-family: 'Inter', sans-serif;
     }
 
-    /* Tombol Pemicu (Bentuk Pil agar lebih mencolok) */
+    /* Tombol Launcher */
     #chatbot-launcher {
         padding: 12px 24px;
         border-radius: 50px;
-        background: #0d6efd;
+        background: var(--bot-color) !important;
+        /* DINAMIS */
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         border: 2px solid white;
     }
 
     #chatbot-launcher:hover {
         transform: scale(1.05);
-        background: #0b5ed7;
-        box-shadow: 0 6px 20px rgba(13, 110, 253, 0.5);
+        background: var(--bot-color-dark) !important;
+        /* DINAMIS */
     }
 
     #chatbot-launcher .launcher-text {
@@ -35,15 +48,13 @@
         white-space: nowrap;
     }
 
-    /* Modifikasi saat Chat Terbuka (berubah jadi bulat dengan ikon X) */
     #chatbot-launcher.active {
         width: 60px;
         height: 60px;
         padding: 0;
         border-radius: 50%;
-        background: #dc3545;
-        /* Berubah merah saat ingin tutup */
-        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        background: #dc3545 !important;
+        /* Tetap merah saat tutup */
     }
 
     /* Window Chat */
@@ -55,7 +66,6 @@
         border-radius: 20px;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         display: none;
-        /* Default tertutup */
         flex-direction: column;
         overflow: hidden;
         position: absolute;
@@ -78,7 +88,8 @@
 
     /* Header Chat */
     .chat-header {
-        background: #0d6efd;
+        background: var(--bot-color) !important;
+        /* DINAMIS */
         color: white;
         padding: 18px;
         display: flex;
@@ -103,7 +114,6 @@
         max-width: 85%;
         font-size: 0.9rem;
         line-height: 1.5;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     }
 
     .message.bot {
@@ -114,13 +124,14 @@
     }
 
     .message.user {
-        background: #0d6efd;
+        background: var(--bot-color) !important;
+        /* DINAMIS */
         color: white;
         align-self: flex-end;
         border-bottom-right-radius: 4px;
     }
 
-    /* Input Area */
+    /* Footer & Input */
     .chat-footer {
         padding: 15px;
         background: white;
@@ -142,11 +153,11 @@
         padding: 8px 15px;
         flex: 1;
         outline: none;
-        font-size: 0.9rem;
     }
 
     .chat-input-group button {
-        background: #0d6efd;
+        background: var(--bot-color) !important;
+        /* DINAMIS */
         color: white;
         border: none;
         width: 38px;
@@ -155,12 +166,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.2s;
-    }
-
-    .chat-input-group button:hover {
-        background: #0b5ed7;
-        transform: scale(1.1);
     }
 </style>
 <x-header :title="$title" />
@@ -172,12 +177,12 @@
                 <div class="d-flex align-items-center">
                     <i class="bi bi-chat-square-dots-fill me-2 fs-5"></i>
                     <div>
-                        <div class="fw-bold lh-1">Bantuan Kademangan</div>
-                        <small style="font-size: 0.7rem; opacity: 0.8;">AI Assistant • Siap Melayani</small>
+                        <div class="fw-bold lh-1">{{ $botSettings['chatbot_name'] ?? 'Bantuan Kademangan' }}</div>
+                        <small
+                            style="font-size: 0.7rem; opacity: 0.8;">{{ $botSettings['chatbot_subtitle'] ?? 'Siap Melayani' }}</small>
                     </div>
                 </div>
-                <button type="button" class="btn-close btn-close-white" onclick="toggleChat()"
-                    aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" onclick="toggleChat()"></button>
             </div>
 
             <div class="chat-body" id="chat-messages">
@@ -594,7 +599,7 @@
             launcherLabel.style.display = 'inline'; // Munculkan tulisan lagi
         }
     }
-    
+
     async function sendMessage(event) {
         event.preventDefault();
         const input = document.getElementById('user-input');

@@ -43,6 +43,8 @@ class HomeController extends Controller
             }
         }
 
+        $botSettings = \App\Models\ChatbotSetting::pluck('value', 'key');
+
         return view('home', [
             'title' => 'Home',
             'layanan' => $layanan,
@@ -50,6 +52,7 @@ class HomeController extends Controller
             'runningTexts' => $runningTexts,
             'video_id' => $video_id,
             'video_meta' => $video_meta,
+            'botSettings' => $botSettings,
         ]);
     }
 }
