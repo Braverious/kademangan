@@ -71,12 +71,23 @@ class ChatbotController extends Controller
             $response = Http::withoutVerifying()
                 ->withHeaders(['Content-Type' => 'application/json'])
                 ->post($url, $payload);
+            if ($response->status() == 429) {
+                return response()->json([
+                    'reply' => "Waduh, saya lagi sibuk melayani banyak warga nih. Tunggu sekitar 5 menit lagi ya, baru tanya saya lagi! 🙏😊"
+                ]);
+            }
 
             if ($response->failed()) {
                 $errorData = $response->json();
                 $errorMessage = $errorData['error']['message'] ?? 'Unknown Error';
-                return response()->json(['reply' => "Google Error: " . $errorMessage], 500);
+                return response()->json(['reply' => "Maaf, sistem sedang sedikit gangguan teknis. Coba lagi nanti ya!"], 500);
             }
+
+            // if ($response->failed()) {
+            //     $errorData = $response->json();
+            //     $errorMessage = $errorData['error']['message'] ?? 'Unknown Error';
+            //     return response()->json(['reply' => "Google Error: " . $errorMessage], 500);
+            // }
 
             $result = $response->json();
 
@@ -88,8 +99,11 @@ class ChatbotController extends Controller
             }
 
             return response()->json(['reply' => $reply]);
+            // } catch (\Exception $e) {
+            //     return response()->json(['reply' => 'Exception: ' . $e->getMessage()], 500);
+            // }
         } catch (\Exception $e) {
-            return response()->json(['reply' => 'Exception: ' . $e->getMessage()], 500);
+            return response()->json(['reply' => 'Maaf, terjadi kesalahan pada server.'], 500);
         }
     }
 }

@@ -35,8 +35,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::post('/chatbot/send', [ChatbotController::class, 'handleChat']);
-Route::get('/admin/chatbot', [ChatbotController::class, 'adminIndex'])->name('admin.chatbot.index');
+Route::post('/chatbot/send', [ChatbotController::class, 'handleChat'])->middleware('throttle:10,1');
+Route::get('/admin/chatbot', [ChatbotController::class, 'adminIndex'])->name('admin.chatbot.index')->middleware('throttle:5,1');
 Route::post('/admin/chatbot/update', [ChatbotController::class, 'adminUpdate'])->name('admin.chatbot.update');
 
 // Grouping Authentication
