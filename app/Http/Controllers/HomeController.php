@@ -6,6 +6,7 @@ use App\Models\RunningText;
 use Illuminate\Http\Request;
 use App\Models\Layanan;
 use App\Models\Pengumuman;
+use App\Models\Galeri;
 use App\Models\SiteSetting;
 
 class HomeController extends Controller
@@ -25,6 +26,9 @@ class HomeController extends Controller
         $runningTexts = RunningText::where('is_active', 1)->get()->keyBy('position');
 
         $settings = SiteSetting::find(1);
+
+        $galeri = Galeri::latest('tgl_upload')->get();
+
         $youtube_link = $settings->youtube_link ?? '';
 
         $video_id = '';
@@ -56,6 +60,7 @@ class HomeController extends Controller
             'layanan' => $layanan,
             'pengumuman' => $pengumuman,
             'runningTexts' => $runningTexts,
+            'galeri' => $galeri,
             'video_id' => $video_id,
             'video_meta' => $video_meta,
             'botSettings' => $botSettings,
