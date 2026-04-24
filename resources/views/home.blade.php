@@ -1,13 +1,220 @@
+<style>
+    /* Container Utama */
+    #chatbot-wrapper {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        z-index: 1050;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Tombol Pemicu (Bentuk Pil agar lebih mencolok) */
+    #chatbot-launcher {
+        padding: 12px 24px;
+        border-radius: 50px;
+        background: #0d6efd;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 2px solid white;
+    }
+
+    #chatbot-launcher:hover {
+        transform: scale(1.05);
+        background: #0b5ed7;
+        box-shadow: 0 6px 20px rgba(13, 110, 253, 0.5);
+    }
+
+    #chatbot-launcher .launcher-text {
+        font-weight: 600;
+        margin-left: 10px;
+        white-space: nowrap;
+    }
+
+    /* Modifikasi saat Chat Terbuka (berubah jadi bulat dengan ikon X) */
+    #chatbot-launcher.active {
+        width: 60px;
+        height: 60px;
+        padding: 0;
+        border-radius: 50%;
+        background: #dc3545;
+        /* Berubah merah saat ingin tutup */
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    }
+
+    /* Window Chat */
+    #chatbot-window {
+        width: 350px;
+        max-width: 90vw;
+        height: 500px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        display: none;
+        /* Default tertutup */
+        flex-direction: column;
+        overflow: hidden;
+        position: absolute;
+        bottom: 85px;
+        right: 0;
+        animation: slideIn 0.4s ease-out;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* Header Chat */
+    .chat-header {
+        background: #0d6efd;
+        color: white;
+        padding: 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Area Pesan */
+    .chat-body {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        background: #f0f2f5;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .message {
+        padding: 10px 15px;
+        border-radius: 18px;
+        max-width: 85%;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .message.bot {
+        background: white;
+        align-self: flex-start;
+        color: #333;
+        border-bottom-left-radius: 4px;
+    }
+
+    .message.user {
+        background: #0d6efd;
+        color: white;
+        align-self: flex-end;
+        border-bottom-right-radius: 4px;
+    }
+
+    /* Input Area */
+    .chat-footer {
+        padding: 15px;
+        background: white;
+        border-top: 1px solid #eee;
+    }
+
+    .chat-input-group {
+        display: flex;
+        gap: 10px;
+        background: #f8f9fa;
+        padding: 5px;
+        border-radius: 30px;
+        border: 1px solid #ddd;
+    }
+
+    .chat-input-group input {
+        border: none;
+        background: transparent;
+        padding: 8px 15px;
+        flex: 1;
+        outline: none;
+        font-size: 0.9rem;
+    }
+
+    .chat-input-group button {
+        background: #0d6efd;
+        color: white;
+        border: none;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+
+    .chat-input-group button:hover {
+        background: #0b5ed7;
+        transform: scale(1.1);
+    }
+</style>
 <x-header :title="$title" />
 <main>
+    <div id="chatbot-wrapper">
+        <!-- Window Chat -->
+        <div id="chatbot-window">
+            <div class="chat-header">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-chat-square-dots-fill me-2 fs-5"></i>
+                    <div>
+                        <div class="fw-bold lh-1">Bantuan Kademangan</div>
+                        <small style="font-size: 0.7rem; opacity: 0.8;">AI Assistant • Siap Melayani</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" onclick="toggleChat()"
+                    aria-label="Close"></button>
+            </div>
+
+            <div class="chat-body" id="chat-messages">
+                <!-- Pesan Pembuka -->
+                <div class="message bot">
+                    Selamat datang di layanan chatbot Kelurahan Kademangan! Ada yang bisa kami bantu hari ini?
+                </div>
+            </div>
+
+            <div class="chat-footer">
+                <form id="chat-form" onsubmit="sendMessage(event)">
+                    <div class="chat-input-group">
+                        <input type="text" id="user-input" placeholder="Tulis pertanyaan Anda..." autocomplete="off">
+                        <button type="submit">
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tombol Launcher (Sekarang berbentuk Pil) -->
+        <div id="chatbot-launcher" onclick="toggleChat()">
+            <i class="bi bi-chat-right-text-fill fs-5" id="launcher-icon"></i>
+            <span class="launcher-text" id="launcher-label">Tanya Kami (AI)</span>
+        </div>
+    </div>
     <section id="home" class="py-5 d-flex align-items-center mb-5 mt-5">
         <div class="container-fluid px-lg-5">
             <div class="row align-items-center">
                 <div class="col-lg-7">
                     <h1 class="display-5 fw-bold mb-3">Layanan Publik Kelurahan yang Mudah & Transparan</h1>
-                    <p class="lead text-muted">Akses informasi, ajukan layanan, dan baca berita terbaru seputar kelurahan
+                    <p class="lead text-muted">Akses informasi, ajukan layanan, dan baca berita terbaru seputar
+                        kelurahan
                         Anda dalam satu halaman.</p>
-                    <a href="#" class="btn btn-primary btn-lg me-2" style="border-radius: 20px;">Ajukan Layanan</a>
+                    <a href="#" class="btn btn-primary btn-lg me-2" style="border-radius: 20px;">Ajukan
+                        Layanan</a>
                     <a href="#Layanan" class="btn btn-outline-primary btn-lg" style="border-radius: 20px;">Layanan
                         kami</a>
                 </div>
@@ -223,7 +430,6 @@
                 </div>
             </div>
 
-            {{-- Carousel Statis untuk Preview --}}
             <div id="carouselGaleri"
                 class="carousel slide carousel-smooth force-motion shadow-sm rounded-4 overflow-hidden"
                 data-bs-ride="carousel" data-bs-interval="9000" data-bs-touch="true" data-bs-keyboard="true"
@@ -365,3 +571,82 @@
     </section>
 </main>
 <x-footer></x-footer>
+<script>
+    // Fungsi untuk buka-tutup jendela chatbot
+    function toggleChat() {
+        const chatWindow = document.getElementById('chatbot-window');
+        const launcher = document.getElementById('chatbot-launcher');
+        const launcherIcon = document.getElementById('launcher-icon');
+        const launcherLabel = document.getElementById('launcher-label');
+
+        // Cek apakah window sedang tertutup
+        if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
+            // Membuka Chat
+            chatWindow.style.display = 'flex';
+            launcher.classList.add('active');
+            launcherIcon.className = 'bi bi-x-lg fs-4'; // Berubah jadi ikon silang
+            launcherLabel.style.display = 'none'; // Sembunyikan tulisan "Tanya Kami"
+        } else {
+            // Menutup Chat
+            chatWindow.style.display = 'none';
+            launcher.classList.remove('active');
+            launcherIcon.className = 'bi bi-chat-right-text-fill fs-5'; // Berubah ke ikon awal
+            launcherLabel.style.display = 'inline'; // Munculkan tulisan lagi
+        }
+    }
+    
+    async function sendMessage(event) {
+        event.preventDefault();
+        const input = document.getElementById('user-input');
+        const messageContainer = document.getElementById('chat-messages');
+        const text = input.value.trim();
+
+        if (text === "") return;
+
+        // 1. Tampilkan pesan user di layar
+        appendMessage('user', text);
+        input.value = '';
+
+        // 2. Beri indikasi "sedang mengetik"
+        const typingIndicator = document.createElement('div');
+        typingIndicator.className = 'message bot italic';
+        typingIndicator.id = 'typing';
+        typingIndicator.textContent = 'Sedang mengetik...';
+        messageContainer.appendChild(typingIndicator);
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+
+        try {
+            // 3. Kirim data ke Laravel menggunakan Fetch API
+            const response = await fetch('/chatbot/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        'content')
+                },
+                body: JSON.stringify({
+                    message: text
+                })
+            });
+
+            const data = await response.json();
+
+            // Hapus indikator mengetik dan tampilkan jawaban AI
+            document.getElementById('typing').remove();
+            appendMessage('bot', data.reply);
+
+        } catch (error) {
+            document.getElementById('typing').remove();
+            appendMessage('bot', "Maaf, server sedang sibuk.");
+        }
+    }
+
+    function appendMessage(sender, text) {
+        const messageContainer = document.getElementById('chat-messages');
+        const div = document.createElement('div');
+        div.className = `message ${sender}`;
+        div.textContent = text;
+        messageContainer.appendChild(div);
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+</script>

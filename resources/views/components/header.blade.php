@@ -6,8 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    {{-- Menggunakan variabel $title dari Route, default ke 'Kelurahan' --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}"> 
     <title>{{ $title ?? 'Kelurahan' }}</title>
     @php
         // Mengambil data setting ID 1 langsung di component

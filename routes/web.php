@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\SuratSktmController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ChatbotController;
 use App\Models\Jangkauan;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::post('/chatbot/send', [ChatbotController::class, 'handleChat']);
 
 // Grouping Authentication
 Route::controller(AuthController::class)->group(function () {
@@ -173,6 +175,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('/{id}/cetak', [SuratSktmController::class, 'cetak'])->name('admin.sktm.cetak');
     });
 });
+
 
 
 // Uji coba error handling

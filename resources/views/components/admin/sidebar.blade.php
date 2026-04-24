@@ -206,7 +206,7 @@
                         <a data-toggle="collapse" href="#menuPengaturan" class="collapsed"
                             aria-expanded="{{ $isSettingsMenuActive ? 'true' : 'false' }}">
                             <i class="fas fa-cog"></i>
-                            <p>Settings</p>
+                            <p>Pengaturan</p>
                             <span class="caret"></span>
                         </a>
                         <div class="collapse {{ $isSettingsMenuActive ? 'show' : '' }}" id="menuPengaturan">

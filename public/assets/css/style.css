@@ -247,7 +247,6 @@ body:not(.is-home).has-abstract-bg::after {
 .nav-topbar .container {
   position: relative;
 }
-/* Ini ngilangin background putih di bawah navbar saat scroll, biar pattern abstrak tetap terlihat tanpa tertutup background putih navbar. Tetap jaga agar navbar tetap terlihat jelas dengan teks dan ikon yang kontras. */
 header.sticky-top, 
 nav.nav-menubar, 
 .container-menu,
