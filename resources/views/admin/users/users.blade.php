@@ -82,7 +82,8 @@
                                                 </a>
 
                                                 @if ($user->id_user != 1)
-                                                    <form action="{{ route('admin.settings.users.destroy', $user->id_user) }}"
+                                                    <form
+                                                        action="{{ route('admin.settings.users.destroy', $user->id_user) }}"
                                                         method="POST" class="js-delete-form"
                                                         data-delete-title="Hapus User?"
                                                         data-delete-text="Apakah Anda yakin ingin menghapus user ini?">
@@ -134,10 +135,14 @@
                         <strong>Panduan Format Excel:</strong><br>
                         Pastikan file Excel (.xlsx) memiliki judul kolom (Header) di baris pertama persis seperti
                         berikut (huruf kecil semua menggunakan underscore):<br>
-                        <code>nama_lengkap</code>, <code>username</code>, <code>password</code>, <code>id_level</code>,
+                        <code>nama_lengkap</code>, <code>username</code>, <code>id_level</code>,
                         <code>nip</code>, <code>jabatan_id</code>.
                     </div>
-
+                    <div class="alert alert-warning small">
+                        <i class="fa fa-exclamation-triangle mr-1"></i>
+                        <strong>Penting:</strong> Password untuk semua akun baru akan otomatis diset menjadi tanggal
+                        hari ini dengan format <strong>{{ now()->format('d-m-Y') }}</strong>.
+                    </div>
                     <div class="form-group p-0">
                         <label for="file_excel">Pilih File Excel <span class="text-danger">*</span></label>
                         <input type="file" name="file_excel" id="file_excel" class="form-control"

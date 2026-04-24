@@ -133,12 +133,14 @@ class UserController extends Controller
         $request->validate([
             'file_excel' => 'required|mimes:xlsx,xls,csv|max:2048'
         ]);
-
+        $defaultPass = now()->format('d-m-Y');
         try {
             Excel::import(new UsersImport, $request->file('file_excel'));
-            return redirect()->back()->with('success', 'Data User dari Excel berhasil diimport!');
+            return redirect()->back()->with('success', "Data User berhasil diimport! Password default akun baru adalah: $defaultPass");
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal import! Pastikan format Excel benar. Error: ' . $e->getMessage());
+            $message = "Gagal import! <br><br> <strong>Detail Error:</strong> <br> <code>" . $e->getMessage() . "</code>";
+
+            return redirect()->back()->with('error', $message);
         }
     }
 
