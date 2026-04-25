@@ -27,16 +27,15 @@
 
                 <!-- KANAN -->
                 <form action="{{ route('admin.belum-bekerja.export') }}" method="GET" target="_blank"
-                    class="d-flex align-items-center">
+                    class="d-flex align-items-center gap-2 flex-wrap">
 
-                    <div class="mr-2">
-                        <label class="mb-0 small">Rekap Bulan</label>
-                        <input type="month" name="bulan" class="form-control form-control-sm"
-                            value="{{ request('bulan', date('Y-m')) }}" max="{{ date('Y-m') }}">
-                    </div>
+                    <span class="text-muted mr-2">Rekap Bulan</span>
 
-                    <button class="btn btn-success btn-sm mt-3">
-                        <i class="fa fa-file-excel"></i> Export Excel
+                    <input type="month" name="bulan" class="form-control form-control-sm" style="width: 160px;"
+                        value="{{ request('bulan', date('Y-m')) }}" max="{{ date('Y-m') }}">
+
+                    <button class="btn btn-success btn-sm ml-2">
+                        <i class="fa fa-file-excel mr-1"></i> Export Excel
                     </button>
 
                 </form>
