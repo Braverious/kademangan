@@ -277,11 +277,60 @@
                                 <p class="text-muted">Solusi layanan publik yang mudah, cepat, dan transparan.</p>
                             </div>
                         </div>
+
                         <div class="position-relative">
-                            <div id="layananSlider" class="d-flex flex-nowrap gap-4 overflow-auto pb-2">
+                            <button id="layananPrev"
+                                class="nav-arrow btn btn-outline-primary btn-sm position-absolute top-50 start-0 translate-middle-y d-none d-lg-inline-flex"
+                                type="button">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <button id="layananNext"
+                                class="nav-arrow btn btn-outline-primary btn-sm position-absolute top-50 end-0 translate-middle-y d-none d-lg-inline-flex"
+                                type="button">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+
+                            <div id="layananSlider" class="d-flex flex-nowrap gap-4 overflow-auto pb-2"
+                                style="scroll-snap-type:x mandatory; scroll-behavior:smooth;">
                                 @forelse ($layanan as $item)
+                                    <div class="slider-item col-10 col-sm-6 col-lg-3 p-0 flex-shrink-0"
+                                        style="scroll-snap-align:start;">
+
+                                        <div class="card service-card h-100 overflow-hidden">
+
+                                            <!-- GAMBAR -->
+                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
+                                                style="height: 150px;">
+
+                                                @if ($item->gambar)
+                                                    <img src="{{ asset('storage/' . $item->gambar) }}"
+                                                        alt="{{ $item->judul }}"
+                                                        style="height:100%; object-fit:cover; width:100%;">
+                                                @else
+                                                    <i class="bi bi-file-earmark-text display-4 text-secondary"></i>
+                                                @endif
+
+                                            </div>
+
+                                            <!-- CONTENT -->
+                                            <div class="card-body">
+                                                <h5 class="card-title mb-1">{{ $item->judul }}</h5>
+
+                                                <span class="title-underline"></span>
+
+                                                <p class="card-text small text-muted mb-0">
+                                                    {{ \Illuminate\Support\Str::limit(strip_tags($item->deskripsi), 100) }}
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
                                 @empty
-                                    <p class="text-center w-100">Belum ada layanan</p>
+
+                                    <div class="col-12 text-center">
+                                        <p class="text-muted">Belum ada layanan tersedia</p>
+                                    </div>
                                 @endforelse
                             </div>
                         </div>

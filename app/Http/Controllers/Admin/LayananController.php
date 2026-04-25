@@ -57,7 +57,7 @@ class LayananController extends Controller
             'gambar' => $gambar,
         ]);
 
-        return redirect()->route('admin.layanan.index')->with('success', 'Berhasil ditambah');
+        return redirect()->route('admin.settings.index')->with('success', 'Berhasil ditambah');
     }
 
     public function edit($id)
