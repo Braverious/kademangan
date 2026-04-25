@@ -1,20 +1,21 @@
 <?php
 
+use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\RunningTextController;
-use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\GaleriController;
 use App\Http\Controllers\Admin\JangkauanController;
 use App\Http\Controllers\Admin\LayananController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PengumumanController;
-use App\Http\Controllers\Admin\GaleriController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RefJabatanController;
-use App\Http\Controllers\Admin\BeritaController;
+use App\Http\Controllers\Admin\RunningTextController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\SuratBelumBekerjaController;
 use App\Http\Controllers\Admin\SuratSktmController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\HomeController;
 use App\Models\Jangkauan;
 use Illuminate\Support\Facades\Route;
 
@@ -175,6 +176,23 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::delete('/{id}', [SuratSktmController::class, 'destroy'])->name('admin.sktm.delete');
 
         Route::get('/{id}/cetak', [SuratSktmController::class, 'cetak'])->name('admin.sktm.cetak');
+    });
+
+    Route::prefix('surat-belum-bekerja')->group(function () {
+
+        Route::get('/', [SuratBelumBekerjaController::class, 'index'])->name('admin.belum-bekerja.index');
+
+        Route::get('/export', [SuratBelumBekerjaController::class, 'export'])->name('admin.belum-bekerja.export');
+
+        Route::get('/{id}', [SuratBelumBekerjaController::class, 'detail'])->name('admin.belum-bekerja.detail');
+
+        Route::get('/{id}/edit', [SuratBelumBekerjaController::class, 'edit'])->name('admin.belum-bekerja.edit');
+
+        Route::put('/{id}', [SuratBelumBekerjaController::class, 'update'])->name('admin.belum-bekerja.update');
+
+        Route::delete('/{id}', [SuratBelumBekerjaController::class, 'destroy'])->name('admin.belum-bekerja.delete');
+
+        Route::get('/{id}/cetak', [SuratBelumBekerjaController::class, 'cetak'])->name('admin.belum-bekerja.cetak');
     });
 });
 

@@ -50,7 +50,7 @@
                         ],
                         [
                             'slug' => 'surat_belum_bekerja',
-                            'url' => 'admin/surat_belum_bekerja',
+                            'url' => 'admin/surat-belum-bekerja',
                             'label' => 'Surat Keterangan Belum Bekerja',
                         ],
                         [

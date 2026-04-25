@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
             LevelSeeder::class,
             UserSeeder::class,
             LayananSeeder::class,
-            SuratSktmSeeder::class
+            SuratSktmSeeder::class,
+            SuratBelumBekerjaSeeder::class,
         ]);
 
         ChatbotSetting::create([
