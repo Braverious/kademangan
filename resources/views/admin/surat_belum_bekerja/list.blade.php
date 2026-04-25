@@ -53,7 +53,7 @@
             @endif
 
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
+                <table id="datatable-belum-bekerja" class="display table table-striped table-hover w-100">
                     <thead>
                         <tr>
                             <th>No</th>
