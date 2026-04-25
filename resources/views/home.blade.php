@@ -292,63 +292,63 @@
             {{-- SECTION: PENGUMUMAN --}}
             @if ($section == 'pengumuman')
                 <section id="pengumuman" class="py-5 section-abstract">
-                <div class="container-fluid px-lg-5">
+                    <div class="container-fluid px-lg-5">
 
-                    <div class="row mb-3">
-                        <div class="col-12 text-center">
-                            <h2 class="section-title mb-1">Pengumuman</h2>
-                            <p class="text-muted mb-0">Info penting/terbaru dari Kelurahan.</p>
+                        <div class="row mb-3">
+                            <div class="col-12 text-center">
+                                <h2 class="section-title mb-1">Pengumuman</h2>
+                                <p class="text-muted mb-0">Info penting/terbaru dari Kelurahan.</p>
+                            </div>
                         </div>
-                    </div>
 
-                    @if ($pengumuman->count())
-                        <div id="pengumumanSlider" class="flash-track d-flex flex-nowrap gap-4 pb-1"
-                            style="scroll-snap-type:x mandatory; scroll-behavior:smooth;">
+                        @if ($pengumuman->count())
+                            <div id="pengumumanSlider" class="flash-track d-flex flex-nowrap gap-4 pb-1"
+                                style="scroll-snap-type:x mandatory; scroll-behavior:smooth;">
 
-                            @foreach ($pengumuman as $p)
-                                @php
-                                    $judul = trim($p->judul);
-                                    $isi = strip_tags($p->isi);
-                                    $ringkas = \Illuminate\Support\Str::limit($isi, 220);
-                                    $tglStr = $p->mulai_tayang
-                                        ? \Carbon\Carbon::parse($p->mulai_tayang)->format('d M Y, H:i')
-                                        : null;
-                                @endphp
+                                @foreach ($pengumuman as $p)
+                                    @php
+                                        $judul = trim($p->judul);
+                                        $isi = strip_tags($p->isi);
+                                        $ringkas = \Illuminate\Support\Str::limit($isi, 220);
+                                        $tglStr = $p->mulai_tayang
+                                            ? \Carbon\Carbon::parse($p->mulai_tayang)->format('d M Y, H:i')
+                                            : null;
+                                    @endphp
 
-                                <article class="flash-item flash-col" style="scroll-snap-align:start;">
-                                    <div class="card flash-card h-100">
+                                    <article class="flash-item flash-col" style="scroll-snap-align:start;">
+                                        <div class="card flash-card h-100">
 
-                                        <div class="card-body d-flex flex-column">
+                                            <div class="card-body d-flex flex-column">
 
-                                            <div class="d-flex align-items-center gap-2 mb-2">
-                                                <span class="flash-icon">
-                                                    <i class="bi bi-megaphone-fill"></i>
-                                                </span>
+                                                <div class="d-flex align-items-center gap-2 mb-2">
+                                                    <span class="flash-icon">
+                                                        <i class="bi bi-megaphone-fill"></i>
+                                                    </span>
 
-                                                <span class="badge bg-warning text-dark fw-semibold">
-                                                    {{ $p->tipe ?? 'Info' }}
-                                                </span>
+                                                    <span class="badge bg-warning text-dark fw-semibold">
+                                                        {{ $p->tipe ?? 'Info' }}
+                                                    </span>
 
-                                                @if ($tglStr)
-                                                    <small class="text-muted ms-auto">
-                                                        {{ $tglStr }}
-                                                    </small>
-                                                @endif
+                                                    @if ($tglStr)
+                                                        <small class="text-muted ms-auto">
+                                                            {{ $tglStr }}
+                                                        </small>
+                                                    @endif
+                                                </div>
+
+                                                <h5 class="card-title mb-2 line-clamp-2">
+                                                    {{ $judul }}
+                                                </h5>
+
+                                                <p class="card-text text-muted mb-3 line-clamp-3">
+                                                    {{ $ringkas }}
+                                                </p>
+
                                             </div>
-
-                                            <h5 class="card-title mb-2 line-clamp-2">
-                                                {{ $judul }}
-                                            </h5>
-
-                                            <p class="card-text text-muted mb-3 line-clamp-3">
-                                                {{ $ringkas }}
-                                            </p>
-
                                         </div>
-                                    </div>
-                                </article>
-                            @endforeach
-                        </div>
+                                    </article>
+                                @endforeach
+                            </div>
                 </section>
             @endif
 
@@ -479,6 +479,42 @@
         {{-- SECTION: VIDEO --}}
         @if ($section == 'video')
             <section id="video" class="py-5">
+                <div class="container-fluid px-lg-5">
+                    <div class="row mb-4">
+                        <div class="col-12 text-center">
+                            <h2 class="section-title">Video Profil</h2>
+                            <p class="text-muted">Kenali lebih dekat Kelurahan Kademangan.</p>
+                        </div>
+                    </div>
+                    @if (!empty($video_id))
+                        <div class="row justify-content-center">
+                            <div class="col-lg-10">
+                                <div class="video-card brand-card shadow-sm rounded-4 overflow-hidden">
+                                    <div class="ratio ratio-16x9">
+                                        <iframe src="https://www.youtube.com/embed/{{ $video_id }}"
+                                            title="{{ $video_meta['title'] }}" frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen></iframe>
+                                    </div>
+
+                                    <div
+                                        class="video-info d-flex justify-content-between align-items-center px-4 py-3 bg-white">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <span class="yt-badge text-light" aria-hidden="true"
+                                                style="font-size: 1.5rem;">
+                                                <i class="bi bi-play-btn-fill"></i>
+                                            </span>
+                                            <div>
+                                                <h5 class="video-title mb-1 fw-bold">{{ $video_meta['title'] }}</h5>
+                                                <p class="video-channel mb-0 text-muted small">
+                                                    {{ $video_meta['author_name'] }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
             </section>
         @endif
         @endforeach
