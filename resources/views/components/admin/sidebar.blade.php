@@ -55,7 +55,7 @@
                         ],
                         [
                             'slug' => 'surat_penghasilan',
-                            'url' => 'admin/surat_penghasilan',
+                            'url' => 'admin/surat-penghasilan',
                             'label' => 'Surat Keterangan Penghasilan',
                         ],
                         [

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\RefJabatanController;
 use App\Http\Controllers\Admin\RunningTextController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SuratBelumBekerjaController;
+use App\Http\Controllers\Admin\SuratPenghasilanController;
 use App\Http\Controllers\Admin\SuratSktmController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
@@ -193,6 +194,24 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::delete('/{id}', [SuratBelumBekerjaController::class, 'destroy'])->name('admin.belum-bekerja.delete');
 
         Route::get('/{id}/cetak', [SuratBelumBekerjaController::class, 'cetak'])->name('admin.belum-bekerja.cetak');
+    });
+
+
+    Route::prefix('surat-penghasilan')->group(function () {
+
+        Route::get('/', [SuratPenghasilanController::class, 'index'])->name('admin.penghasilan.index');
+
+        Route::get('/export', [SuratPenghasilanController::class, 'export'])->name('admin.penghasilan.export');
+
+        Route::get('/{id}', [SuratPenghasilanController::class, 'detail'])->name('admin.penghasilan.detail');
+
+        Route::get('/{id}/edit', [SuratPenghasilanController::class, 'edit'])->name('admin.penghasilan.edit');
+
+        Route::put('/{id}', [SuratPenghasilanController::class, 'update'])->name('admin.penghasilan.update');
+
+        Route::delete('/{id}', [SuratPenghasilanController::class, 'destroy'])->name('admin.penghasilan.delete');
+
+        Route::get('/{id}/cetak', [SuratPenghasilanController::class, 'cetak'])->name('admin.penghasilan.cetak');
     });
 });
 
