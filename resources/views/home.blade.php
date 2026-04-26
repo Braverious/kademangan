@@ -167,6 +167,34 @@
         align-items: center;
         justify-content: center;
     }
+
+    /* Sembunyikan scrollbar tapi tetap bisa di-scroll */
+    #layananSlider {
+        overflow-x: auto !important;
+        /* Tetap bisa geser */
+        -ms-overflow-style: none !important;
+        /* IE and Edge */
+        scrollbar-width: none !important;
+        /* Firefox */
+    }
+
+    #layananSlider::-webkit-scrollbar {
+        display: none;
+        /* Chrome, Safari, and Opera */
+    }
+
+    /* Biar tombol navigasi kelihatan lebih pas */
+    .nav-arrow {
+        z-index: 10;
+        background: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 </style>
 <x-header :title="$title" />
 <main>
@@ -280,7 +308,7 @@
 
                         <div class="position-relative">
                             <button id="layananPrev"
-                                class="nav-arrow btn btn-outline-primary btn-sm position-absolute top-50 start-0 translate-middle-y d-none d-lg-inline-flex"
+                                class="nav-arrow btn btn-outline-primary btn-sm position-absolute top-50 start-0 translate-middle-y d-none"
                                 type="button">
                                 <i class="bi bi-chevron-left"></i>
                             </button>
@@ -290,7 +318,7 @@
                                 <i class="bi bi-chevron-right"></i>
                             </button>
 
-                            <div id="layananSlider" class="d-flex flex-nowrap gap-4 overflow-auto pb-2"
+                            <div id="layananSlider" class="d-flex flex-nowrap gap-4 pb-2"
                                 style="scroll-snap-type:x mandatory; scroll-behavior:smooth;">
                                 @forelse ($layanan as $item)
                                     <div class="slider-item col-10 col-sm-6 col-lg-3 p-0 flex-shrink-0"
@@ -572,6 +600,49 @@
 
 <x-footer></x-footer>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slider = document.getElementById('layananSlider');
+        const btnNext = document.getElementById('layananNext');
+        const btnPrev = document.getElementById('layananPrev');
+
+        if (slider && btnNext && btnPrev) {
+            const scrollStep = 320; // Sesuaikan dengan lebar satu card + gap
+
+            // Klik Next
+            btnNext.addEventListener('click', () => {
+                slider.scrollBy({
+                    left: scrollStep,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Klik Prev
+            btnPrev.addEventListener('click', () => {
+                slider.scrollBy({
+                    left: -scrollStep,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Pantau pergerakan scroll untuk muncul/hilangkan tombol
+            slider.addEventListener('scroll', () => {
+                // Jika di posisi awal (0), sembunyikan Prev
+                if (slider.scrollLeft <= 5) {
+                    btnPrev.classList.add('d-none');
+                } else {
+                    btnPrev.classList.remove('d-none');
+                }
+
+                // Jika sudah di ujung kanan, sembunyikan Next
+                const isEnd = slider.scrollLeft + slider.offsetWidth >= slider.scrollWidth - 5;
+                if (isEnd) {
+                    btnNext.classList.add('d-none');
+                } else {
+                    btnNext.classList.remove('d-none');
+                }
+            });
+        }
+    });
     // Fungsi untuk buka-tutup jendela chatbot
     function toggleChat() {
         const chatWindow = document.getElementById('chatbot-window');
