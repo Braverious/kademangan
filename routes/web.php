@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\SuratBelumBekerjaController;
 use App\Http\Controllers\Admin\SuratPenghasilanController;
 use App\Http\Controllers\Admin\SuratSktmController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\FrontBeritaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\HomeController;
@@ -36,6 +37,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/berita', [FrontBeritaController::class, 'index'])->name('berita.index');
+Route::get('/berita/{slug}', [FrontBeritaController::class, 'detail'])->name('berita.detail');
 
 Route::post('/chatbot/send', [ChatbotController::class, 'handleChat'])->middleware('throttle:10,1');
 Route::get('/admin/chatbot', [ChatbotController::class, 'adminIndex'])->name('admin.chatbot.index')->middleware('throttle:5,1');

@@ -37,7 +37,7 @@
 <script src="{{ asset('assets/admin/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
 
 <script src="{{ asset('assets/admin/js/atlantis.min.js') }}"></script>
-<script src="{{ asset('assets/admin/js/custom.js?v=2') }}"></script>
+<script src="{{ asset('assets/admin/js/custom.js?v=3') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         updateVideoPreview(); // Jalankan preview saat halaman dimuat
@@ -54,10 +54,16 @@
     }
 
     function updateVideoPreview() {
-        const url = document.getElementById('youtube_link').value;
+        const input = document.getElementById('youtube_link');
         const container = document.getElementById('video_preview_container');
         const iframe = document.getElementById('video_preview');
         const msg = document.getElementById('video_preview_message');
+
+        if (!input || !container || !iframe || !msg) {
+            return;
+        }
+
+        const url = input.value;
         const videoId = getYoutubeVideoId(url);
 
         if (videoId) {

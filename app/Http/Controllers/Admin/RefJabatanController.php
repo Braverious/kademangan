@@ -59,7 +59,7 @@ class RefJabatanController extends Controller
             'is_active' => $request->boolean('is_active', true),
         ]);
 
-        return redirect()->route('admin.jabatan.index')->with('success', 'Jabatan berhasil ditambahkan.');
+        return redirect()->route('admin.settings.jabatan.index')->with('success', 'Jabatan berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -101,7 +101,7 @@ class RefJabatanController extends Controller
             'is_active' => $request->boolean('is_active'),
         ]);
 
-        return redirect()->route('admin.jabatan.index')->with('success', 'Jabatan berhasil diperbarui.');
+        return redirect()->route('admin.settings.jabatan.index')->with('success', 'Jabatan berhasil diperbarui.');
     }
 
     public function toggle($id)
@@ -114,7 +114,7 @@ class RefJabatanController extends Controller
 
         $status = $jabatan->is_active ? 'diaktifkan' : 'dinonaktifkan';
 
-        return redirect()->route('admin.jabatan.index')->with('success', "Jabatan berhasil {$status}.");
+        return redirect()->route('admin.settings.jabatan.index')->with('success', "Jabatan berhasil {$status}.");
     }
 
     public function destroy($id)
@@ -124,13 +124,13 @@ class RefJabatanController extends Controller
         $jabatan = RefJabatan::withCount('users')->findOrFail($id);
 
         if ($jabatan->users_count > 0) {
-            return redirect()->route('admin.jabatan.index')
+            return redirect()->route('admin.settings.jabatan.index')
                 ->with('error', 'Jabatan tidak bisa dihapus karena masih dipakai oleh user. Nonaktifkan saja jika ingin disembunyikan.');
         }
 
         $jabatan->delete();
 
-        return redirect()->route('admin.jabatan.index')->with('success', 'Jabatan berhasil dihapus.');
+        return redirect()->route('admin.settings.jabatan.index')->with('success', 'Jabatan berhasil dihapus.');
     }
 
     private function authorizeSuperadmin(): void

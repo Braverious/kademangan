@@ -54,7 +54,7 @@
                         <div class="form-group">
                             <label>Isi Berita</label>
                             <textarea name="isi_berita" id="isi_berita" class="form-control" rows="10"
-                                data-upload-url="{{ route('admin.berita.upload-gambar') }}" required>{{ old('isi_berita') }}</textarea>
+                                data-upload-url="{{ route('admin.berita.upload-gambar') }}">{{ old('isi_berita') }}</textarea>
                         </div>
 
                         <div class="d-flex gap-2">

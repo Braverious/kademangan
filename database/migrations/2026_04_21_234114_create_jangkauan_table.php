@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coverage_stats', function (Blueprint $table) {
+        Schema::create('jangkauan', function (Blueprint $table) {
             $table->id();
             $table->integer('jumlah_kk')->default(0);
             $table->integer('jumlah_penduduk')->default(0);

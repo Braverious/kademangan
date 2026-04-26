@@ -234,6 +234,9 @@ if (textareaBerita && typeof ClassicEditor !== 'undefined') {
 
   ClassicEditor.create(textareaBerita, editorConfig).then(editor => {
     ck = editor;
+    editor.model.document.on('change:data', function () {
+      textareaBerita.value = editor.getData();
+    });
   }).catch(console.error);
 
   function isEmptyHtml(html) {
@@ -244,6 +247,10 @@ if (textareaBerita && typeof ClassicEditor !== 'undefined') {
 
   textareaBerita.closest('form')?.addEventListener('submit', function (e) {
     try {
+      if (!ck) {
+        return;
+      }
+
       const data = ck.getData();
       if (isEmptyHtml(data)) {
         e.preventDefault();
@@ -267,6 +274,10 @@ document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
   checkbox.addEventListener('change', function () {
     const position = this.name.includes('top') ? 'top' : 'bottom';
     const marquee = document.getElementById(`preview_marquee_${position}`);
+
+    if (!marquee) {
+      return;
+    }
 
     if (this.checked) {
       marquee.style.opacity = "1";

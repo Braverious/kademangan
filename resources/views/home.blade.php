@@ -242,7 +242,7 @@
     <main>
         @php
             // 1. Sinkronkan nama default dengan yang ada di database
-            $defaultOrder = ['home', 'marquee-info', 'Layanan', 'pengumuman', 'coverage', 'galeri', 'berita', 'video'];
+            $defaultOrder = ['home', 'runningtext', 'Layanan', 'pengumuman', 'coverage', 'galeri', 'berita', 'video'];
 
             // 2. Ambil urutan, pastikan casting array
             $sections = isset($setting) && $setting->section_order ? $setting->section_order : $defaultOrder;
@@ -272,7 +272,7 @@
             @endif
 
             {{-- SECTION: RUNNING TEXT --}}
-            @if ($section == 'runningtext')
+            @if (in_array($section, ['runningtext', 'marquee-info']))
                 @if (isset($runningTexts) && $runningTexts->count() > 0)
                     <section id="marquee-info" class="py-2">
                         <div class="container-fluid px-lg-5">
@@ -495,61 +495,64 @@
         {{-- SECTION: BERITA --}}
         @if ($section == 'berita')
             <section id="berita" class="py-5 bg-light section-abstract">
-                @if ($section == 'berita')
-                    <section id="berita" class="py-5 bg-light section-abstract">
-                        <div class="container-fluid px-lg-5">
-                            <div class="row mb-4">
-                                <div class="col-12 text-center">
-                                    <h2 class="section-title">Berita Terbaru</h2>
-                                    <p class="text-muted">Kegiatan kelurahan dan informasi aktual untuk warga.</p>
+                <div class="container-fluid px-lg-5">
+                    <div class="row mb-4">
+                        <div class="col-12 text-center">
+                            <h2 class="section-title">Berita Terbaru</h2>
+                            <p class="text-muted">Kegiatan kelurahan dan informasi aktual untuk warga.</p>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        @forelse ($berita_list as $berita)
+                            <div class="col-md-4">
+                                <div class="card news-card h-100 overflow-hidden rounded-4 shadow-sm">
+                                    <img
+                                        src="{{ asset('storage/' . $berita->gambar) }}"
+                                        class="card-img-top news-img"
+                                        alt="{{ $berita->judul_berita }}"
+                                        style="height: 200px; object-fit: cover;">
+
+                                    <div class="card-body d-flex flex-column">
+                                        <span class="badge bg-primary-subtle text-primary align-self-start mb-2">
+                                            {{ $berita->kategori }}
+                                        </span>
+
+                                        <div class="text-muted small mb-1">
+                                            Dipublikasikan oleh
+                                            <span class="fw-semibold text-primary">
+                                                {{ $berita->user->nama_lengkap ?? 'Admin Kelurahan' }}
+                                            </span>
+
+                                            @if ($berita->tgl_publish)
+                                                • <time datetime="{{ $berita->tgl_publish->format('Y-m-d') }}">
+                                                    {{ $berita->tgl_publish->format('d M Y') }}
+                                                </time>
+                                            @endif
+                                        </div>
+
+                                        <h5 class="card-title mb-2">
+                                            {{ $berita->judul_berita }}
+                                        </h5>
+
+                                        <p class="card-text small text-muted mb-3 flex-grow-1 home-news-excerpt">
+                                            {{ Str::limit(strip_tags(html_entity_decode($berita->isi_berita)), 160) }}
+                                        </p>
+
+                                        <a href="{{ route('berita.detail', $berita->slug_berita) }}"
+                                        class="btn btn-outline-primary btn-sm mt-auto">
+                                            Baca Selengkapnya
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="row g-4">
-                                {{-- Loop Statis untuk Preview (3 Berita) --}}
-                                @for ($i = 1; $i <= 3; $i++)
-                                    <div class="col-md-4">
-                                        <div class="card news-card h-100 overflow-hidden rounded-4 shadow-sm">
-                                            <img src="https://placehold.co/600x400?text=Berita+Kelurahan+{{ $i }}"
-                                                class="card-img-top news-img" alt="Berita {{ $i }}"
-                                                style="height: 200px; object-fit: cover;">
-
-                                            <div class="card-body d-flex flex-column">
-                                                <span
-                                                    class="badge bg-primary-subtle text-primary align-self-start mb-2">
-                                                    Pengumuman
-                                                </span>
-
-                                                <div class="text-muted small mb-1">
-                                                    Dipublikasikan oleh
-                                                    <span class="fw-semibold text-primary">Admin Kelurahan</span>
-                                                    • <time datetime="2024-04-17">17 Apr 2024</time>
-                                                </div>
-
-                                                <h5 class="card-title mb-2">Kegiatan Kerja Bakti Rutin Lingkungan
-                                                    Kademangan
-                                                </h5>
-
-                                                <p
-                                                    class="card-text small text-muted mb-3 flex-grow-1 home-news-excerpt">
-                                                    Ini adalah contoh teks ringkasan berita kelurahan. Warga
-                                                    diharapkan
-                                                    berpartisipasi
-                                                    dalam
-                                                    menjaga kebersihan lingkungan sekitar demi kenyamanan bersama...
-                                                </p>
-
-                                                <a href="#" class="btn btn-outline-primary btn-sm mt-auto">
-                                                    Baca Selengkapnya
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endfor
+                        @empty
+                            <div class="col-12 text-center">
+                                <p>Belum ada berita yang dipublikasikan.</p>
                             </div>
-                        </div>
-                    </section>
-                @endif
+                        @endforelse
+                    </div>
+                </div>
             </section>
         @endif
 

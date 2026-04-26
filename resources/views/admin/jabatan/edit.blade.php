@@ -72,7 +72,7 @@
 
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                            <a href="{{ route('admin.jabatan.index') }}" class="btn btn-secondary">Batal</a>
+                            <a href="{{ route('admin.settings.jabatan.index') }}" class="btn btn-secondary">Batal</a>
                         </div>
                     </form>
                 </div>

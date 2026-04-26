@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\RunningText;
 
 class RunningTextController extends Controller
@@ -13,6 +12,8 @@ class RunningTextController extends Controller
     {
         // Mengambil semua data running text dan diubah menjadi koleksi dengan key 'position'
         $runningTexts = RunningText::all()->keyBy('position');
+        $top = $runningTexts->get('top') ?? $this->defaultRunningText('top');
+        $bottom = $runningTexts->get('bottom') ?? $this->defaultRunningText('bottom');
 
         $breadcrumbs = [
             ['label' => 'Pengaturan', 'url' => null], // url null jika tidak ingin bisa diklik
@@ -21,8 +22,8 @@ class RunningTextController extends Controller
 
         return view('admin.runningtext', [
             'title' => 'Running Text Settings',
-            'top' => $runningTexts->get('top'),
-            'bottom' => $runningTexts->get('bottom'),
+            'top' => $top,
+            'bottom' => $bottom,
             'breadcrumbs' => $breadcrumbs,
         ]);
     }
@@ -38,8 +39,8 @@ class RunningTextController extends Controller
             'bottom_speed' => 'required|integer|min:1|max:10',
         ]);
 
-        // Update Top - Menggunakan data dari request sepenuhnya
-        RunningText::where('position', 'top')->update([
+        // Update Top - buat record jika belum ada.
+        RunningText::updateOrCreate(['position' => 'top'], [
             'content' => $request->top_content,
             'direction' => $request->top_direction,
             'speed' => $request->top_speed,
@@ -47,7 +48,7 @@ class RunningTextController extends Controller
         ]);
 
         // Update Bottom
-        RunningText::where('position', 'bottom')->update([
+        RunningText::updateOrCreate(['position' => 'bottom'], [
             'content' => $request->bottom_content,
             'direction' => $request->bottom_direction,
             'speed' => $request->bottom_speed,
@@ -55,5 +56,16 @@ class RunningTextController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Data berhasil diperbarui langsung ke database.');
+    }
+
+    private function defaultRunningText(string $position): RunningText
+    {
+        return new RunningText([
+            'position' => $position,
+            'content' => '',
+            'direction' => 'left',
+            'speed' => 5,
+            'is_active' => true,
+        ]);
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Layanan;
 use App\Models\Pengumuman;
 use App\Models\Galeri;
+use App\Models\Berita;
 use App\Models\SiteSetting;
 
 class HomeController extends Controller
@@ -18,6 +19,8 @@ class HomeController extends Controller
             'title' => $setting->home_title ?? 'Layanan Publik Kelurahan yang Mudah & Transparan',
             'description' => $setting->home_description ?? 'Akses informasi, ajukan layanan, dan baca berita terbaru seputar kelurahan Anda dalam satu halaman.',
         ];
+
+        $berita_list = Berita::with('user')->orderByDesc('tgl_publish')->take(3)->get();
 
         $layanan = Layanan::orderByDesc('id')->get();
 
@@ -61,6 +64,7 @@ class HomeController extends Controller
             'pengumuman' => $pengumuman,
             'runningTexts' => $runningTexts,
             'galeri' => $galeri,
+            'berita_list' => $berita_list,
             'video_id' => $video_id,
             'video_meta' => $video_meta,
             'botSettings' => $botSettings,
