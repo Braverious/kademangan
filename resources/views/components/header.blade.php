@@ -41,8 +41,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <a class="navbar-brand fw-bold navbar-brand-center brand-kademangan" href="#">
-                <span class="brand-line-1">Kademangan</span>
+            <a class="navbar-brand fw-bold navbar-brand-center brand-kademangan" href="{{ route('home') }}">
+                <span class="brand-line-1">KADEMANGAN</span>
                 <span class="brand-line-2">Solutif &middot; Kolaboratif &middot; Inklusif</span>
             </a>
 
@@ -67,7 +67,7 @@
                             <li class="nav-item">
                                 {{-- Menggunakan request()->is() untuk deteksi menu aktif --}}
                                 <a class="nav-link px-3 d-flex align-items-center gap-2 {{ request()->is('/') || request()->is('home') ? 'active' : '' }}"
-                                    href="#">
+                                    href="{{ route('home') }}">
                                     <i class="fa-solid fa-house" aria-hidden="true"></i>
                                     <span>Home</span>
                                 </a>
@@ -75,37 +75,10 @@
 
                             <li class="nav-item dropdown">
                                 <a href="#"
-                                    class="nav-link d-none d-lg-flex align-items-center gap-2 px-3 {{ request()->is('pelayanan*') ? 'active' : '' }}">
+                                    class="nav-link d-flex align-items-center gap-2 px-3 {{ request()->is('pelayanan*') ? 'active' : '' }}">
                                     <i class="fa-solid fa-file-signature" aria-hidden="true"></i>
                                     <span>Pelayanan</span>
                                 </a>
-
-                                <a href="#"
-                                    class="nav-link dropdown-toggle d-lg-none d-flex align-items-center gap-2 px-3"
-                                    data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                    <i class="fa-solid fa-file-signature" aria-hidden="true"></i>
-                                    <span>Pelayanan</span>
-                                </a>
-
-                                <ul class="dropdown-menu shadow rounded-3 border-0 p-2">
-                                    <li>
-                                        <h6 class="dropdown-header fw-bold text-primary">
-                                            <i class="fas fa-envelope-open-text me-2"></i>Pilih Jenis Surat
-                                        </h6>
-                                    </li>
-                                    <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i
-                                                class="fas fa-shield-alt me-2"></i>SKTM</a></li>
-                                    <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i
-                                                class="fas fa-user me-2"></i>Ket. Belum Bekerja</a></li>
-                                    <li><a class="dropdown-item d-flex align-items-center gap-2" href="#"><i
-                                                class="fas fa-university me-2"></i>Domisili Yayasan</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item text-center fw-semibold text-primary" href="#">
-                                            <i class="fas fa-ellipsis-h me-1"></i>Layanan Lainnya
-                                        </a></li>
-                                </ul>
                             </li>
 
                             <li class="nav-item dropdown">
@@ -115,19 +88,31 @@
                                     <span>LKK</span>
                                 </a>
                                 <ul class="dropdown-menu shadow rounded-3 border-0 p-2">
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-users me-2"></i>RT
-                                            dan
-                                            RW</a></li>
-                                    <li><a class="dropdown-item" href="#"><i
-                                                class="fas fa-hand-holding-heart me-2"></i>PKK</a></li>
-                                    <li><a class="dropdown-item" href="#"><i
-                                                class="fas fa-hands-helping me-2"></i>Karang Taruna</a></li>
+                                    <li>
+                                        <h6 class="dropdown-header fw-bold text-primary">
+                                            <i class="fas fa-sitemap me-2"></i>Lembaga Kemasyarakatan Kelurahan
+                                        </h6>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-users me-2"></i>RT dan RW</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-hand-holding-heart me-2"></i>PKK</a></li>
+                                    <li><a class="dropdown-item" href="https://www.instagram.com/karangtarunakademangan?igsh=MWZzd2VlcGgxaGM5NQ==" target="_blank" rel="noopener">
+                                            <i class="fas fa-hands-helping me-2"></i>Karang Taruna</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-clinic-medical me-2"></i>Posyandu</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-project-diagram me-2"></i>LPM</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-mosque me-2"></i>MUI Kelurahan</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-mosque me-2"></i>DMI Kelurahan</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-quran me-2"></i>LPTQ Kelurahan</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-book-open me-2"></i>Pengajian Al Hidayah</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-recycle me-2"></i>TPS3R dan Bank Sampah</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-seedling me-2"></i>KWT dan Poktan</a></li>
+                                    <li><a class="dropdown-item" href="https://www.instagram.com/kkmp_kademangan?igsh=MWxsOXNhNXEzaGlsYg==" target="_blank" rel="noopener">
+                                            <i class="fa-solid fa-coins"></i> Koperasi Merah Putih</a></li>
                                 </ul>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link px-3 d-flex align-items-center gap-2 {{ request()->is('berita*') ? 'active' : '' }}"
-                                    href="#">
+                                    href="{{ route('berita.index') }}">
                                     <i class="fa-regular fa-newspaper" aria-hidden="true"></i>
                                     <span>Berita</span>
                                 </a>

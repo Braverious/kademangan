@@ -30,5 +30,7 @@ class SuratBelumBekerja extends Model
 
     protected $casts = [
         'dokumen_pendukung' => 'array',
+        'tanggal_surat_rt' => 'date',
+        'tanggal_lahir' => 'date',
     ];
 }

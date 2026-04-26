@@ -30,4 +30,9 @@ class SuratSktm extends Model
         'status',
         'id_user'
     ];
+
+    protected $casts = [
+        'tanggal_surat_rt' => 'date',
+        'tanggal_lahir' => 'date',
+    ];
 }

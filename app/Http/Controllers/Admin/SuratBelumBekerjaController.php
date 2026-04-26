@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Exports\ArrayRekapExport;
 use App\Models\SuratBelumBekerja;
 use App\Models\Pejabat;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SuratBelumBekerjaController extends Controller
 {
@@ -240,49 +243,59 @@ class SuratBelumBekerjaController extends Controller
     public function export(Request $request)
     {
         $bulan = $request->get('bulan', now()->format('Y-m'));
-
-        $start = $bulan . '-01';
-        $end = date('Y-m-t', strtotime($start));
+        $periode = Carbon::createFromFormat('Y-m', $bulan)->startOfMonth();
 
         $data = SuratBelumBekerja::whereBetween('created_at', [
-            $start . ' 00:00:00',
-            $end . ' 23:59:59'
-        ])->orderBy('created_at', 'asc')->get();
+            $periode->copy()->startOfMonth(),
+            $periode->copy()->endOfMonth(),
+        ])->orderBy('created_at')->get();
 
-        $filename = 'rekap-belum-bekerja-' . $bulan . '.csv';
-
-        $headers = [
-            "Content-type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=$filename",
+        $headings = [
+            'No',
+            'Tanggal Pengajuan',
+            'Nomor Surat RT',
+            'Tanggal Surat RT',
+            'Nomor Surat Kelurahan',
+            'Nama Pemohon',
+            'NIK',
+            'Tempat Lahir',
+            'Tanggal Lahir',
+            'Jenis Kelamin',
+            'Warga Negara',
+            'Agama',
+            'Pekerjaan',
+            'Alamat',
+            'Keperluan',
+            'Telepon',
+            'Status',
         ];
 
-        $callback = function () use ($data) {
-            $file = fopen('php://output', 'w');
+        $rows = $data->values()->map(function ($row, int $index) {
+            return [
+                $index + 1,
+                optional($row->created_at)->format('d/m/Y H:i'),
+                (string) $row->nomor_surat_rt,
+                optional($row->tanggal_surat_rt)->format('d/m/Y'),
+                (string) $row->nomor_surat,
+                $row->nama_pemohon,
+                (string) $row->nik,
+                $row->tempat_lahir,
+                optional($row->tanggal_lahir)->format('d/m/Y'),
+                $row->jenis_kelamin,
+                $row->warganegara,
+                $row->agama,
+                $row->pekerjaan,
+                $row->alamat,
+                $row->keperluan,
+                (string) $row->telepon_pemohon,
+                $row->status,
+            ];
+        })->all();
 
-            fputcsv($file, [
-                'No',
-                'Tanggal',
-                'Nama',
-                'NIK',
-                'Status'
-            ]);
-
-            $no = 1;
-
-            foreach ($data as $row) {
-                fputcsv($file, [
-                    $no++,
-                    $row->created_at,
-                    $row->nama_pemohon,
-                    $row->nik,
-                    $row->status
-                ]);
-            }
-
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
+        return Excel::download(
+            new ArrayRekapExport($headings, $rows, 'Rekap Belum Bekerja'),
+            'rekap-belum-bekerja-' . $bulan . '.xlsx'
+        );
     }
 
     public function destroy($id)
