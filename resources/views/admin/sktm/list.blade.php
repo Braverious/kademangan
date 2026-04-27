@@ -4,54 +4,29 @@
 <div class="page-inner">
 
     <!-- HEADER -->
-    <div class="page-header">
-        <h4 class="page-title">Data Surat Keterangan Tidak Mampu</h4>
-
-        <ul class="breadcrumbs">
-            <li class="nav-home">
-                <a href="{{ route('admin.dashboard') }}">
-                    <i class="flaticon-home"></i>
-                </a>
-            </li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a>Surat Pelayanan</a></li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a>SKTM</a></li>
-        </ul>
+    <div class="page-header mb-0.5">
+        <x-admin.breadcrumbs :title="$title" :breadcrumbs="$breadcrumbs" />
     </div>
-
     <div class="card">
-
-
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
-
             <h4 class="card-title mb-0">Daftar Pengajuan</h4>
-
             <form method="GET" action="{{ route('admin.sktm.export') }}"
                 class="d-flex align-items-center gap-2 flex-wrap">
-
                 <span class="text-muted mr-2">Rekap Bulan</span>
-
                 <input type="month" name="bulan" class="form-control form-control-sm" style="width: 160px;"
                     value="{{ request('bulan', date('Y-m')) }}" max="{{ date('Y-m') }}">
-
                 <button class="btn btn-success btn-sm ml-2">
                     <i class="fa fa-file-excel mr-1"></i> Export Excel
                 </button>
-
             </form>
-
         </div>
-
         <!-- BODY -->
         <div class="card-body">
-
             @if (session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
                 </div>
             @endif
-
             <div class="table-responsive">
                 <table id="datatable-sktm" class="display table table-striped table-hover w-100">
 

@@ -1,21 +1,9 @@
 <x-admin.header :title="$title" />
 <x-admin.sidebar />
-
 <div class="page-inner">
-    <div class="page-header">
-        <h4 class="page-title">Data Surat Keterangan Belum Bekerja</h4>
 
-        <ul class="breadcrumbs">
-            <li class="nav-home">
-                <a href="{{ route('admin.dashboard') }}">
-                    <i class="flaticon-home"></i>
-                </a>
-            </li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a href="#">Surat Pelayanan</a></li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a>Data Surat Keterangan Belum Bekerja</a></li>
-        </ul>
+    <div class="page-header mb-0.5">
+        <x-admin.breadcrumbs :title="$title" :breadcrumbs="$breadcrumbs" />
     </div>
 
     <div class="card">

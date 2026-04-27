@@ -26,8 +26,13 @@ class SuratSktmController extends Controller
     {
         $title = 'Data Surat SKTM';
         $list = SuratSktm::latest()->get();
+        $breadcrumbs = [
+            ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
+            ['label' => 'Surat Keterangan', 'url' => '#'],
+            ['label' => 'SKTM', 'url' => route('admin.sktm.index')],
+        ];
 
-        return view('admin.sktm.list', compact('title', 'list'));
+        return view('admin.sktm.list', compact('title', 'list', 'breadcrumbs'));
     }
 
     public function detail($id)

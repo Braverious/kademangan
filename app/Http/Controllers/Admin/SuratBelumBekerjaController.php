@@ -25,11 +25,14 @@ class SuratBelumBekerjaController extends Controller
     public function index()
     {
         $list = SuratBelumBekerja::orderBy('created_at', 'desc')->get();
+        $title = 'Data Surat Keterangan Belum Bekerja';
+        $breadcrumbs = [
+            ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
+            ['label' => 'Surat Keterangan', 'url' => '#'],
+            ['label' => 'Belum Bekerja', 'url' => route('admin.belum-bekerja.index')],
+        ];
 
-        return view('admin.surat_belum_bekerja.list', [
-            'title' => 'Data Surat Keterangan Belum Bekerja',
-            'list' => $list
-        ]);
+        return view('admin.surat_belum_bekerja.list', compact('title', 'list', 'breadcrumbs'));
     }
 
     public function detail($id)

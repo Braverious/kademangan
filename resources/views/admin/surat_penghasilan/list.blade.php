@@ -2,20 +2,8 @@
 <x-admin.sidebar />
 
 <div class="page-inner">
-    <div class="page-header">
-        <h4 class="page-title">Data Surat Keterangan Penghasilan</h4>
-
-        <ul class="breadcrumbs">
-            <li class="nav-home">
-                <a href="{{ route('admin.dashboard') }}">
-                    <i class="flaticon-home"></i>
-                </a>
-            </li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a>Surat Pelayanan</a></li>
-            <li class="separator"><i class="flaticon-right-arrow"></i></li>
-            <li class="nav-item"><a>Surat Penghasilan</a></li>
-        </ul>
+    <div class="page-header mb-0.5">
+        <x-admin.breadcrumbs :title="$title" :breadcrumbs="$breadcrumbs" />
     </div>
 
     <div class="card">

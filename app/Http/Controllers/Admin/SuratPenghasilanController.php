@@ -24,12 +24,17 @@ class SuratPenghasilanController extends Controller
 {
     public function index()
     {
+        $title = 'Data Surat Keterangan Penghasilan';
         $list = SuratPenghasilan::latest()->get();
+        $breadcrumbs = [
+            ['label' => 'Dashboard', 'url' => route('admin.dashboard')],
+            ['label' => 'Surat Keterangan', 'url' => '#'],
+            ['label' => 'Penghasilan', 'url' => route('admin.penghasilan.index')],
+        ];
 
-        return view('admin.surat_penghasilan.list', [
-            'title' => 'Data Surat Keterangan Penghasilan',
-            'list' => $list
-        ]);
+        return view(
+            'admin.surat_penghasilan.list', compact('title', 'list', 'breadcrumbs')
+        );
     }
 
     public function detail($id)
@@ -230,9 +235,18 @@ class SuratPenghasilanController extends Controller
         $bulan = substr($bulanParam, 5, 2);
 
         $namaBulan = [
-            '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April',
-            '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus',
-            '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember',
+            '01' => 'Januari',
+            '02' => 'Februari',
+            '03' => 'Maret',
+            '04' => 'April',
+            '05' => 'Mei',
+            '06' => 'Juni',
+            '07' => 'Juli',
+            '08' => 'Agustus',
+            '09' => 'September',
+            '10' => 'Oktober',
+            '11' => 'November',
+            '12' => 'Desember',
         ];
         $namaBulanIndo = $namaBulan[$bulan] ?? $bulanParam;
 
@@ -275,9 +289,22 @@ class SuratPenghasilanController extends Controller
 
         // Lebar Kolom A-P
         $columnWidths = [
-            'A' => 6, 'B' => 14, 'C' => 18, 'D' => 22, 'E' => 18, 'F' => 14,
-            'G' => 12, 'H' => 12, 'I' => 12, 'J' => 12, 'K' => 18, 'L' => 26,
-            'M' => 22, 'N' => 16, 'O' => 12, 'P' => 18
+            'A' => 6,
+            'B' => 14,
+            'C' => 18,
+            'D' => 22,
+            'E' => 18,
+            'F' => 14,
+            'G' => 12,
+            'H' => 12,
+            'I' => 12,
+            'J' => 12,
+            'K' => 18,
+            'L' => 26,
+            'M' => 22,
+            'N' => 16,
+            'O' => 12,
+            'P' => 18
         ];
         foreach ($columnWidths as $col => $width) {
             $sheet->getColumnDimension($col)->setWidth($width);
@@ -331,7 +358,7 @@ class SuratPenghasilanController extends Controller
         // ========== Header Tabel ==========
         $headerRow = 10;
         $headers = ['No', 'Tanggal Pengajuan', 'Nomor Surat', 'Nama Pemohon', 'NIK', 'Tempat Lahir', 'Tgl Lahir', 'Jenis Kelamin', 'Warganegara', 'Agama', 'Pekerjaan', 'Alamat', 'Keperluan', 'No. Telepon', 'Status', 'Petugas'];
-        
+
         foreach ($headers as $key => $title) {
             $cell = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($key + 1) . $headerRow;
             $sheet->setCellValue($cell, $title);
@@ -387,7 +414,7 @@ class SuratPenghasilanController extends Controller
 
         // ========== Download ==========
         $filename = 'Rekap_Penghasilan_' . $bulanParam . '.xlsx';
-        
+
         return response()->streamDownload(function () use ($spreadsheet) {
             $writer = new Xlsx($spreadsheet);
             $writer->save('php://output');
@@ -398,4 +425,3 @@ class SuratPenghasilanController extends Controller
         ]);
     }
 }
-
