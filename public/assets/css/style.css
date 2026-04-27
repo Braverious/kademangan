@@ -1067,7 +1067,6 @@ body.is-home .nav-menubar .menubar-floating {
 }
 
 #video .ratio {
-  --bs-aspect-ratio: 60%;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 6px 24px rgba(0, 0, 0, .08);

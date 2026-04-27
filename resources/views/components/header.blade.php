@@ -73,8 +73,8 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item dropdown">
-                                <a href="#"
+                            <li class="nav-item">
+                                <a href="{{ route('pelayanan.index') }}"
                                     class="nav-link d-flex align-items-center gap-2 px-3 {{ request()->is('pelayanan*') ? 'active' : '' }}">
                                     <i class="fa-solid fa-file-signature" aria-hidden="true"></i>
                                     <span>Pelayanan</span>
@@ -82,8 +82,8 @@
                             </li>
 
                             <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle d-flex align-items-center gap-2 px-3"
-                                    data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                                <a href="{{ route('lkk.index') }}"
+                                    class="nav-link d-flex align-items-center gap-2 px-3 {{ request()->is('lkk*') ? 'active' : '' }}">
                                     <i class="fa-solid fa-people-group" aria-hidden="true"></i>
                                     <span>LKK</span>
                                 </a>

@@ -261,7 +261,7 @@
                             <div class="col-lg-7">
                                 <h1 class="display-5 fw-bold mb-3">{{ $homeContent['title'] }}</h1>
                                 <p class="lead text-muted">{{ $homeContent['description'] }}</p>
-                                <a href="#" class="btn btn-primary btn-lg me-2"
+                                <a href="{{ route('pelayanan.index') }}" class="btn btn-primary btn-lg me-2"
                                     style="border-radius: 20px;">Ajukan Layanan</a>
                                 <a href="#Layanan" class="btn btn-outline-primary btn-lg"
                                     style="border-radius: 20px;">Layanan kami</a>
