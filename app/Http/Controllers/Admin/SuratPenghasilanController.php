@@ -8,9 +8,17 @@ use App\Models\SuratPenghasilan;
 use App\Models\Pejabat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class SuratPenghasilanController extends Controller
 {
@@ -210,61 +218,184 @@ class SuratPenghasilanController extends Controller
         return $pdf->stream('surat-penghasilan.pdf');
     }
 
-    public function export(Request $request)
+    public function exportExcel(Request $request)
     {
-        $bulan = $request->get('bulan', now()->format('Y-m'));
-        $periode = Carbon::createFromFormat('Y-m', $bulan)->startOfMonth();
+        // --- 1. Parameter Bulan ---
+        $bulanParam = $request->input('bulan');
+        if (!$bulanParam || !preg_match('/^\d{4}-\d{2}$/', $bulanParam)) {
+            $bulanParam = date('Y-m');
+        }
 
-        $data = SuratPenghasilan::whereBetween('created_at', [
-            $periode->copy()->startOfMonth(),
-            $periode->copy()->endOfMonth(),
-        ])->orderBy('created_at')->get();
+        $tahun = substr($bulanParam, 0, 4);
+        $bulan = substr($bulanParam, 5, 2);
 
-        $headings = [
-            'No',
-            'Tanggal Pengajuan',
-            'Nomor Surat RT',
-            'Tanggal Surat RT',
-            'Nomor Surat Kelurahan',
-            'Nama Pemohon',
-            'NIK',
-            'Tempat Lahir',
-            'Tanggal Lahir',
-            'Jenis Kelamin',
-            'Warga Negara',
-            'Agama',
-            'Pekerjaan',
-            'Alamat',
-            'Keperluan',
-            'Telepon',
-            'Status',
+        $namaBulan = [
+            '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April',
+            '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus',
+            '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember',
         ];
+        $namaBulanIndo = $namaBulan[$bulan] ?? $bulanParam;
 
-        $rows = $data->values()->map(function ($row, int $index) {
-            return [
-                $index + 1,
-                optional($row->created_at)->format('d/m/Y H:i'),
-                (string) $row->nomor_surat_rt,
-                optional($row->tanggal_surat_rt)->format('d/m/Y'),
-                (string) $row->nomor_surat,
-                $row->nama_pemohon,
-                (string) $row->nik,
-                $row->tempat_lahir,
-                optional($row->tanggal_lahir)->format('d/m/Y'),
-                $row->jenis_kelamin,
-                $row->warganegara,
-                $row->agama,
-                $row->pekerjaan,
-                $row->alamat,
-                $row->keperluan,
-                (string) $row->telepon_pemohon,
-                $row->status,
-            ];
-        })->all();
+        // --- 2. Ambil Data ---
+        $startDate = Carbon::parse($bulanParam . '-01')->startOfDay();
+        $endDate   = Carbon::parse($bulanParam . '-01')->endOfMonth()->endOfDay();
 
-        return Excel::download(
-            new ArrayRekapExport($headings, $rows, 'Rekap Penghasilan'),
-            'rekap-penghasilan-' . $bulan . '.xlsx'
-        );
+        $rows = SuratPenghasilan::whereBetween('created_at', [$startDate, $endDate])
+            ->orderBy('created_at', 'ASC')
+            ->get();
+
+        // --- 3. Mapping Petugas ---
+        $petugasMap = [];
+        $idsUser = $rows->pluck('id_user')->filter()->unique()->toArray();
+        if (!empty($idsUser)) {
+            $users = DB::table('users')->whereIn('id', $idsUser)->get();
+            foreach ($users as $u) {
+                $petugasMap[$u->id] = $u->name ?? $u->nama_lengkap ?? $u->username ?? ('User #' . $u->id);
+            }
+        }
+
+        $namaTtd    = '................................';
+        $jabatanTtd = 'Lurah Kademangan';
+
+        // --- 4. Spreadsheet Setup ---
+        $spreadsheet = new Spreadsheet();
+        $sheet       = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Rekap Penghasilan');
+
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Calibri')->setSize(11);
+
+        // Page Setup: F4 Landscape
+        $pageSetup = $sheet->getPageSetup();
+        $pageSetup->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+        $pageSetup->setPaperSize(PageSetup::PAPERSIZE_FOLIO);
+        $pageSetup->setFitToWidth(1);
+        $pageSetup->setFitToHeight(0);
+
+        $sheet->getPageMargins()->setTop(0.5)->setBottom(0.5)->setLeft(0.5)->setRight(0.5);
+
+        // Lebar Kolom A-P
+        $columnWidths = [
+            'A' => 6, 'B' => 14, 'C' => 18, 'D' => 22, 'E' => 18, 'F' => 14,
+            'G' => 12, 'H' => 12, 'I' => 12, 'J' => 12, 'K' => 18, 'L' => 26,
+            'M' => 22, 'N' => 16, 'O' => 12, 'P' => 18
+        ];
+        foreach ($columnWidths as $col => $width) {
+            $sheet->getColumnDimension($col)->setWidth($width);
+        }
+
+        // ========== KOP SURAT ==========
+        $sheet->mergeCells('A1:A5');
+        $sheet->getColumnDimension('A')->setWidth(4);
+        $sheet->getColumnDimension('B')->setWidth(16);
+        $sheet->getRowDimension(1)->setRowHeight(20);
+        $sheet->getRowDimension(2)->setRowHeight(20);
+        $sheet->getRowDimension(3)->setRowHeight(20);
+
+        $logoPath = public_path('assets/img/logo_tangsel.png');
+        if (file_exists($logoPath)) {
+            $drawing = new Drawing();
+            $drawing->setName('Logo');
+            $drawing->setPath($logoPath);
+            $drawing->setHeight(120);
+            $drawing->setCoordinates('A1');
+            $drawing->setOffsetX(30);
+            $drawing->setOffsetY(5);
+            $drawing->setWorksheet($sheet);
+        }
+
+        $sheet->mergeCells('B1:P1');
+        $sheet->mergeCells('B2:P2');
+        $sheet->mergeCells('B3:P3');
+        $sheet->mergeCells('B4:P4');
+        $sheet->mergeCells('B5:P5');
+
+        $sheet->setCellValue('B1', 'PEMERINTAH KOTA TANGERANG SELATAN');
+        $sheet->setCellValue('B2', 'KECAMATAN SETU');
+        $sheet->setCellValue('B3', 'KELURAHAN KADEMANGAN');
+        $sheet->setCellValue('B4', 'Jl. Masjid Jami Al-Latif No.1 Kec. Setu - Tangerang Selatan - Banten 15313');
+        $sheet->setCellValue('B5', 'WA: 083125243200   •   Email: kel.kademangan@gmail.com   •   IG: @kelurahan.kademangan   •   Website: http://kademangan.tangerangselatankota.go.id');
+
+        $sheet->getStyle('B1:B3')->getFont()->setBold(true)->setSize(13);
+        $sheet->getStyle('B1:P5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER)->setWrapText(true);
+        $sheet->getStyle('A5:P5')->getBorders()->getBottom()->setBorderStyle(Border::BORDER_MEDIUM);
+
+        // ========== Judul Rekap ==========
+        $sheet->mergeCells('A7:P7');
+        $sheet->mergeCells('A8:P8');
+        $sheet->setCellValue('A7', 'REKAPITULASI SURAT KETERANGAN PENGHASILAN');
+        $sheet->setCellValue('A8', 'Periode : ' . $namaBulanIndo . ' ' . $tahun);
+
+        $sheet->getStyle('A7')->getFont()->setBold(true)->setSize(12);
+        $sheet->getStyle('A7:A8')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+        // ========== Header Tabel ==========
+        $headerRow = 10;
+        $headers = ['No', 'Tanggal Pengajuan', 'Nomor Surat', 'Nama Pemohon', 'NIK', 'Tempat Lahir', 'Tgl Lahir', 'Jenis Kelamin', 'Warganegara', 'Agama', 'Pekerjaan', 'Alamat', 'Keperluan', 'No. Telepon', 'Status', 'Petugas'];
+        
+        foreach ($headers as $key => $title) {
+            $cell = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($key + 1) . $headerRow;
+            $sheet->setCellValue($cell, $title);
+        }
+
+        $sheet->getStyle('A' . $headerRow . ':P' . $headerRow)->applyFromArray([
+            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER, 'wrapText' => true],
+            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '1147A7']]
+        ]);
+
+        // ========== Isi Data ==========
+        $rowIndex = $headerRow + 1;
+        $no = 1;
+
+        foreach ($rows as $r) {
+            $sheet->setCellValue('A' . $rowIndex, $no++);
+            $sheet->setCellValue('B' . $rowIndex, Carbon::parse($r->created_at)->format('d-m-Y'));
+            $sheet->setCellValue('C' . $rowIndex, $r->nomor_surat);
+            $sheet->setCellValue('D' . $rowIndex, $r->nama_pemohon);
+            $sheet->setCellValueExplicit('E' . $rowIndex, (string)$r->nik, DataType::TYPE_STRING);
+            $sheet->setCellValue('F' . $rowIndex, $r->tempat_lahir);
+            $sheet->setCellValue('G' . $rowIndex, $r->tanggal_lahir ? Carbon::parse($r->tanggal_lahir)->format('d-m-Y') : '-');
+            $sheet->setCellValue('H' . $rowIndex, $r->jenis_kelamin);
+            $sheet->setCellValue('I' . $rowIndex, $r->warganegara);
+            $sheet->setCellValue('J' . $rowIndex, $r->agama);
+            $sheet->setCellValue('K' . $rowIndex, $r->pekerjaan);
+            $sheet->setCellValue('L' . $rowIndex, $r->alamat);
+            $sheet->setCellValue('M' . $rowIndex, $r->keperluan);
+            $sheet->setCellValueExplicit('N' . $rowIndex, (string)$r->telepon_pemohon, DataType::TYPE_STRING);
+            $sheet->setCellValue('O' . $rowIndex, $r->status);
+            $sheet->setCellValue('P' . $rowIndex, $petugasMap[$r->id_user] ?? '-');
+
+            $rowIndex++;
+        }
+
+        $lastDataRow = max($headerRow + 1, $rowIndex - 1);
+        $sheet->getStyle('A' . $headerRow . ':P' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+        $sheet->getStyle('A' . ($headerRow + 1) . ':P' . $lastDataRow)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER)->setWrapText(true);
+
+        // ========== Tanda Tangan ==========
+        $signRow = $lastDataRow + 3;
+        $sheet->mergeCells('L' . $signRow . ':P' . $signRow);
+        $sheet->mergeCells('L' . ($signRow + 1) . ':P' . ($signRow + 1));
+        $sheet->mergeCells('L' . ($signRow + 4) . ':P' . ($signRow + 4));
+
+        $sheet->setCellValue('L' . $signRow, 'Kademangan, ' . date('d-m-Y'));
+        $sheet->setCellValue('L' . ($signRow + 1), $jabatanTtd);
+        $sheet->setCellValue('L' . ($signRow + 4), strtoupper($namaTtd));
+
+        $sheet->getStyle('L' . $signRow . ':P' . ($signRow + 4))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('L' . ($signRow + 4) . ':P' . ($signRow + 4))->getBorders()->getTop()->setBorderStyle(Border::BORDER_THIN);
+
+        // ========== Download ==========
+        $filename = 'Rekap_Penghasilan_' . $bulanParam . '.xlsx';
+        
+        return response()->streamDownload(function () use ($spreadsheet) {
+            $writer = new Xlsx($spreadsheet);
+            $writer->save('php://output');
+        }, $filename, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Cache-Control' => 'max-age=0, no-cache, must-revalidate',
+            'Pragma' => 'public'
+        ]);
     }
 }
+

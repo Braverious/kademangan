@@ -169,7 +169,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
         Route::get('/', [SuratSktmController::class, 'index'])->name('admin.sktm.index');
 
-        Route::get('/export', [SuratSktmController::class, 'export'])->name('admin.sktm.export');
+        Route::get('/sktm/export', [SuratSktmController::class, 'exportExcel'])->name('admin.sktm.export');
 
         Route::get('/{id}', [SuratSktmController::class, 'detail'])->name('admin.sktm.detail');
 
@@ -186,7 +186,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
         Route::get('/', [SuratBelumBekerjaController::class, 'index'])->name('admin.belum-bekerja.index');
 
-        Route::get('/export', [SuratBelumBekerjaController::class, 'export'])->name('admin.belum-bekerja.export');
+        Route::get('/export/excel', [SuratBelumBekerjaController::class, 'exportExcel'])->name('admin.belum-bekerja.export');
 
         Route::get('/{id}', [SuratBelumBekerjaController::class, 'detail'])->name('admin.belum-bekerja.detail');
 
@@ -204,7 +204,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
         Route::get('/', [SuratPenghasilanController::class, 'index'])->name('admin.penghasilan.index');
 
-        Route::get('/export', [SuratPenghasilanController::class, 'export'])->name('admin.penghasilan.export');
+        Route::get('/export/excel', [SuratPenghasilanController::class, 'exportExcel'])->name('admin.penghasilan.export');
 
         Route::get('/{id}', [SuratPenghasilanController::class, 'detail'])->name('admin.penghasilan.detail');
 
