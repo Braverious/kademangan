@@ -6,6 +6,7 @@ use App\Models\RunningText;
 use Illuminate\Http\Request;
 use App\Models\Layanan;
 use App\Models\Pengumuman;
+use App\Models\Jangkauan;
 use App\Models\Galeri;
 use App\Models\Berita;
 use App\Models\SiteSetting;
@@ -25,6 +26,8 @@ class HomeController extends Controller
         $layanan = Layanan::orderByDesc('id')->get();
 
         $pengumuman = Pengumuman::getActive(5);
+        
+        $jangkauan = Jangkauan::first();
 
         $runningTexts = RunningText::where('is_active', 1)->get()->keyBy('position');
 
@@ -64,6 +67,7 @@ class HomeController extends Controller
             'pengumuman' => $pengumuman,
             'runningTexts' => $runningTexts,
             'galeri' => $galeri,
+            'jangkauan' => $jangkauan,
             'berita_list' => $berita_list,
             'video_id' => $video_id,
             'video_meta' => $video_meta,

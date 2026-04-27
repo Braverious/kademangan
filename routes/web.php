@@ -107,7 +107,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
         // 5. Jangkauan Area
         Route::prefix('jangkauan')->controller(JangkauanController::class)->name('jangkauan.')->group(function () {
-            Route::get('/', 'index')->name('index'); // admin.pengaturan.jangkauan.index
+            Route::get('/', 'index')->name('index');
             Route::post('/', 'update')->name('update');
         });
 

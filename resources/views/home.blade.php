@@ -242,7 +242,7 @@
     <main>
         @php
             // 1. Sinkronkan nama default dengan yang ada di database
-            $defaultOrder = ['home', 'runningtext', 'Layanan', 'pengumuman', 'coverage', 'galeri', 'berita', 'video'];
+            $defaultOrder = ['home', 'runningtext', 'Layanan', 'pengumuman', 'jangkauan', 'galeri', 'berita', 'video'];
 
             // 2. Ambil urutan, pastikan casting array
             $sections = isset($setting) && $setting->section_order ? $setting->section_order : $defaultOrder;
@@ -293,6 +293,85 @@
                         </div>
                     </section>
                 @endif
+            @endif
+
+            {{-- SECTION: JANGKAUAN --}}
+            @if ($section == 'jangkauan')
+                @php
+                    $formatInt = fn ($number) => number_format((int) $number, 0, ',', '.');
+
+                    $jangkauanCards = [
+                        [
+                            'title' => 'Jumlah KK',
+                            'desc' => 'Jumlah Kartu Keluarga yang terdaftar di wilayah kami',
+                            'value' => $formatInt($jangkauan->jumlah_kk ?? 0),
+                            'icon' => !empty($jangkauan?->icon_kk)
+                                ? asset('storage/' . $jangkauan->icon_kk)
+                                : asset('assets/img/icons/kk.png'),
+                        ],
+                        [
+                            'title' => 'Jumlah Penduduk',
+                            'desc' => 'Jumlah penduduk terdaftar di wilayah kami',
+                            'value' => $formatInt($jangkauan->jumlah_penduduk ?? 0),
+                            'icon' => !empty($jangkauan?->icon_penduduk)
+                                ? asset('storage/' . $jangkauan->icon_penduduk)
+                                : asset('assets/img/icons/penduduk.png'),
+                        ],
+                        [
+                            'title' => 'Jumlah RW',
+                            'desc' => 'Jumlah yang aktif di wilayah kami',
+                            'value' => $formatInt($jangkauan->jumlah_rw ?? 0),
+                            'icon' => !empty($jangkauan?->icon_rw)
+                                ? asset('storage/' . $jangkauan->icon_rw)
+                                : asset('assets/img/icons/rw.png'),
+                        ],
+                        [
+                            'title' => 'Jumlah RT',
+                            'desc' => 'Jumlah yang aktif di wilayah kami',
+                            'value' => $formatInt($jangkauan->jumlah_rt ?? 0),
+                            'icon' => !empty($jangkauan?->icon_rt)
+                                ? asset('storage/' . $jangkauan->icon_rt)
+                                : asset('assets/img/icons/rt.png'),
+                        ],
+                    ];
+                @endphp
+
+                <section id="jangkauan" class="py-5 section-abstract">
+                    <div class="container-fluid px-lg-5">
+                        <div class="row mb-4">
+                            <div class="col-12 text-center">
+                                <h2 class="section-title mb-1">Jangkauan Kami</h2>
+                                <p class="text-muted">
+                                    Berpengalaman melayani lingkungan pemerintahan & warga secara transparan.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row g-4">
+                            @foreach ($jangkauanCards as $card)
+                                <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                                    <div class="card metric-card news-card h-100 overflow-hidden rounded-4 shadow-sm">
+                                        <div class="card-body text-center d-flex flex-column">
+                                            <img src="{{ $card['icon'] }}" alt="" class="metric-illustration mx-auto mb-2">
+
+                                            <h5 class="metric-title mb-1">
+                                                {{ $card['title'] }}
+                                            </h5>
+
+                                            <p class="metric-desc text-muted mb-4">
+                                                {{ $card['desc'] }}
+                                            </p>
+
+                                            <div class="metric-value mt-auto">
+                                                {{ $card['value'] }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </section>
             @endif
 
             {{-- SECTION: LAYANAN --}}
@@ -428,25 +507,6 @@
                             </div>
                 </section>
             @endif
-
-            {{-- SECTION: SKALA / COVERAGE --}}
-            @if ($section == 'coverage')
-                <section id="coverage" class="py-5 section-abstract">
-                    @if ($section == 'coverage')
-                        <section id="coverage" class="py-5 section-abstract">
-                            <div class="container-fluid px-lg-5">
-                                <div class="row mb-4">
-                                    <div class="col-12 text-center">
-                                        <h2 class="section-title mb-1">Skala Kami</h2>
-                                        <p class="text-muted">Berpengalaman melayani lingkungan pemerintahan & warga
-                                            secara
-                                            transparan.</p>
-                                    </div>
-                                </div>
-                        </section>
-                    @endif
-            @endif
-            </section>
         @endif
 
         {{-- SECTION: GALERI (DINAMIS) --}}

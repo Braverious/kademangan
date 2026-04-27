@@ -1239,8 +1239,8 @@ body.is-home .nav-menubar .menubar-floating {
   }
 }
 
-/* ===== Coverage Metrics ===== */
-#coverage .metric-card {
+/* ===== Jangkauan Metrics ===== */
+#jangkauan .metric-card {
   background: var(--white);
   border: 0;
   border-radius: 16px;
@@ -1250,7 +1250,7 @@ body.is-home .nav-menubar .menubar-floating {
   overflow: hidden;
 }
 
-#coverage .metric-card::before {
+#jangkauan .metric-card::before {
   content: "";
   position: absolute;
   left: 0;
@@ -1260,19 +1260,19 @@ body.is-home .nav-menubar .menubar-floating {
   background: var(--accent);
 }
 
-#coverage .metric-card:hover {
+#jangkauan .metric-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 .75rem 1.25rem rgba(0, 0, 0, .10);
 }
 
-#coverage .metric-illustration {
+#jangkauan .metric-illustration {
   width: 110px;
   height: 110px;
   object-fit: contain;
   display: block;
 }
 
-#coverage .metric-illustration-wrap {
+#jangkauan .metric-illustration-wrap {
   width: 120px;
   height: 120px;
   margin: 6px auto 10px;
@@ -1284,14 +1284,14 @@ body.is-home .nav-menubar .menubar-floating {
   box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
-#coverage .metric-title {
+#jangkauan .metric-title {
   color: var(--primary);
   font-weight: 600;
   margin-bottom: .5rem;
   position: relative;
 }
 
-#coverage .metric-title::after {
+#jangkauan .metric-title::after {
   content: "";
   display: block;
   width: 56px;
@@ -1301,13 +1301,13 @@ body.is-home .nav-menubar .menubar-floating {
   margin: .25rem auto .75rem;
 }
 
-#coverage .metric-desc {
+#jangkauan .metric-desc {
   color: #64748b;
   font-size: .95rem;
   line-height: 1.5;
 }
 
-#coverage .metric-value {
+#jangkauan .metric-value {
   color: var(--primary);
   font-weight: 800;
   letter-spacing: .5px;
@@ -1315,7 +1315,7 @@ body.is-home .nav-menubar .menubar-floating {
   margin-top: auto;
 }
 
-#coverage .coverage-card {
+#jangkauan .jangkauan-card {
   background: var(--white);
   border: 0;
   border-radius: 16px;
@@ -1325,7 +1325,7 @@ body.is-home .nav-menubar .menubar-floating {
   overflow: hidden;
 }
 
-#coverage .coverage-card::before {
+#jangkauan .jangkauan-card::before {
   content: "";
   position: absolute;
   left: 0;
@@ -1335,12 +1335,12 @@ body.is-home .nav-menubar .menubar-floating {
   background: var(--accent);
 }
 
-#coverage .coverage-card:hover {
+#jangkauan .jangkauan-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 .75rem 1.25rem rgba(0, 0, 0, .10);
 }
 
-#coverage .coverage-icon-wrap {
+#jangkauan .jangkauan-icon-wrap {
   width: 60px;
   height: 60px;
   border-radius: 14px;
@@ -1351,7 +1351,7 @@ body.is-home .nav-menubar .menubar-floating {
   box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
-#coverage .coverage-icon {
+#jangkauan .jangkauan-icon {
   width: 48px;
   height: 48px;
   object-fit: contain;

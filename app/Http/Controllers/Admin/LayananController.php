@@ -57,7 +57,7 @@ class LayananController extends Controller
             'gambar' => $gambar,
         ]);
 
-        return redirect()->route('admin.settings.index')->with('success', 'Berhasil ditambah');
+        return redirect()->route('admin.settings.layanan.index')->with('success', 'Berhasil ditambah');
     }
 
     public function edit($id)
@@ -99,7 +99,7 @@ class LayananController extends Controller
 
         $row->update($data);
 
-        return redirect()->route('admin.layanan.index')->with('success', 'Berhasil diupdate');
+        return redirect()->route('admin.settings.layanan.index')->with('success', 'Berhasil diupdate');
     }
 
     public function destroy($id)
@@ -113,6 +113,6 @@ class LayananController extends Controller
 
         $row->delete();
 
-        return redirect()->route('admin.settings.index')->with('success', 'Berhasil dihapus');
+        return redirect()->route('admin.settings.layanan.index')->with('success', 'Berhasil dihapus');
     }
 }

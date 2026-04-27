@@ -62,15 +62,15 @@
                                                 @php
                                                     // Daftar ID section sesuai yang ada di home.blade.php kamu
                                                     $defaultOrder = [
-                                                        'home',
-                                                        'runningtext',
-                                                        'Layanan',
-                                                        'pengumuman',
-                                                        'coverage',
-                                                        'galeri',
-                                                        'berita',
-                                                        'video',
-                                                    ];
+                                                    'home',
+                                                    'runningtext',
+                                                    'Layanan',
+                                                    'pengumuman',
+                                                    'jangkauan',
+                                                    'galeri',
+                                                    'berita',
+                                                    'video',
+                                                ];
                                                     $currentOrder = $settings['section_order'] ?? $defaultOrder;
                                                 @endphp
 
@@ -265,7 +265,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <div class="tab-pane fade" id="pills-multimedia" role="tabpanel"
                             aria-labelledby="pills-multimedia-tab">
                             <div class="row">
@@ -364,6 +363,7 @@ document.addEventListener('click', function(e) {
         });
     });
 </script>
+
 <script>
     function updateVideoPreview() {
         const url = document.getElementById('youtube_link').value;
@@ -412,3 +412,5 @@ document.addEventListener('click', function(e) {
         });
     });
 </script>
+
+<x-admin.footer />
