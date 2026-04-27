@@ -12,6 +12,7 @@ class LayananController extends Controller
     public function index()
     {
         $title = 'Manajemen Layanan';
+
         $breadcrumbs = [
             ['label' => 'Pengaturan', 'url' => null],
             ['label' => $title, 'url' => route('admin.settings.layanan.index')],
@@ -19,45 +20,41 @@ class LayananController extends Controller
 
         $rows = Layanan::orderByDesc('id')->get();
 
-        return view('admin.layanan.layanan', [
-            'title' => $title,
-            'breadcrumbs' => $breadcrumbs,
-            'rows' => $rows
-        ]);
+        return view('admin.layanan.layanan', compact('title', 'breadcrumbs', 'rows'));
     }
 
     public function create()
     {
         $title = 'Tambah Layanan';
+
         $breadcrumbs = [
             ['label' => 'Pengaturan', 'url' => null],
             ['label' => 'Manajemen Layanan', 'url' => route('admin.settings.layanan.index')],
             ['label' => $title, 'url' => null],
         ];
 
-        return view('admin.layanan.tambah', [
-            'title' => $title,
-            'breadcrumbs' => $breadcrumbs
-        ]);
+        $pelayananOptions = $this->pelayananOptions();
+
+        return view('admin.layanan.tambah', compact('title', 'breadcrumbs', 'pelayananOptions'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'judul' => 'required|min:3|max:120',
-            'deskripsi' => 'required|min:8',
-            'gambar' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+        $validated = $request->validate([
+            'judul' => ['required', 'string', 'min:3', 'max:120'],
+            'deskripsi' => ['required', 'string', 'min:8'],
+            'gambar' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'slug' => ['required', 'string', 'max:100', 'unique:layanan,slug'],
+            'is_active' => ['required', 'boolean'],
         ]);
 
-        $gambar = $request->file('gambar')->store('layanan', 'public');
+        $validated['gambar'] = $request->file('gambar')->store('layanan', 'public');
 
-        Layanan::create([
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'gambar' => $gambar,
-        ]);
+        Layanan::create($validated);
 
-        return redirect()->route('admin.settings.layanan.index')->with('success', 'Berhasil ditambah');
+        return redirect()
+            ->route('admin.settings.layanan.index')
+            ->with('success', 'Layanan berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -65,54 +62,89 @@ class LayananController extends Controller
         $row = Layanan::findOrFail($id);
 
         $title = 'Edit Layanan';
+
         $breadcrumbs = [
             ['label' => 'Pengaturan', 'url' => null],
             ['label' => 'Manajemen Layanan', 'url' => route('admin.settings.layanan.index')],
             ['label' => $title, 'url' => null],
         ];
 
-        return view('admin.layanan.edit', [
-            'title' => $title,
-            'row' => $row,
-            'breadcrumbs' => $breadcrumbs
-        ]);
+        $pelayananOptions = $this->pelayananOptions();
+
+        return view('admin.layanan.edit', compact('title', 'row', 'breadcrumbs', 'pelayananOptions'));
     }
 
     public function update(Request $request, $id)
     {
         $row = Layanan::findOrFail($id);
 
-        $request->validate([
-            'judul' => 'required|min:3|max:120',
-            'deskripsi' => 'required|min:8',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        $validated = $request->validate([
+            'judul' => ['required', 'string', 'min:3', 'max:120'],
+            'deskripsi' => ['required', 'string', 'min:8'],
+            'gambar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'slug' => ['required', 'string', 'max:100', 'unique:layanan,slug,' . $row->id],
+            'is_active' => ['required', 'boolean'],
         ]);
-
-        $data = $request->only(['judul', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
             if ($row->gambar) {
                 Storage::disk('public')->delete($row->gambar);
             }
-            $data['gambar'] = $request->file('gambar')->store('layanan', 'public');
+
+            $validated['gambar'] = $request->file('gambar')->store('layanan', 'public');
         }
 
-        $row->update($data);
+        $row->update($validated);
 
-        return redirect()->route('admin.settings.layanan.index')->with('success', 'Berhasil diupdate');
+        return redirect()
+            ->route('admin.settings.layanan.index')
+            ->with('success', 'Layanan berhasil diperbarui.');
+    }
+
+    public function toggle($id)
+    {
+        $row = Layanan::findOrFail($id);
+
+        $row->update([
+            'is_active' => !$row->is_active,
+        ]);
+
+        $message = $row->is_active
+            ? 'Layanan berhasil diaktifkan.'
+            : 'Layanan berhasil ditutup.';
+
+        return redirect()
+            ->route('admin.settings.layanan.index')
+            ->with('success', $message);
     }
 
     public function destroy($id)
     {
         $row = Layanan::findOrFail($id);
 
-        // Opsional: Hapus gambar fisiknya juga kalau datanya dihapus
         if ($row->gambar) {
             Storage::disk('public')->delete($row->gambar);
         }
 
         $row->delete();
 
-        return redirect()->route('admin.settings.layanan.index')->with('success', 'Berhasil dihapus');
+        return redirect()
+            ->route('admin.settings.layanan.index')
+            ->with('success', 'Layanan berhasil dihapus.');
+    }
+
+    private function pelayananOptions(): array
+    {
+        return [
+            'tidak-mampu' => 'Surat Keterangan Tidak Mampu',
+            'belum-bekerja' => 'Surat Keterangan Belum Bekerja',
+            'domisili-yayasan' => 'Surat Domisili Yayasan',
+            'belum-memiliki-rumah' => 'Surat Belum Memiliki Rumah',
+            'kematian' => 'Surat Keterangan Kematian Dukcapil',
+            'kematian-nondukcapil' => 'Surat Kematian Non Dukcapil',
+            'suami-istri' => 'Surat Keterangan Suami Istri',
+            'pengantar-nikah' => 'Surat Pengantar Nikah',
+            'penghasilan' => 'Surat Keterangan Penghasilan',
+        ];
     }
 }

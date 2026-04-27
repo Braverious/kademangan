@@ -56,6 +56,26 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="required">Jenis Pelayanan</label>
+                            <select name="slug" class="form-control" required>
+                                <option value="">-- Pilih Jenis Pelayanan --</option>
+                                @foreach ($pelayananOptions as $slug => $label)
+                                    <option value="{{ $slug }}" {{ old('slug', $row->slug) === $slug ? 'selected' : '' }}>
+                                        {{ $label }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required">Status Layanan</label>
+                            <select name="is_active" class="form-control" required>
+                                <option value="1" {{ old('is_active', $row->is_active) == '1' ? 'selected' : '' }}>Aktif</option>
+                                <option value="0" {{ old('is_active', $row->is_active) == '0' ? 'selected' : '' }}>Sedang Tutup</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label>Deskripsi</label>
                             <textarea name="deskripsi"
                                 class="form-control"

@@ -11,8 +11,12 @@ class Layanan extends Model
     protected $fillable = [
         'judul',
         'deskripsi',
-        'gambar'
+        'gambar',
+        'slug',
+        'is_active',
     ];
 
-    public $timestamps = false;
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
 }

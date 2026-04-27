@@ -46,6 +46,9 @@ Route::get('/berita/{slug}', [FrontBeritaController::class, 'detail'])->name('be
 Route::get('/pelayanan', [PelayananController::class, 'index'])->name('pelayanan.index');
 Route::get('/pelayanan/{slug}', [PelayananController::class, 'show'])->name('pelayanan.show');
 
+Route::get('/pelayanan/{slug}', [PelayananController::class, 'show'])->name('pelayanan.show');
+Route::post('/pelayanan/tidak-mampu', [PelayananController::class, 'submitSktm'])->name('pelayanan.sktm.submit');
+
 Route::get('/lkk', [LkkController::class, 'index'])->name('lkk.index');
 
 Route::post('/chatbot/send', [ChatbotController::class, 'handleChat'])->middleware('throttle:10,1');
@@ -126,6 +129,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             Route::post('/', 'store')->name('store');
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}', 'update')->name('update');
+            Route::patch('/{id}/toggle', 'toggle')->name('toggle');
             Route::delete('/{id}', 'destroy')->name('destroy');
         });
     });

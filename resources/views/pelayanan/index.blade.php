@@ -24,29 +24,53 @@
                 </div>
             </div>
 
+            @php
+                $icons = [
+                    'tidak-mampu' => 'bi-shield-check',
+                    'belum-bekerja' => 'bi-file-earmark-person',
+                    'domisili-yayasan' => 'bi-building',
+                    'belum-memiliki-rumah' => 'bi-house',
+                    'kematian' => 'bi-person-x',
+                    'kematian-nondukcapil' => 'bi-person-x-fill',
+                    'suami-istri' => 'bi-people-fill',
+                    'pengantar-nikah' => 'bi-suit-heart',
+                    'penghasilan' => 'bi-cash-coin',
+                ];
+            @endphp
+
             <div class="row g-4">
-                @foreach ($data['cards'] as $card)
+                @forelse ($data['cards'] as $card)
                     <div class="col-md-4">
                         <div class="card h-100 shadow-sm service-card">
                             <div class="card-body d-flex flex-column">
                                 <div class="d-flex align-items-center mb-3">
-                                    <i class="bi {{ $card['icon'] }} fs-3 text-primary me-2"></i>
-                                    <h5 class="card-title mb-0">{{ $card['title'] }}</h5>
+                                    <i class="bi {{ $icons[$card->slug] ?? 'bi-file-earmark-text' }} fs-3 text-primary me-2"></i>
+                                    <h5 class="card-title mb-0">
+                                        {{ $card->judul }}
+                                    </h5>
                                 </div>
 
                                 <p class="card-text text-muted small flex-grow-1">
-                                    {{ $card['desc'] }}
+                                    {{ $card->deskripsi }}
                                 </p>
 
-                                <a href="#"
-                                    class="btn btn-primary mt-auto disabled"
-                                    aria-disabled="true">
-                                    Ajukan Sekarang
-                                </a>
+                                @if ($card->is_active)
+                                    <a href="{{ route('pelayanan.show', $card->slug) }}" class="btn btn-primary mt-auto">
+                                        Ajukan Sekarang
+                                    </a>
+                                @else
+                                    <button type="button" class="btn btn-secondary mt-auto" disabled>
+                                        Pelayanan Sedang Tutup
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-12 text-center">
+                        <p class="text-muted mb-0">Belum ada pelayanan tersedia.</p>
+                    </div>
+                @endforelse
             </div>
 
         </div>

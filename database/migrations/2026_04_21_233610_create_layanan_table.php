@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('judul', 120);
             $table->text('deskripsi');
             $table->string('gambar')->nullable();
-            
+            $table->string('slug', 100)->unique();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

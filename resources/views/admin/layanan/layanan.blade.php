@@ -32,10 +32,12 @@
                             <thead>
                                 <tr>
                                     <th style="width: 5%">No</th>
-                                    <th style="width: 15%">Gambar</th>
-                                    <th>Judul</th>
-                                    <th>Deskripsi</th>
-                                    <th style="width: 10%">Aksi</th>
+                                    <th style="width: 12%">Gambar</th>
+                                    <th style="width: 18%">Judul</th>
+                                    <th style="width: 14%">Slug</th>
+                                    <th style="width: 8%">Status</th>
+                                    <th style="width: 33%">Deskripsi</th>
+                                    <th style="width: 10%" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,32 +54,64 @@
 
                                         <td><strong>{{ $r->judul }}</strong></td>
 
-                                        <td class="text-muted" style="max-width:360px;">
-                                            {{ \Illuminate\Support\Str::limit(strip_tags($r->deskripsi), 120) }}
+                                        <td>
+                                            <span class="badge badge-light">
+                                                {{ $r->slug }}
+                                            </span>
                                         </td>
 
                                         <td>
-                                            <div class="form-button-action d-flex">
+                                            @if ($r->is_active)
+                                                <span class="badge badge-success">Aktif</span>
+                                            @else
+                                                <span class="badge badge-danger">Tutup</span>
+                                            @endif
+                                        </td>
+
+                                        <td class="text-muted">
+                                            <div style="max-width: 420px; white-space: normal; line-height: 1.5;">
+                                                {{ \Illuminate\Support\Str::limit(strip_tags($r->deskripsi), 130) }}
+                                            </div>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <div class="form-button-action d-flex justify-content-center align-items-center">
                                                 <a href="{{ route('admin.settings.layanan.edit', $r->id) }}"
-                                                    class="btn btn-link btn-primary btn-lg" title="Edit">
+                                                    class="btn btn-link btn-primary btn-lg"
+                                                    title="Edit">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
 
+                                                <form action="{{ route('admin.settings.layanan.toggle', $r->id) }}"
+                                                    method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('PATCH')
+
+                                                    <button type="submit"
+                                                        class="btn btn-link {{ $r->is_active ? 'btn-success' : 'btn-warning' }}"
+                                                        title="{{ $r->is_active ? 'Tutup Layanan' : 'Aktifkan Layanan' }}">
+                                                        <i class="fa {{ $r->is_active ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
+                                                    </button>
+                                                </form>
+
                                                 <form action="{{ route('admin.settings.layanan.destroy', $r->id) }}"
-                                                    method="POST" style="display:inline;" class="js-delete-form"
+                                                    method="POST"
+                                                    style="display:inline;"
+                                                    class="js-delete-form"
                                                     data-delete-title="Hapus Layanan?"
                                                     data-delete-text="Apakah Anda yakin ingin menghapus layanan ini?">
                                                     @csrf
                                                     @method('DELETE')
 
-                                                    <button type="submit" class="btn btn-link btn-danger"
+                                                    <button type="submit"
+                                                        class="btn btn-link btn-danger"
                                                         title="Hapus">
                                                         <i class="fa fa-times"></i>
                                                     </button>
                                                 </form>
                                             </div>
                                         </td>
-
                                     </tr>
                                 @endforeach
                             </tbody>
