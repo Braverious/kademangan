@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}"> 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? 'Kelurahan' }}</title>
     @php
         // Mengambil data setting ID 1 langsung di component
@@ -48,11 +48,24 @@
 
             <div class="d-none d-lg-block ms-auto">
                 @auth
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-primary px-3">Dashboard</a>
+                    @if (Auth::user()->level_id == 3)
+                        {{-- Tombol untuk Warga (Level 3) --}}
+                        <a href="{{ route('logout') }}" class="btn btn-outline-danger px-3">
+                            <i class="fa fa-sign-out-alt mr-1"></i> Logout
+                        </a>
+                    @else
+                        {{-- Tombol untuk Staff/Admin (Level 1 & 2) --}}
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-primary px-3">
+                            <i class="fa fa-tachometer-alt mr-1"></i> Dashboard
+                        </a>
+                    @endif
                 @endauth
 
                 @guest
-                    <a href="{{ route('login') }}" class="btn btn-outline-primary px-3">Login</a>
+                    {{-- Tombol untuk Pengunjung yang belum login --}}
+                    <a href="{{ route('login') }}" class="btn btn-outline-primary px-3">
+                        <i class="fa fa-user mr-1"></i> Login
+                    </a>
                 @endguest
             </div>
         </div>
@@ -93,19 +106,33 @@
                                             <i class="fas fa-sitemap me-2"></i>Lembaga Kemasyarakatan Kelurahan
                                         </h6>
                                     </li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-users me-2"></i>RT dan RW</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-hand-holding-heart me-2"></i>PKK</a></li>
-                                    <li><a class="dropdown-item" href="https://www.instagram.com/karangtarunakademangan?igsh=MWZzd2VlcGgxaGM5NQ==" target="_blank" rel="noopener">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-users me-2"></i>RT dan
+                                            RW</a></li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="fas fa-hand-holding-heart me-2"></i>PKK</a></li>
+                                    <li><a class="dropdown-item"
+                                            href="https://www.instagram.com/karangtarunakademangan?igsh=MWZzd2VlcGgxaGM5NQ=="
+                                            target="_blank" rel="noopener">
                                             <i class="fas fa-hands-helping me-2"></i>Karang Taruna</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-clinic-medical me-2"></i>Posyandu</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-project-diagram me-2"></i>LPM</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-mosque me-2"></i>MUI Kelurahan</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-mosque me-2"></i>DMI Kelurahan</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-quran me-2"></i>LPTQ Kelurahan</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-book-open me-2"></i>Pengajian Al Hidayah</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-recycle me-2"></i>TPS3R dan Bank Sampah</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="fas fa-seedling me-2"></i>KWT dan Poktan</a></li>
-                                    <li><a class="dropdown-item" href="https://www.instagram.com/kkmp_kademangan?igsh=MWxsOXNhNXEzaGlsYg==" target="_blank" rel="noopener">
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="fas fa-clinic-medical me-2"></i>Posyandu</a></li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="fas fa-project-diagram me-2"></i>LPM</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-mosque me-2"></i>MUI
+                                            Kelurahan</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-mosque me-2"></i>DMI
+                                            Kelurahan</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-quran me-2"></i>LPTQ
+                                            Kelurahan</a></li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="fas fa-book-open me-2"></i>Pengajian Al Hidayah</a></li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="fas fa-recycle me-2"></i>TPS3R dan Bank Sampah</a></li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="fas fa-seedling me-2"></i>KWT dan Poktan</a></li>
+                                    <li><a class="dropdown-item"
+                                            href="https://www.instagram.com/kkmp_kademangan?igsh=MWxsOXNhNXEzaGlsYg=="
+                                            target="_blank" rel="noopener">
                                             <i class="fa-solid fa-coins"></i> Koperasi Merah Putih</a></li>
                                 </ul>
                             </li>
@@ -117,6 +144,25 @@
                                     <span>Berita</span>
                                 </a>
                             </li>
+                            @auth
+                                @if (Auth::user()->level_id == 3)
+                                    <li class="nav-item">
+                                        <a class="nav-link px-3 d-flex align-items-center gap-2 {{ request()->is('warga/profil*') ? 'active' : '' }}"
+                                            href="{{ route('warga.profil') }}">
+                                            <i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+                                            <span>Profil</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link px-3 d-flex align-items-center gap-2 {{ request()->is('warga/riwayat*') ? 'active' : '' }}"
+                                            href="#">
+                                            <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
+                                            <span>Riwayat</span>
+                                        </a>
+                                    </li>
+                                @endif
+                            @endauth
 
                             <li class="nav-item d-lg-none mt-2">
                                 <a href="#" class="btn btn-outline-primary w-100">Login</a>

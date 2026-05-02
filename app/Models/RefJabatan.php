@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use App\Models\StaffDetail;
 
 class RefJabatan extends Model
 {
     protected $table = 'ref_jabatan';
-    
+
     // Matikan timestamps karena di tabelmu tidak ada created_at/updated_at
-    public $timestamps = false; 
+    public $timestamps = false;
 
     protected $fillable = [
         'nama',
@@ -20,6 +21,6 @@ class RefJabatan extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class, 'jabatan_id', 'id');
+        return $this->hasMany(StaffDetail::class, 'jabatan_id', 'id');
     }
 }

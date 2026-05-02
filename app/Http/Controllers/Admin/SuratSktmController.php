@@ -85,7 +85,7 @@ class SuratSktmController extends Controller
             'nomor_surat' => 'nullable|string',
         ]);
 
-        $data['id_user'] = Auth::id();
+        $data['user_id'] = Auth::id();
 
         $surat->update($data);
 
@@ -140,13 +140,13 @@ class SuratSktmController extends Controller
 
         // --- Mapping Petugas ---
         $petugasMap = [];
-        $idsUser = $rows->pluck('id_user')->filter()->unique()->toArray();
+        $idsUser = $rows->pluck('user_id')->filter()->unique()->toArray();
 
         if (!empty($idsUser)) {
-            $users = \Illuminate\Support\Facades\DB::table('user')->whereIn('id_user', $idsUser)->get();
+            $users = \Illuminate\Support\Facades\DB::table('user')->whereIn('user_id', $idsUser)->get();
             foreach ($users as $u) {
-                $label = $u->name ?? $u->nama_lengkap ?? $u->username ?? ('User #' . $u->id_user);
-                $petugasMap[$u->id_user] = $label;
+                $label = $u->name ?? $u->nama_lengkap ?? $u->username ?? ('User #' . $u->user_id);
+                $petugasMap[$u->user_id] = $label;
             }
         }
 
@@ -316,7 +316,7 @@ class SuratSktmController extends Controller
             $sheet->setCellValueExplicit('Q' . $rowIndex, (string)$r->telepon_pemohon, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
             $sheet->setCellValue('R' . $rowIndex, $r->status);
 
-            $petugasNama = $petugasMap[$r->id_user] ?? '';
+            $petugasNama = $petugasMap[$r->user_id] ?? '';
             $sheet->setCellValue('S' . $rowIndex, $petugasNama);
 
             $rowIndex++;

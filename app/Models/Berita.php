@@ -16,7 +16,7 @@ class Berita extends Model
         'kategori',
         'gambar',
         'tgl_publish',
-        'id_user',
+        'user_id',
     ];
 
     public $timestamps = false;
@@ -27,6 +27,6 @@ class Berita extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user', 'id_user');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

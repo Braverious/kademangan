@@ -2,33 +2,52 @@
 
 namespace App\Imports;
 
+use App\Models\StaffDetail;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Row;
 
-class UsersImport implements ToModel, WithHeadingRow, SkipsEmptyRows
+class UsersImport implements OnEachRow, WithHeadingRow, SkipsEmptyRows
 {
-    public function model(array $row)
+    public function onRow(Row $row)
     {
-        // Cek apakah username sudah ada agar tidak error duplicate
-        $existingUser = User::where('username', $row['username'])->first();
+        $data = $row->toArray();
+
+        // 1. Cek Duplikasi Username
+        $existingUser = User::where('username', $data['username'])->first();
         if ($existingUser) {
-            return null; // Skip jika user sudah ada
+            return null; // Lewati jika user sudah ada
         }
 
         $defaultPassword = now()->format('d-m-Y');
+        // Tentukan level (Default 2 jika kosong)
+        $levelId = (empty($data['level_id']) || $data['level_id'] == 0) ? 2 : $data['level_id'];
 
-        return new User([
-            // Pastikan penamaan key array sesuai dengan judul kolom di Excel
-            'nama_lengkap' => $row['nama_lengkap'],
-            'username'     => $row['username'],
-            'password'     => Hash::make($defaultPassword),
-            'id_level'     => ($row['id_level'] == 0 || empty($row['id_level'])) ? 2 : $row['id_level'],
-            'nip'          => $row['nip'] ?? null,
-            'jabatan_id'   => $row['jabatan_id'] ?? null,
-            'foto'         => 'default.jpg', // Default sesuai struktur tabel
-        ]);
+        // 2. Jalankan Transaction (Wajib untuk multi-tabel)
+        DB::transaction(function () use ($data, $defaultPassword, $levelId) {
+            // A. Simpan ke tabel users (Header)
+            $user = User::create([
+                'username' => $data['username'],
+                'password' => Hash::make($defaultPassword),
+                'role'     => 'staff',
+                'level_id' => $levelId,
+                'created_by' => Auth::id() ?? 'sysadmin',
+                'is_active'  => true,
+            ]);
+
+            // B. Simpan ke tabel staff_details (Detail)
+            StaffDetail::create([
+                'user_id'    => $user->id, // Mengambil ID yang baru dibuat
+                'full_name'  => $data['nama_lengkap'],
+                'nip'        => $data['nip'] ?? null,
+                'jabatan_id' => $data['jabatan_id'] ?? null,
+                'photo'      => 'default.jpg',
+            ]);
+        });
     }
 }

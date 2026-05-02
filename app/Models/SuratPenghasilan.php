@@ -28,7 +28,7 @@ class SuratPenghasilan extends Model
         'alamat',
         'keperluan',
         'status',
-        'id_user',
+        'user_id',
     ];
 
     protected $casts = [

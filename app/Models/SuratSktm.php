@@ -28,7 +28,7 @@ class SuratSktm extends Model
         'penghasilan_bulanan',
         'keperluan',
         'status',
-        'id_user'
+        'user_id'
     ];
 
     protected $casts = [

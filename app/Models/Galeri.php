@@ -12,7 +12,7 @@ class Galeri extends Model
     protected $fillable = [
         'judul_foto',
         'foto',
-        'id_user',
+        'user_id',
         'tgl_upload'
     ];
 
@@ -20,6 +20,6 @@ class Galeri extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user', 'id_user');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

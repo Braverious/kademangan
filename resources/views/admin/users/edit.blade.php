@@ -24,8 +24,7 @@
                     <h4 class="card-title">Form Edit User</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.settings.users.update', $user->id_user) }}" method="POST">
-                        @csrf
+                    <form action="{{ route('admin.settings.staff.update', $user->id) }}" method="POST"> @csrf
                         @method('PUT')
 
                         <div class="form-group">
@@ -60,14 +59,14 @@
 
                         <div class="form-group">
                             <label>Level Akses</label>
-                            @if ($user->id_user == 1)
+                            @if ($user->user_id == 1)
                                 <input type="text" class="form-control" value="Superadmin (Absolut)" readonly>
-                                <input type="hidden" name="id_level" value="1">
+                                <input type="hidden" name="level_id" value="1">
                             @else
-                                <select name="id_level" class="form-control" required>
+                                <select name="level_id" class="form-control" required>
                                     @foreach ($levels as $lvl)
-                                        <option value="{{ $lvl->id_level }}"
-                                            {{ old('id_level', $user->id_level) == $lvl->id_level ? 'selected' : '' }}>
+                                        <option value="{{ $lvl->level_id }}"
+                                            {{ old('level_id', $user->level_id) == $lvl->level_id ? 'selected' : '' }}>
                                             {{ $lvl->nama_level }}
                                         </option>
                                     @endforeach
@@ -88,7 +87,7 @@
                         </div>
                         <div class="d-flex">
                             <button type="submit" class="btn btn-primary me-2 mr-1">Update</button>
-                            <a href="{{ route('admin.settings.users.index') }}" class="btn btn-secondary">Batal</a>
+                            <a href="{{ route('admin.settings.staff.index') }}" class="btn btn-secondary">Batal</a>
                         </div>
                     </form>
                 </div>

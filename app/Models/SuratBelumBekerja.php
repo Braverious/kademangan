@@ -25,7 +25,7 @@ class SuratBelumBekerja extends Model
         'alamat',
         'keperluan',
         'dokumen_pendukung',
-        'id_user'
+        'user_id'
     ];
 
     protected $casts = [

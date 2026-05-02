@@ -5,8 +5,6 @@
     <x-admin.breadcrumbs :title="$title" :breadcrumbs="$breadcrumbs" />
     <div class="row">
         <div class="col-md-12">
-
-            {{-- Alert Handling (Sukses / Error / Validasi) --}}
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
@@ -22,22 +20,20 @@
                     </ul>
                 </div>
             @endif
-
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center flex-wrap gap-2">
-                        <h4 class="card-title">Daftar User</h4>
+                        <h4 class="card-title">Daftar Staff</h4>
                         <div class="ml-auto d-flex gap-2">
                             <button class="btn btn-success btn-round mr-2" data-toggle="modal"
                                 data-target="#importExcelModal">
-                                <i class="fa fa-file-excel mr-2"></i> Import User
+                                <i class="fa fa-file-excel mr-2"></i> Import Staff
                             </button>
-                            <a href="{{ route('admin.settings.users.create') }}"
+                            <a href="{{ route('admin.settings.staff.create') }}"
                                 class="btn btn-primary btn-round ml-auto">
-                                <i class="fa fa-plus mr-2"></i> Tambah User
+                                <i class="fa fa-plus mr-2"></i> Tambah Staff
                             </a>
                         </div>
-
                     </div>
                 </div>
                 <div class="card-body">
@@ -49,6 +45,7 @@
                                     <th>Nama Lengkap & Info</th>
                                     <th>Username</th>
                                     <th>Level Akses</th>
+                                    <th>Pembuat</th>
                                     <th style="width: 10%">Aksi</th>
                                 </tr>
                             </thead>
@@ -58,7 +55,6 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
                                             <strong>{{ $user->nama_lengkap }}</strong><br>
-
                                             {{-- Cek apakah user punya relasi jabatan --}}
                                             @if ($user->jabatan_id)
                                                 <small
@@ -75,18 +71,34 @@
                                                 class="badge badge-info">{{ $user->level->nama_level ?? 'Staff' }}</span>
                                         </td>
                                         <td>
+                                            @if (is_numeric($user->created_by))
+                                                <span class="badge badge-primary">
+                                                    <i class="fa fa-user-tie mr-1"></i>
+                                                    {{ $user->creator->staffDetail->full_name ?? ($user->creator->username ?? 'Staff') }}
+                                                </span>
+                                            @elseif ($user->created_by === 'sysadmin' || empty($user->created_by))
+                                                <span class="badge badge-secondary">
+                                                    <i class="fa fa-database mr-1"></i> System (SQL)
+                                                </span>
+                                            @else
+                                                <span class="badge badge-info">
+                                                    <i class="fa fa-laptop mr-1"></i> {{ ucfirst($user->created_by) }}
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td>
                                             <div class="form-button-action d-flex">
-                                                <a href="{{ route('admin.settings.users.edit', $user->id_user) }}"
+                                                <a href="{{ route('admin.settings.staff.edit', $user->id) }}"
                                                     title="Edit" class="btn btn-link btn-primary btn-lg">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
 
-                                                @if ($user->id_user != 1)
+                                                @if ($user->id != 1)
                                                     <form
-                                                        action="{{ route('admin.settings.users.destroy', $user->id_user) }}"
+                                                        action="{{ route('admin.settings.staff.destroy', $user->id) }}"
                                                         method="POST" class="js-delete-form"
-                                                        data-delete-title="Hapus User?"
-                                                        data-delete-text="Apakah Anda yakin ingin menghapus user ini?">
+                                                        data-delete-title="Hapus Staff?"
+                                                        data-delete-text="Apakah Anda yakin ingin menghapus staff ini?">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" title="Hapus"
@@ -122,20 +134,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title font-weight-bold" id="importExcelModalLabel">
-                    <i class="fa fa-file-excel text-success mr-2"></i> Import Data User
+                    <i class="fa fa-file-excel text-success mr-2"></i> Import Data Staff
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('admin.settings.users.import') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.settings.staff.import') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="alert alert-info small">
                         <strong>Panduan Format Excel:</strong><br>
                         Pastikan file Excel (.xlsx) memiliki judul kolom (Header) di baris pertama persis seperti
                         berikut (huruf kecil semua menggunakan underscore):<br>
-                        <code>nama_lengkap</code>, <code>username</code>, <code>id_level</code>,
+                        <code>nama_lengkap</code>, <code>username</code>, <code>level_id</code>,
                         <code>nip</code>, <code>jabatan_id</code>.
                     </div>
                     <div class="alert alert-warning small">

@@ -68,7 +68,7 @@
                             <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
                                 aria-expanded="false">
                                 <div class="avatar-sm">
-                                    <img src="{{ asset('uploads/profil/' . (Auth::user()->foto ?? 'default.jpg')) }}"
+                                    <img src="{{ asset('uploads/profil/' . (Auth::user()->staffDetail->photo ?? 'default.png')) }}"
                                         alt="Profile" class="avatar-img rounded-circle">
                                 </div>
                             </a>
@@ -77,13 +77,13 @@
                                     <li>
                                         <div class="user-box">
                                             <div class="avatar-lg">
-                                                <img src="{{ asset('uploads/profil/' . (Auth::user()->foto ?? 'default.jpg')) }}"
+                                                <img src="{{ asset('uploads/profil/' . (Auth::user()->staffDetail->photo ?? 'default.png')) }}"
                                                     alt="Profile" class="avatar-img rounded">
                                             </div>
                                             <div class="u-text">
-                                                <h4>{{ Auth::user()->nama_lengkap ?? 'Administrator' }}</h4>
+                                                <h4>{{ Auth::user()->staffDetail->full_name ?? 'Administrator' }}</h4>
                                                 <p class="text-muted">
-                                                    {{ Auth::user()->id_level == 1 ? 'Superadmin' : 'Admin/Staff' }}
+                                                    {{ Auth::user()->level->nama_level ?? 'User' }}
                                                 </p>
                                             </div>
                                         </div>

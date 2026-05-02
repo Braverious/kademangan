@@ -1,7 +1,6 @@
 <div class="sidebar sidebar-style-2">
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
-
             @php
                 //==== Segments untuk active menu di Laravel =====//
                 $seg2 = request()->segment(2); // menangkap 'dashboard' dari 'admin/dashboard'
@@ -10,15 +9,16 @@
 
             <div class="user">
                 <div class="avatar-sm float-left mr-2">
-                    <img src="{{ asset('uploads/profil/' . (Auth::user()->foto ?? 'default.jpg')) }}" alt="Profile"
-                        class="avatar-img rounded-circle">
+                    {{-- Mengambil foto dari staffDetail --}}
+                    <img src="{{ asset('uploads/profil/' . (Auth::user()->staffDetail->photo ?? 'default.png')) }}"
+                        alt="Profile" class="avatar-img rounded-circle">
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                         <span>
-                            {{ Auth::user()->nama_lengkap ?? 'Administrator' }}
+                            {{ Auth::user()->staffDetail->full_name ?? 'Administrator' }}
                             <span class="user-level">
-                                {{ Auth::user()->id_level == 1 ? 'Superadmin' : 'Admin/Staff' }}
+                                {{ Auth::user()->level->nama_level ?? 'User' }}
                             </span>
                         </span>
                     </a>
@@ -147,7 +147,7 @@
                 @endforeach
 
                 {{-- DINAMIS: Hanya Superadmin (ID Level = 1) yang bisa melihat menu ini --}}
-                @if (Auth::user()->id_level == 1)
+                @if (Auth::user()->level_id == 1)
                     <li class="nav-section">
                         <span class="sidebar-mini-icon"><i class="fas fa-ellipsis-h"></i></span>
                         <h4 class="text-section">ADMINISTRATOR</h4>
@@ -155,14 +155,20 @@
 
                     @php
                         $settingsItems = [
-                            [
+                         [
                                 'slug' => 'pengaturan',
-                                'seg3' => 'users',
-                                'route' => 'admin.settings.users.index',
-                                'label' => 'Manajemen User',
+                                'seg3' => 'citizens', 
+                                'route' => 'admin.settings.citizens.index',
+                                'label' => 'Manajemen Warga',
                             ],
                             [
-                                'slug' => 'pengaturan', // Samakan dengan prefix di route
+                                'slug' => 'pengaturan',
+                                'seg3' => 'staff',
+                                'route' => 'admin.settings.staff.index',
+                                'label' => 'Manajemen Staff',
+                            ],
+                            [
+                                'slug' => 'pengaturan', 
                                 'seg3' => 'layanan',
                                 'route' => 'admin.settings.layanan.index',
                                 'label' => 'Manajemen Layanan',
@@ -196,6 +202,12 @@
                                 'seg3' => null,
                                 'route' => 'admin.chatbot.index',
                                 'label' => 'Konfigurasi Chatbot',
+                            ],
+                            [
+                                'slug' => 'login-logs',
+                                'seg3' => null,
+                                'route' => 'admin.settings.login_logs',
+                                'label' => 'Riwayat login',
                             ],
                         ];
 

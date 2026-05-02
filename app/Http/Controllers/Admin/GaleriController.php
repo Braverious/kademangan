@@ -56,7 +56,7 @@ class GaleriController extends Controller
         Galeri::create([
             'judul_foto' => $request->judul_foto,
             'foto' => $path,
-            'id_user' => auth()->id(),
+            'user_id' => auth()->id(),
             'tgl_upload' => now()
         ]);
 
@@ -96,7 +96,7 @@ class GaleriController extends Controller
             'judul_foto' => $request->judul_foto
         ];
 
-        $data['id_user'] = auth()->id();
+        $data['user_id'] = auth()->id();
         $data['tgl_upload'] = now();
         if ($request->hasFile('foto')) {
 

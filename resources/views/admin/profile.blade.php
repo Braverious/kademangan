@@ -32,11 +32,11 @@
                             <div class="col-md-4">
                                 <div class="form-group text-center">
                                     <label>Foto Profil</label><br>
-                                    <img src="{{ asset('uploads/profil/' . $user->foto) }}" alt="Foto Profil"
-                                        class="avatar-img rounded-circle mb-2 profile-avatar-preview">
+                                    {{-- Update: Ambil dari staffDetail --}}
+                                    <img src="{{ asset('uploads/profil/' . ($user->staffDetail->photo ?? 'default.jpg')) }}"
+                                        alt="Foto Profil" class="avatar-img rounded-circle mb-2 profile-avatar-preview"
+                                        style="width: 150px; height: 150px; object-fit: cover;">
                                     <input type="file" name="foto" class="form-control mt-2">
-                                    <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah
-                                        foto.</small>
                                 </div>
                             </div>
                             <div class="col-md-8">
@@ -45,7 +45,9 @@
                                         <div class="form-group">
                                             <label for="nama_lengkap">Nama Lengkap</label>
                                             <input type="text" class="form-control" name="nama_lengkap"
-                                                value="{{ old('nama_lengkap', $user->nama_lengkap) }}" required>
+                                                {{-- Update: Ambil full_name dari staffDetail --}}
+                                                value="{{ old('nama_lengkap', $user->staffDetail->full_name ?? '') }}"
+                                                required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">

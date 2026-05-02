@@ -92,7 +92,7 @@ class SuratBelumBekerjaController extends Controller
                 ->with('error', 'Data tidak ditemukan');
         }
 
-        $isSuperadmin = auth()->user()->id_level == 1;
+        $isSuperadmin = auth()->user()->level_id == 1;
 
         return view('admin.surat_belum_bekerja.edit', [
             'title' => 'Edit Surat Ket. Belum Bekerja',
@@ -111,7 +111,7 @@ class SuratBelumBekerjaController extends Controller
                 ->with('error', 'Data tidak ditemukan');
         }
 
-        $isSuperadmin = auth()->user()->id_level == 1;
+        $isSuperadmin = auth()->user()->level_id == 1;
 
         // =========================
         // VALIDASI
@@ -126,7 +126,7 @@ class SuratBelumBekerjaController extends Controller
             $surat->update([
                 'nomor_surat' => $request->nomor_surat,
                 'status' => $request->status,
-                'id_user' => auth()->id(),
+                'user_id' => auth()->id(),
             ]);
 
             return redirect()
@@ -289,7 +289,7 @@ class SuratBelumBekerjaController extends Controller
 
         // --- 3. Mapping Petugas (User) ---
         $petugasMap = [];
-        $idsUser = $rows->pluck('id_user')->filter()->unique()->toArray();
+        $idsUser = $rows->pluck('user_id')->filter()->unique()->toArray();
         if (!empty($idsUser)) {
             $users = DB::table('users')->whereIn('id', $idsUser)->get();
             foreach ($users as $u) {
@@ -423,7 +423,7 @@ class SuratBelumBekerjaController extends Controller
             $sheet->setCellValue('O' . $rowIndex, $r->keperluan);
             $sheet->setCellValueExplicit('P' . $rowIndex, (string)$r->telepon_pemohon, DataType::TYPE_STRING);
             $sheet->setCellValue('Q' . $rowIndex, $r->status);
-            $sheet->setCellValue('R' . $rowIndex, $petugasMap[$r->id_user] ?? '-');
+            $sheet->setCellValue('R' . $rowIndex, $petugasMap[$r->user_id] ?? '-');
 
             $rowIndex++;
         }
@@ -468,7 +468,7 @@ class SuratBelumBekerjaController extends Controller
                 ->with('error', 'Data tidak ditemukan');
         }
 
-        if (auth()->user()->id_level != 1) {
+        if (auth()->user()->level_id != 1) {
             return redirect()
                 ->route('admin.belum-bekerja.index')
                 ->with('error', 'Akses ditolak! Hanya superadmin.');

@@ -135,6 +135,6 @@ class RefJabatanController extends Controller
 
     private function authorizeSuperadmin(): void
     {
-        abort_unless(Auth::check() && Auth::user()->id_level == 1, 403);
+        abort_unless(Auth::check() && Auth::user()->level_id == 1, 403);
     }
 }

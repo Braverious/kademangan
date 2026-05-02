@@ -59,11 +59,11 @@
 
                         <div class="form-group">
                             <label>Level Akses</label>
-                            <select name="id_level" class="form-control" required>
+                            <select name="level_id" class="form-control" required>
                                 <option value="">-- Pilih Level --</option>
                                 @foreach ($levels as $lvl)
-                                    <option value="{{ $lvl->id_level }}"
-                                        {{ old('id_level') == $lvl->id_level ? 'selected' : '' }}>
+                                    <option value="{{ $lvl->id }}"
+                                        {{ old('level_id') == $lvl->id ? 'selected' : '' }}>
                                         {{ $lvl->nama_level }}
                                     </option>
                                 @endforeach

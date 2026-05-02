@@ -3,7 +3,6 @@
 <main>
     <section class="pelayanan-section py-5">
         <div class="container">
-
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div></div>
 
@@ -13,6 +12,7 @@
                         <path fill-rule="evenodd"
                             d="M15 8a.75.75 0 0 1-.75.75H3.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 1 1 1.06 1.06L3.56 7.25h10.69A.75.75 0 0 1 15 8z" />
                     </svg>
+
                     <span class="ms-2 fw-semibold">Kembali</span>
                 </a>
             </div>
@@ -24,38 +24,27 @@
                 </div>
             </div>
 
-            @php
-                $icons = [
-                    'tidak-mampu' => 'bi-shield-check',
-                    'belum-bekerja' => 'bi-file-earmark-person',
-                    'domisili-yayasan' => 'bi-building',
-                    'belum-memiliki-rumah' => 'bi-house',
-                    'kematian' => 'bi-person-x',
-                    'kematian-nondukcapil' => 'bi-person-x-fill',
-                    'suami-istri' => 'bi-people-fill',
-                    'pengantar-nikah' => 'bi-suit-heart',
-                    'penghasilan' => 'bi-cash-coin',
-                ];
-            @endphp
-
             <div class="row g-4">
                 @forelse ($data['cards'] as $card)
                     <div class="col-md-4">
                         <div class="card h-100 shadow-sm service-card">
+                            @if ($card->gambar)
+                                <img src="{{ asset('storage/' . $card->gambar) }}" class="card-img-top"
+                                    alt="{{ $card->judul }}" style="height: 180px; object-fit: cover;">
+                            @endif
+
                             <div class="card-body d-flex flex-column">
-                                <div class="d-flex align-items-center mb-3">
-                                    <i class="bi {{ $icons[$card->slug] ?? 'bi-file-earmark-text' }} fs-3 text-primary me-2"></i>
-                                    <h5 class="card-title mb-0">
-                                        {{ $card->judul }}
-                                    </h5>
-                                </div>
+                                <h5 class="card-title mb-2">
+                                    {{ $card->judul }}
+                                </h5>
 
                                 <p class="card-text text-muted small flex-grow-1">
                                     {{ $card->deskripsi }}
                                 </p>
 
                                 @if ($card->is_active)
-                                    <a href="{{ route('pelayanan.show', $card->slug) }}" class="btn btn-primary mt-auto">
+                                    <a href="{{ route('pelayanan.show', $card->slug) }}"
+                                        class="btn btn-primary mt-auto">
                                         Ajukan Sekarang
                                     </a>
                                 @else
@@ -72,9 +61,7 @@
                     </div>
                 @endforelse
             </div>
-
         </div>
     </section>
 </main>
-
 <x-footer />

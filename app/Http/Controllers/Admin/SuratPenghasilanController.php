@@ -77,7 +77,7 @@ class SuratPenghasilanController extends Controller
                 ->with('error', 'Data tidak ditemukan');
         }
 
-        $isSuperadmin = auth()->user()->id_level == 1;
+        $isSuperadmin = auth()->user()->level_id == 1;
 
         return view('admin.surat_penghasilan.edit', [
             'title' => 'Edit Surat Penghasilan',
@@ -95,7 +95,7 @@ class SuratPenghasilanController extends Controller
                 ->with('error', 'Data tidak ditemukan');
         }
 
-        $isSuperadmin = auth()->user()->id_level == 1;
+        $isSuperadmin = auth()->user()->level_id == 1;
 
         if (!$isSuperadmin) {
             $request->validate([
@@ -106,7 +106,7 @@ class SuratPenghasilanController extends Controller
             $surat->update([
                 'nomor_surat' => $request->nomor_surat,
                 'status' => $request->status,
-                'id_user' => auth()->id(),
+                'user_id' => auth()->id(),
             ]);
 
             return redirect()->route('admin.penghasilan.detail', $id)
@@ -174,7 +174,7 @@ class SuratPenghasilanController extends Controller
                 ->with('error', 'Data tidak ditemukan');
         }
 
-        if (auth()->user()->id_level != 1) {
+        if (auth()->user()->level_id != 1) {
             return redirect()->route('admin.penghasilan.index')
                 ->with('error', 'Akses ditolak');
         }
@@ -260,7 +260,7 @@ class SuratPenghasilanController extends Controller
 
         // --- 3. Mapping Petugas ---
         $petugasMap = [];
-        $idsUser = $rows->pluck('id_user')->filter()->unique()->toArray();
+        $idsUser = $rows->pluck('user_id')->filter()->unique()->toArray();
         if (!empty($idsUser)) {
             $users = DB::table('users')->whereIn('id', $idsUser)->get();
             foreach ($users as $u) {
@@ -390,7 +390,7 @@ class SuratPenghasilanController extends Controller
             $sheet->setCellValue('M' . $rowIndex, $r->keperluan);
             $sheet->setCellValueExplicit('N' . $rowIndex, (string)$r->telepon_pemohon, DataType::TYPE_STRING);
             $sheet->setCellValue('O' . $rowIndex, $r->status);
-            $sheet->setCellValue('P' . $rowIndex, $petugasMap[$r->id_user] ?? '-');
+            $sheet->setCellValue('P' . $rowIndex, $petugasMap[$r->user_id] ?? '-');
 
             $rowIndex++;
         }

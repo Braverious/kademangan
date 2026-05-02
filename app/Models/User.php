@@ -2,61 +2,71 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\CitizenDetail;
+use App\Models\StaffDetail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasFactory, Notifiable;
 
-    // 1. Nama tabel tunggal sesuai database Anda
-    protected $table = 'user';
+    protected $table = 'users';
 
-    // 2. Tentukan Primary Key kustom
-    protected $primaryKey = 'id_user';
-
-    // 3. Matikan timestamps karena di struktur tabel Anda tidak ada created_at/updated_at
-    // public $timestamps = false;
-
-    // 4. Kolom yang boleh diisi (Mass Assignment)
     protected $fillable = [
-        'nama_lengkap',
-        'nip',
-        'jabatan_id',
         'username',
         'password',
-        'foto',
-        'id_level',
+        'notelp',
+        'role',
+        'level_id',
+        'created_by',
+        'is_active',
+        'inactive_reason',
     ];
 
-    // 5. Sembunyikan data sensitif saat model dipanggil
     protected $hidden = [
         'password',
+        'remember_token',
     ];
 
-    /**
-     * Karena Laravel secara default mencari kolom 'id', 
-     * kita pastikan dia tahu id_user adalah kuncinya.
-     */
-    public function getAuthIdentifierName()
+    public static function setCreator()
     {
-        return 'id_user';
+        if (Auth::check()) {
+            // Jika sedang login, berarti dibuat oleh Staff/Admin (simpan ID-nya)
+            return Auth::id();
+        }
+
+        // Jika tidak login, cek apakah sedang berada di route register
+        if (request()->routeIs('auth.register.process')) {
+            return 'register';
+        }
+
+        // Default jika dibuat melalui SQL manual / Seeder / Command line
+        return 'sysadmin';
     }
 
-    /**
-     * Relasi ke tabel Level
-     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    // Relasi ke detail Staff
+    public function staffDetail()
+    {
+        return $this->hasOne(StaffDetail::class, 'user_id');
+    }
+
+    // Relasi ke detail Warga
+    public function citizenDetail()
+    {
+        return $this->hasOne(CitizenDetail::class, 'user_id');
+    }
+
     public function level()
     {
-        return $this->belongsTo(Level::class, 'id_level', 'id_level');
-    }
-
-    public function relasiJabatan()
-    {
-        // Relasi belongsTo(NamaModel, foreign_key_di_user, primary_key_di_referensi)
-        return $this->belongsTo(RefJabatan::class, 'jabatan_id', 'id');
+        // FK di users adalah level_id, PK di level adalah id
+        return $this->belongsTo(Level::class, 'level_id', 'id');
     }
 }

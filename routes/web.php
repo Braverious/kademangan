@@ -14,6 +14,8 @@ use App\Http\Controllers\Admin\SuratBelumBekerjaController;
 use App\Http\Controllers\Admin\SuratPenghasilanController;
 use App\Http\Controllers\Admin\SuratSktmController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CitizenController;
+use App\Http\Controllers\Admin\LoginLogController;
 use App\Http\Controllers\PelayananController;
 use App\Http\Controllers\LkkController;
 use App\Http\Controllers\FrontBeritaController;
@@ -55,17 +57,25 @@ Route::post('/chatbot/send', [ChatbotController::class, 'handleChat'])->middlewa
 Route::get('/admin/chatbot', [ChatbotController::class, 'adminIndex'])->name('admin.chatbot.index')->middleware('throttle:5,1');
 Route::post('/admin/chatbot/update', [ChatbotController::class, 'adminUpdate'])->name('admin.chatbot.update');
 
+
 // Grouping Authentication
 Route::controller(AuthController::class)->group(function () {
-    Route::get('auth/login', 'index')->name('login');
-    Route::post('auth/process', 'aksi_login');
+    // Login Warga (Default)
+    Route::get('login', 'showLoginWarga')->name('login');
 
-    // Rute apabila akses via GET, lemparin aja ke login lagi
+    // Login Staff
+    Route::get('login/staff', 'showLoginStaff')->name('login.staff');
+
+    // Proses Login (Satu pintu saja tidak apa-apa karena role dicek setelah login)
+    Route::post('auth/process', 'aksi_login')->name('login.process');
+
+    Route::get('register', 'showRegister')->name('auth.register');
+    Route::post('register/process', 'aksi_register')->name('auth.register.process');
+
     Route::get('auth/process', function () {
         return redirect()->route('login');
     });
 
-    // Rute logout
     Route::get('logout', 'logout')->name('logout');
 });
 
@@ -79,33 +89,53 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/profil', [ProfileController::class, 'index'])->name('admin.profile');
     Route::post('/profil/update', [ProfileController::class, 'update'])->name('admin.profile.update');
 
+    Route::get('/profil-warga', [AuthController::class, 'profilWarga'])->name('warga.profil');
+    // Riwayat Pengajuan (Hanya rute dummy untuk sekarang)
+    Route::get('/riwayat', function () {
+        return "#";
+    })->name('warga.riwayat');
+
     // ================= SETTINGS MASTER GROUP =================
     Route::prefix('pengaturan')->name('admin.settings.')->group(function () {
 
-        // 1. Web Settings (About, Links, Social, Video)
+        // 1. Riwayat Login 
+        Route::get('/login-logs', [LoginLogController::class, 'index'])->name('login_logs');
+
+        // 2. Web Settings
         Route::controller(SettingsController::class)->group(function () {
-            Route::get('/konfigurasi', 'settings')->name('index'); // admin.settings.index
-            Route::post('/save', 'settingsSave')->name('save');    // admin.settings.save
+            Route::get('/konfigurasi', 'settings')->name('index');
+            Route::post('/save', 'settingsSave')->name('save');
         });
 
-        // 2. Running Text
+        // 3. Running Text
         Route::prefix('runningtext')->controller(RunningTextController::class)->name('runningtext.')->group(function () {
-            Route::get('/', 'index')->name('index');  // admin.settings.runningtext.index
+            Route::get('/', 'index')->name('index');
             Route::post('/', 'update')->name('update');
         });
 
-        // 3. User Management
-        Route::prefix('users')->controller(UserController::class)->name('users.')->group(function () {
+        // 4. Staff Management
+        Route::prefix('staff')->controller(UserController::class)->name('staff.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
-            Route::post('/import', [UserController::class, 'importExcel'])->name('import');
+            Route::post('/import', 'importExcel')->name('import');
             Route::post('/', 'store')->name('store');
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
         });
 
-        // 4. Referensi Jabatan
+        // 5. Citizen Management
+        Route::prefix('citizens')->controller(CitizenController::class)->name('citizens.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{id}/edit', 'edit')->name('edit');
+            Route::put('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'destroy')->name('destroy');
+            Route::patch('/{id}/toggle-status', 'toggleStatus')->name('toggle-status');
+        });
+
+        // 6. Referensi Jabatan
         Route::prefix('jabatan')->controller(RefJabatanController::class)->name('jabatan.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
@@ -116,13 +146,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             Route::delete('/{id}', 'destroy')->name('destroy');
         });
 
-        // 5. Jangkauan Area
+        // 7. Jangkauan Area
         Route::prefix('jangkauan')->controller(JangkauanController::class)->name('jangkauan.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/', 'update')->name('update');
         });
 
-        // 6. Layanan (Manajemen Kategori Layanan)
+        // 8. Layanan 
         Route::prefix('layanan')->controller(LayananController::class)->name('layanan.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');

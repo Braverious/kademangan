@@ -80,7 +80,7 @@ class BeritaController extends Controller
             'isi_berita' => $validated['isi_berita'],
             'kategori' => $validated['kategori'],
             'gambar' => '',
-            'id_user' => Auth::id(),
+            'user_id' => Auth::id(),
             'tgl_publish' => now(),
         ];
 
@@ -119,6 +119,7 @@ class BeritaController extends Controller
             'slug_berita' => $this->generateUniqueSlug($validated['judul_berita'], $berita->id_berita),
             'isi_berita' => $validated['isi_berita'],
             'kategori' => $validated['kategori'],
+            'user_id' => Auth::id(),
         ];
 
         if ($request->hasFile('gambar')) {
